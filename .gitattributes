@@ -1,0 +1,42 @@
+#줄바꿈은 전역 core.autocrlf에 맡기지 않고, 저장소의 .gitattributes가 관리하도록 만드는 방식이다.
+#git config --global core.autocrlf false
+
+#현재 설정 확인:
+#git config --global --get core.autocrlf
+#git config --show-origin --get core.autocrlf
+# 자동 감지 후 저장소 내부 줄바꿈 정규화
+
+* text=auto
+
+# Visual Studio / Windows 소스
+*.c              text eol=crlf
+*.cc             text eol=crlf
+*.cpp            text eol=crlf
+*.cxx            text eol=crlf
+*.h              text eol=crlf
+*.hpp            text eol=crlf
+*.inl            text eol=crlf
+*.rc             text eol=crlf
+*.rc2            text eol=crlf
+*.def            text eol=crlf
+*.idl            text eol=crlf
+
+*.sln            text eol=crlf
+*.vcxproj        text eol=crlf
+*.filters        text eol=crlf
+*.props          text eol=crlf
+*.targets        text eol=crlf
+
+# 이미지와 바이너리
+*.png            binary
+*.jpg            binary
+*.jpeg           binary
+*.gif            binary
+*.ico            binary
+*.bmp            binary
+*.wav            binary
+*.mp3            binary
+*.dll            binary
+*.lib            binary
+*.exe            binary
+*.pdb            binary
