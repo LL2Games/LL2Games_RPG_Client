@@ -1,0 +1,27 @@
+{
+  "skill_id": 29001,
+  "key": "knight.slash_01",
+  "cooldown_ms": 500,
+  "mp_cost": 10,
+  "type": "MELEE_ARC",
+  "range": 120.0,
+  "angle_deg": 60.0,
+  "client": [
+    {
+      "anim": "ANIM_SKL_KNIGHT_SLASH_01",
+      "vfx": "VFX_SKL_KNIGHT_SLASH_01",
+      "sfx": "SFX_SKL_KNIGHT_SLASH_01",
+      "icon": "icon_skill_20001",
+      "name": "??????",
+      "desc": "?????? ???? ???? ???????."
+    }
+  ],
+
+  "__comments": [
+    "20000~20999: ???? ?��",
+    "21000~21999: ??? ?��",
+    "22000~22999: ?????? ?��",
+    "23000~23999: ???? ?��",
+    "29000~29999: common(????)"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "monster_id": 100100,
+  "name": "Green Slime",
+
+  "animations": {
+    "idle": {
+      "path": "Monster/100100/stand",
+      "frame_prefix": "stand.",
+      "frame_count": 1,
+      "delay_ms": 150
+    },
+    "move": {
+      "path": "Monster/100100/move",
+      "frame_prefix": "move.",
+      "frame_count": 5,
+      "delay_ms": 120
+    },
+    "hit": {
+      "path": "Monster/100100/hit",
+      "frame_prefix": "hit1.",
+      "frame_count": 1,
+      "delay_ms": 100,
+      "event" : {
+        "end" : "MonsterHitEnd"
+      }
+    },
+    "die": {
+      "path": "Monster/100100/die",
+      "frame_prefix": "die1.",
+      "frame_count": 8,
+      "delay_ms": 120,
+      "event" : {
+        "complete" : "MonsterDieEnd"
+      }
+    }
+  },
+
+  "render": {
+      "width": 64,
+      "height": 64,
+      "origin": {
+        "x": 16,
+        "y": 0
+      }
+    }
+  ,
+
+  "collider" :{
+        "type"      :   "Rect2D",
+        "offset"    :   {"x" : 0, "y" : 12},
+        "half"      :   {"w" :18, "h": 12}
+    },
+
+  "ui": {
+      "hp_bar_offset": {
+        "x": 0,
+        "y": -45
+      }
+    },
+
+  "moveSpeed": 10
+}

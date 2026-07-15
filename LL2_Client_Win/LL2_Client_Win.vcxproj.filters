@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="LOGIN">
+      <UniqueIdentifier>{1f13a140-d025-4286-a239-153fe5096971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOCKET">
+      <UniqueIdentifier>{7819c39f-6987-46e0-8d14-5e3ebb4a4727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WORLD">
+      <UniqueIdentifier>{4d041b01-2293-41c3-9ffa-9d940aa70182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UTIL">
+      <UniqueIdentifier>{053f49a7-b371-4892-97f2-6a4103a5667e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="LL2_Client_Win.h" />
+    <ClInclude Include="CLogin.h">
+      <Filter>LOGIN</Filter>
+    </ClInclude>
+    <ClInclude Include="CRegister.h">
+      <Filter>LOGIN</Filter>
+    </ClInclude>
+    <ClInclude Include="MySocket.h">
+      <Filter>SOCKET</Filter>
+    </ClInclude>
+    <ClInclude Include="CWorld.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LL2_Client_Win.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="LL2_Client_Win.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LL2_Client_Win.cpp" />
+    <ClCompile Include="CLogin.cpp">
+      <Filter>LOGIN</Filter>
+    </ClCompile>
+    <ClCompile Include="CRegister.cpp">
+      <Filter>LOGIN</Filter>
+    </ClCompile>
+    <ClCompile Include="MySocket.cpp">
+      <Filter>SOCKET</Filter>
+    </ClCompile>
+    <ClCompile Include="CWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

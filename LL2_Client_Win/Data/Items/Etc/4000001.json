@@ -1,0 +1,9 @@
+  {
+  "item_id": 4000000,
+  "name": "Mushroom Hat",
+  "type": "material",
+  
+  "stackable": true,
+  "max_stack": 999,
+  "sell_price": 2
+}

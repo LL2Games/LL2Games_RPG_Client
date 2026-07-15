@@ -1,0 +1,655 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MySocket.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbApplication.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbDamageText.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbDontDestroyOnLoad.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbSingletonBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoxCollider2D.cpp">
+      <Filter>Colider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCircleCollider2D.cpp">
+      <Filter>Colider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCollider.cpp">
+      <Filter>Colider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCollisionManager.cpp">
+      <Filter>Colider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbAnimation.cpp">
+      <Filter>Component\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbAnimator.cpp">
+      <Filter>Component\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCamera.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbScript.cpp">
+      <Filter>Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbSpriteRenderer.cpp">
+      <Filter>Component\SpriteRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbTransform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Inventory.cpp">
+      <Filter>Game\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InventoryManager.cpp">
+      <Filter>Game\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ItemDataManager.cpp">
+      <Filter>Game\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ItemUseService.cpp">
+      <Filter>Game\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InventoryUI.cpp">
+      <Filter>Game\UI\InventoryUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ChatUI.cpp">
+      <Filter>Game\UI\ChatUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpBarUI.cpp">
+      <Filter>Game\UI\ExpBarUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)HealthBarUI.cpp">
+      <Filter>Game\UI\HealthBarUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LevelUI.cpp">
+      <Filter>Game\UI\LevelUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotUI.cpp">
+      <Filter>Game\UI\QuickSlotUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TradeRequestUI.cpp">
+      <Filter>Game\UI\TradeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TradeUI.cpp">
+      <Filter>Game\UI\TradeUI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UI.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UILayout.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp">
+      <Filter>Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerManager.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Stat.cpp">
+      <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbOtherPlayer.cpp">
+      <Filter>Game\OtherPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbOtherPlayerManager.cpp">
+      <Filter>Game\OtherPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbGameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbLayer.cpp">
+      <Filter>Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbMath.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbChatNetworkManager.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbNetworkConfig.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbNetworkManager.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PacketManager.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PacketParser.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)InventoryPacketHandler.cpp">
+      <Filter>PacketHandler\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerDataPacketHandler.cpp">
+      <Filter>PacketHandler\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovePacketHandler.cpp">
+      <Filter>PacketHandler\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ChannelInitPacketHandler.cpp">
+      <Filter>PacketHandler\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ChatPacketHandler.cpp">
+      <Filter>PacketHandler\Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CombatPacketHandler.cpp">
+      <Filter>PacketHandler\Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DropItemPacketHandler.cpp">
+      <Filter>PacketHandler\DropItem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)itemPacketHandler.cpp">
+      <Filter>PacketHandler\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IPacketHandler.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterPacketHandler.cpp">
+      <Filter>PacketHandler\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.cpp">
+      <Filter>PacketHandler\QuickSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TradePacketHandler.cpp">
+      <Filter>PacketHandler\Trade</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbD2DRenderer.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbRender.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbResourceManager.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbTexture.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbSceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbTime.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Monster.cpp">
+      <Filter>Game\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterDataManager.cpp">
+      <Filter>Game\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterManager.cpp">
+      <Filter>Game\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterScript.cpp">
+      <Filter>Game\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CombatSystem.cpp">
+      <Filter>Game\Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DropItemManager.cpp">
+      <Filter>Game\DropItem</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Skill.cpp">
+      <Filter>Game\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkillDataManager.cpp">
+      <Filter>Game\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAnimationManager.cpp">
+      <Filter>Game\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotManager.cpp">
+      <Filter>Game\QuickSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbEntity.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.cpp">
+      <Filter>PacketHandler\OtherPlayer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbApplication.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbDamageText.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbDontDestroyOnLoad.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbSingletonBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoxCollider2D.h">
+      <Filter>Colider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCircleCollider2D.h">
+      <Filter>Colider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCollider.h">
+      <Filter>Colider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCollisionManager.h">
+      <Filter>Colider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collider_Info.h">
+      <Filter>Colider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbAnimation.h">
+      <Filter>Component\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbAnimator.h">
+      <Filter>Component\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCamera.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbScript.h">
+      <Filter>Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbSpriteRenderer.h">
+      <Filter>Component\SpriteRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbTransform.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Inventory.h">
+      <Filter>Game\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryManager.h">
+      <Filter>Game\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemDataManager.h">
+      <Filter>Game\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemUseService.h">
+      <Filter>Game\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryUI.h">
+      <Filter>Game\UI\InventoryUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryUI_Info.h">
+      <Filter>Game\UI\InventoryUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ChatUI.h">
+      <Filter>Game\UI\ChatUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpBarUI.h">
+      <Filter>Game\UI\ExpBarUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)HealthBarUI.h">
+      <Filter>Game\UI\HealthBarUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LevelUI.h">
+      <Filter>Game\UI\LevelUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI.h">
+      <Filter>Game\UI\QuickSlotUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI_Info.h">
+      <Filter>Game\UI\QuickSlotUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradeRequestUI.h">
+      <Filter>Game\UI\TradeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradeUI.h">
+      <Filter>Game\UI\TradeUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UI.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UILayout.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIManager.h">
+      <Filter>Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerManager.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)playerInfo.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stat.h">
+      <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbOtherPlayer.h">
+      <Filter>Game\OtherPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbOtherPlayerManager.h">
+      <Filter>Game\OtherPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbGameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbLayer.h">
+      <Filter>Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbChatNetworkManager.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkConfig.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkDebug.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkInit.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkManager.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Packet.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PacketData.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PacketManager.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PacketParser.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryPacketHandler.h">
+      <Filter>PacketHandler\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerDataPacketHandler.h">
+      <Filter>PacketHandler\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovePacketHandler.h">
+      <Filter>PacketHandler\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ChannelInitPacketHandler.h">
+      <Filter>PacketHandler\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ChatPacketHandler.h">
+      <Filter>PacketHandler\Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CombatPacketHandler.h">
+      <Filter>PacketHandler\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DropItemPacketHandler.h">
+      <Filter>PacketHandler\DropItem</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemPacketHandler.h">
+      <Filter>PacketHandler\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IPacketHandler.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterPacketHandler.h">
+      <Filter>PacketHandler\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.h">
+      <Filter>PacketHandler\QuickSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradePacketHandler.h">
+      <Filter>PacketHandler\Trade</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbD2DRenderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbRender.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbResourceManager.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbTexture.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbSceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbTime.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Monster.h">
+      <Filter>Game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterDataManager.h">
+      <Filter>Game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterInfo.h">
+      <Filter>Game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterManager.h">
+      <Filter>Game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterScript.h">
+      <Filter>Game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CombatSystem.h">
+      <Filter>Game\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CombatSystem_Info.h">
+      <Filter>Game\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DropItemManager.h">
+      <Filter>Game\DropItem</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skill.h">
+      <Filter>Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skill_Info.h">
+      <Filter>Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkillDataManager.h">
+      <Filter>Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Trade_Info.h">
+      <Filter>Game\Trade</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradeManager.h">
+      <Filter>Game\Trade</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AnimationInfo.h">
+      <Filter>Game\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerAnimationManager.h">
+      <Filter>Game\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotManager.h">
+      <Filter>Game\QuickSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StringConvert.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbEntity.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbEnums.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EquipeTypes.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.h">
+      <Filter>PacketHandler\OtherPlayer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Colider">
+      <UniqueIdentifier>{99486a7e-9840-4ed4-84f0-dbbf37c6a17c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{6298e03c-c146-470d-92dc-c38b82708085}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{b6d834a7-46df-476f-a2e9-68d65e75547b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Animation">
+      <UniqueIdentifier>{000fbe15-5268-4378-88b8-8970a7dccfd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Camera">
+      <UniqueIdentifier>{686be2e7-e8d3-4953-93cb-b2321fa0e2a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script">
+      <UniqueIdentifier>{dedc92bc-3975-4df5-944b-eeeaf5868c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{7e5e9caf-2145-470e-bf7f-ab6558fff5b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\SpriteRenderer">
+      <UniqueIdentifier>{609ad117-f276-4817-8689-6e47e73924ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{2c7d8eba-c8bd-4700-95cf-db1cf93a917c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Inventory">
+      <UniqueIdentifier>{fd4af138-5efe-492e-a38b-e2c86151f14e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\OtherPlayer">
+      <UniqueIdentifier>{74b36c57-4b02-402e-96e4-a09cddd92f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Player">
+      <UniqueIdentifier>{a7d0906c-6f44-4491-aa67-e95f904ee5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI">
+      <UniqueIdentifier>{b0b259c7-d564-4f46-ba4f-a251d9a56b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\InventoryUI">
+      <UniqueIdentifier>{55f4476e-0658-43d2-ac2f-63ef41990d37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\ChatUI">
+      <UniqueIdentifier>{4e8ee6e5-f46c-4c59-94ee-45486ecba7b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\ExpBarUI">
+      <UniqueIdentifier>{2afabdeb-aa12-4fe3-9fa6-b9c85a4618b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\HealthBarUI">
+      <UniqueIdentifier>{48862923-978b-4e3f-8da4-3aca629847cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\LevelUI">
+      <UniqueIdentifier>{57d51c38-aac3-4324-83ae-a2d5f3caad89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\QuickSlotUI">
+      <UniqueIdentifier>{467925e0-d53e-4131-a80f-2909b4bfc11a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\TradeUI">
+      <UniqueIdentifier>{c0d0b0d2-22e5-4361-aa29-29586fd10188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{5a7050a1-444c-499c-a81f-5ffd1d0d1402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{04402cd7-25ba-407c-8003-9e24d9b90d79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Layer">
+      <UniqueIdentifier>{3a9133f9-b7d0-4974-9c8b-af39d61ef0b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{4c383155-d930-4d6c-9732-61729dfe5e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{109b0735-8470-485d-988b-79260776b3aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{1acc3a3e-ea3f-41b9-80eb-8162707282d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet">
+      <UniqueIdentifier>{0f65b6ee-d0a8-40c6-b315-5dc887380136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler">
+      <UniqueIdentifier>{0e82e3bc-cc3e-4d69-9968-27b6afc1a9b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Inventory">
+      <UniqueIdentifier>{5726073e-6ed9-4795-a161-037050306ea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Player">
+      <UniqueIdentifier>{236b6070-cf10-4cbf-a4fc-dcc56bf80dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Chat">
+      <UniqueIdentifier>{bcaf0397-258e-4ade-9f27-fca7e30d71c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Combat">
+      <UniqueIdentifier>{e72b28ad-8778-4f6b-b348-ad04f55b3d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\DropItem">
+      <UniqueIdentifier>{91751bcf-2192-479d-a96a-f0e6ec080bde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Item">
+      <UniqueIdentifier>{8f136296-1bd9-4e70-bf0e-6fab1cc3f450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Monster">
+      <UniqueIdentifier>{843139be-5b99-45b1-82f9-411f17e50dd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\QuickSlot">
+      <UniqueIdentifier>{4c97e626-b15e-49b2-924b-4b5c27e7ee93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Trade">
+      <UniqueIdentifier>{cf384c25-c385-4353-9bea-a796a554b8a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{8091c751-bc61-4cc2-8559-b8d6ded58d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{210f0408-13f3-4872-af2b-39716362a103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{44b9d554-311b-4131-8455-6b1296837e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{ef6691a5-dcb7-4779-b2a6-5f743d42cdf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Monster">
+      <UniqueIdentifier>{513786cc-35e0-4dcc-b32b-16626d20d393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Combat">
+      <UniqueIdentifier>{3767f6d5-7615-4c9d-a8ec-0bccc028811e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\DropItem">
+      <UniqueIdentifier>{df18da4d-f235-46c2-b330-e7d6b633d78b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Skill">
+      <UniqueIdentifier>{b8a11573-c920-4ebe-b556-4c12e1cc6b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Trade">
+      <UniqueIdentifier>{e480ef64-cc8b-432a-8b57-3a52c1052be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Animation">
+      <UniqueIdentifier>{fdcf2afb-7cb4-4442-8661-8e17929727cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\QuickSlot">
+      <UniqueIdentifier>{e696540d-bdb0-432d-a403-e74254364a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{82465e83-c772-48b5-adfa-4126c8a4e3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\OtherPlayer">
+      <UniqueIdentifier>{76710acb-d664-4283-a532-ecb7d7b5e4e2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

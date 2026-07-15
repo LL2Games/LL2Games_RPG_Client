@@ -1,0 +1,53 @@
+{
+  "monster_id": 100102,
+  "name": "Orange Mushroom",
+
+  "animations": {
+    "move": {
+      "path": "Monster/100102/move",
+      "frame_prefix": "move.",
+      "frame_count": 4,
+      "delay_ms": 120
+    },
+    "hit": {
+      "path": "Monster/100102/hit",
+      "frame_prefix": "hit1.",
+      "frame_count": 1,
+      "delay_ms": 100,
+      "event": {
+        "end": "MonsterHitEnd"
+      }
+    },
+    "die": {
+      "path": "Monster/100102/die",
+      "frame_prefix": "die1.",
+      "frame_count": 3,
+      "delay_ms": 120,
+      "event": {
+        "complete": "MonsterDieEnd"
+      }
+    }
+  },
+
+  "render": {
+    "width": 64,
+    "height": 64,
+    "origin": {
+      "x": 32,
+      "y": 0
+    }
+  },
+  "collider" :{
+        "type" : "Rect2D",
+        "offset" : {"x" : 0, "y" : 28},
+        "half": {"w" :30, "h": 30}
+    },
+  "ui": {
+    "hp_bar_offset": {
+      "x": 0,
+      "y": -45
+    }
+  },
+
+  "moveSpeed": 10
+}

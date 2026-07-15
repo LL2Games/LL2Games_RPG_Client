@@ -1,0 +1,93 @@
+{
+  "key": "player_warrior_onehand_sword",
+  "job": "warrior",
+  "weapon": "onehand_sword",
+
+  "render": {
+    "width": 64,
+    "height": 64,
+     "origin": {
+        "x": 32,
+        "y": 55
+      }
+  },
+
+  "animations": {
+     "stand": {
+      "path": "Character/Warrior/onehand_sword/stand",
+      "frame_prefix": "stand1_",
+      "frame_count": 4,
+      "delay_ms": 0.15
+    },
+    "alert": {
+      "path": "Character/Warrior/onehand_sword/alert",
+      "frame_prefix": "alert_",
+      "frame_count": 4,
+      "delay_ms": 10
+    },
+    "walk": {
+      "path": "Character/Warrior/onehand_sword/walk",
+      "frame_prefix": "walk1_",
+      "frame_count": 4,
+      "delay_ms": 0.2,
+      "frame_offsets": [
+        { "x": 0, "y": 0 },
+        { "x": -6, "y": 0 },
+        { "x": 1, "y": 0 },
+        { "x": 0, "y": 0 }
+      ]
+    },
+    "jump": {
+      "path": "Character/Warrior/onehand_sword/jump",
+      "frame_prefix": "jump_",
+      "frame_count": 2,
+      "delay_ms": 0.1
+    },
+    "prone":{
+      "path": "Character/Warrior/onehand_sword/prone",
+      "frame_prefix": "prone_",
+      "frame_count": 2,
+      "delay_ms": 10
+    },
+    "proneStab":{
+      "path": "Character/Warrior/onehand_sword/proneStab",
+      "frame_prefix": "proneStab_",
+      "frame_count": 3,
+      "delay_ms": 10
+    },
+    "rope":{
+      "path": "Character/Warrior/onehand_sword/rope",
+      "frame_prefix": "rope_",
+      "frame_count": 3,
+      "delay_ms": 10
+    },
+     "ladder":{
+      "path": "Character/Warrior/onehand_sword/ladder",
+      "frame_prefix": "ladder_",
+      "frame_count": 3,
+      "delay_ms": 10
+    },
+    "swingO3": {
+      "path": "Character/Warrior/onehand_sword/swingO3",
+      "frame_prefix": "swingO3_",
+      "frame_count": 3,
+      "delay_ms": 0.2,
+      "event": {
+        "start": "",
+        "complete": "PlayerAttackEnd",
+        "end": ""
+      },
+      "frame_offsets": [
+        { "x": 0, "y": 0 },
+        { "x": -38, "y": 0 },
+        { "x": 2, "y": 0 }
+      ]
+    },
+    "stabO1": {
+      "path": "Character/Warrior/onehand_sword/stabO1",
+      "frame_prefix": "stabO1_",
+      "frame_count": 3,
+      "delay_ms": 10
+    }
+  }
+}

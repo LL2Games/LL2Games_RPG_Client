@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{dd8fae81-152e-4a0d-a434-ebe4b255b632}</ItemsProjectGuid>
+    <ItemsProjectName>LL2_Client_Win_Source</ItemsProjectName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AnimationInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoxCollider2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ChannelInitPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ChatPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ChatUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collider_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CombatPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CombatSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CombatSystem_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DropItemManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DropItemPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EquipeTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpBarUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HealthBarUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Inventory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryUI_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InventoryUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemUseService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LevelUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Monster.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MonsterScript.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovePacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Packet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PacketData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PacketManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PacketParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerAnimationManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerDataPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)playerInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skill.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkillDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skill_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Stat.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbAnimation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbAnimator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbApplication.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbChatNetworkManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCircleCollider2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCollider.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbCollisionManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbD2DRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbDamageText.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbDontDestroyOnLoad.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbEnums.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbGameObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbInput.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbLayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbMath.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkDebug.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkInit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbOtherPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbOtherPlayerManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbRender.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbResourceManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbSceneManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbScript.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbSingletonBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbSpriteRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbTexture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbTime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stbTransform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StringConvert.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ItemPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradeManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradePacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradeRequestUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TradeUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Trade_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UILayout.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UIManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoxCollider2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ChannelInitPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ChatPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ChatUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CombatPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CombatSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DropItemManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DropItemPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpBarUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HealthBarUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Inventory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InventoryManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InventoryPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InventoryUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ItemDataManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ItemUseService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LevelUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Monster.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterDataManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MonsterScript.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovePacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MySocket.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PacketManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PacketParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAnimationManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerDataPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Skill.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkillDataManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Stat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbAnimation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbAnimator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbApplication.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbChatNetworkManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCircleCollider2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCollider.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbCollisionManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbD2DRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbDamageText.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbDontDestroyOnLoad.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbGameObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbInput.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbLayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbMath.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbNetworkConfig.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbNetworkManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbOtherPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbOtherPlayerManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbRender.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbResourceManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbScene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbSceneManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbScript.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbSingletonBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbSpriteRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbTexture.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbTime.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stbTransform.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)itemPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TradePacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TradeRequestUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TradeUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UILayout.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp" />
+  </ItemGroup>
+</Project>

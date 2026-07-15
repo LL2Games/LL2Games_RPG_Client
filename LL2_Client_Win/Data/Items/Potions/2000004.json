@@ -1,0 +1,16 @@
+{
+  "item_id": 2000004,
+  "name": "Green Apple",
+  "type": "Consume",
+  "stackable": true,
+  "max_stack": 300,
+  "sell_price": 30,
+  "tooltip": [
+    {
+      "hp_restore": 0,
+      "mp_restore": 30
+    }
+  ]
+}
+
+

@@ -1,0 +1,16 @@
+{
+  "item_id": 2000003,
+  "name": "Blue Potion",
+  "type": "Consume",
+  "stackable": true,
+  "max_stack": 3000,
+  "sell_price": 10,
+  "tooltip": [
+    {
+      "hp_restore": 0,
+      "mp_restore": 100
+    }
+  ]
+}
+
+

@@ -1,0 +1,14 @@
+{
+  "item_id": 2000001,
+  "name": "Orange Potion",
+  "type": "Consume",
+  "stackable": true,
+  "max_stack": 100,
+  "sell_price": 24,
+  "tooltip": [
+    {
+      "hp_restore": 150,
+      "mp_restore": 0
+    }
+  ]
+}

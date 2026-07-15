@@ -1,0 +1,14 @@
+  {
+  "item_id": 2000000,
+  "name": "Red Potion",
+  "type": "Consume",
+  "stackable": true,
+  "max_stack": 100,
+  "sell_price": 3,
+  "tooltip": [
+    {
+      "hp_restore": 50,
+      "mp_restore": 0
+    }
+  ]
+}

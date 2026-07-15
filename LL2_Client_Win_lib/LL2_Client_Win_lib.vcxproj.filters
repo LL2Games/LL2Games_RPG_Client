@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="stbLoadScenes.h" />
+    <ClInclude Include="stbLoadResource.h" />
+    <ClInclude Include="stbPlayScene.h" />
+    <ClInclude Include="stbPlayer.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="stbPlayerScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="stbChatScene.h">
+      <Filter>Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="stbAudioClip.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stbPlayScene.cpp" />
+    <ClCompile Include="stbPlayer.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="stbPlayerScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="stbChatScene.cpp">
+      <Filter>Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="stbAudioClip.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{4d2696ef-8e62-47ba-b96c-b383adbb0b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script">
+      <UniqueIdentifier>{98befc76-1d72-4d3c-80db-018c8e0d0144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Chat">
+      <UniqueIdentifier>{9d0f2f0c-b04f-4630-8e52-83f83c183ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{e1b4e7cf-02bc-498b-8806-14e6b823392f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
