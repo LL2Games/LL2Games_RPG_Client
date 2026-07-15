@@ -59,7 +59,7 @@ void UIManager::Update()
 	}
 }
 
-void UIManager::Render(HDC hdc)
+void UIManager::Render(HDC /*hdc*/)
 {
 
 }

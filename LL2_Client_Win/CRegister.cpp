@@ -47,14 +47,19 @@ int CRegister::Register(const CString &strID, const CString strNick, const CStri
 	int nBuffLen = 0;
 	int nSendLen = 0;
 
-	nBuffLen = strID.GetLength() + strNick.GetLength() + strPW.GetLength() + 20;
+	const CStringA idA(strID);
+	const CStringA nickA(strNick);
+	const CStringA pwA(strPW);
+
+	nBuffLen = idA.GetLength() + nickA.GetLength() + pwA.GetLength() + 20;
 	buff = (char*)calloc(nBuffLen, sizeof(char));
 	if (buff == NULL)
 	{
 		AfxMessageBox(_T("메모리 할당 실패"));
 		goto err;
 	}
-	nSendLen = sprintf_s(buff, nBuffLen, "REGISTER$%s$%s$%s$", CStringA(strID),CStringA(strNick), CStringA(strPW));
+
+	nSendLen = sprintf_s(buff, nBuffLen, "REGISTER$%s$%s$%s$", idA.GetString(), nickA.GetString(), pwA.GetString());
 
 	//m_pSock->Send(buff, nSendLen);
 
@@ -66,7 +71,7 @@ err:
 	return rc;
 }
 
-int CRegister::OnRegister(const char* pID, const int nIDLen)
+int CRegister::OnRegister(const char* /*pID*/, const size_t /*nIDLen*/)
 {
 	int i;
 	char* context = NULL;

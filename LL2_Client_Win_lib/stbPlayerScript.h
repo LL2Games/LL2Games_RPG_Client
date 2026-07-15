@@ -60,7 +60,7 @@ namespace stb
 		stb::Player* m_player;
 		stb::Animator* m_animator;
 
-		std::string DebugMsg;
+		std::string m_debugMsg;
 		QuickSlotManager* m_quickSlotManager;
 	};
 }

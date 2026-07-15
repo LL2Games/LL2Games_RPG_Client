@@ -651,7 +651,7 @@ void stbD2DRenderer::DrawBitmap(ID2D1Bitmap* bitmap, const D2D1_RECT_F& destRect
     );
 }
 
-void stbD2DRenderer::DrawBitmap(ID2D1Bitmap* bitmap, const D2D1_RECT_F& destRect, const D2D1_RECT_F& srcRect, float opacity, bool flipX)
+void stbD2DRenderer::DrawBitmap(ID2D1Bitmap* bitmap, const D2D1_RECT_F& destRect, const D2D1_RECT_F& /*srcRect*/, float /*opacity*/, bool flipX)
 {
     if (bitmap == nullptr)
         return;

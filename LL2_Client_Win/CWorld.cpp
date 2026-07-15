@@ -11,6 +11,7 @@
 //#include "..\\LL2_Client_Win_Source\\MySocket.h"
 #include "MySocket.h"
 //#include "UTIL.h"
+#include "..\\LL2_Client_Win_Source\\stbLogger.h"
 
 //로그인 아이디
 extern std::string g_account_id;
@@ -149,7 +150,7 @@ void CWorld::DoDataExchange(CDataExchange* pDX)
 
 BOOL CWorld::connect()
 {
-	BOOL bRet;
+	//BOOL bRet;
 	//CString strHost = _T("100.99.220.45");
 	CString strHost = _T("100.108.54.60");
 	CString strPort = _T("5500");
@@ -207,11 +208,24 @@ int CWorld::InitWorld()
 	std::vector<std::string> datas;
 	std::string body, pkt;
 
-	datas.push_back(g_account_id);
-	body = PacketParser::MakeBody(datas);
-	pkt = PacketParser::MakePacket(PKT_INIT_WORLD, body);
+	try
+	{
+		datas.push_back(g_account_id);
+		body = PacketParser::MakeBody(datas);
+		pkt = PacketParser::MakePacket(PKT_INIT_WORLD, body);
 
-	m_pSock->SendPacket(pkt);
+		m_pSock->SendPacket(pkt);
+	}
+	catch (const std::length_error& e)
+	{
+		M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+		goto err;
+	}
+	catch (const std::exception& e)
+	{
+		M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+		goto err;
+	}
 
 	rc = EXIT_SUCCESS;
 err:
@@ -219,7 +233,7 @@ err:
 	return rc;
 }
 
-int CWorld::OnInitWorld(const char* recvBuff, const int recvLen)
+int CWorld::OnInitWorld(const char* recvBuff, const size_t recvLen)
 {
 	int rc = EXIT_FAILURE;
 
@@ -271,13 +285,26 @@ int CWorld::CharacterList()
 
 	m_pSock->m_status = E_WORLD_CHAR_LIST;
 
-	std::vector<std::string> datas;
-	std::string body, pkt;
+	try
+	{
+		std::vector<std::string> datas;
+		std::string body, pkt;
 
-	body = PacketParser::MakeBody({});
-	pkt = PacketParser::MakePacket(PKT_SELECT_CHARACTER, body);
+		body = PacketParser::MakeBody({});
+		pkt = PacketParser::MakePacket(PKT_SELECT_CHARACTER, body);
 
-	m_pSock->SendPacket(pkt);
+		m_pSock->SendPacket(pkt);
+	}
+	catch (const std::length_error& e)
+	{
+		M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+		goto err;
+	}
+	catch (const std::exception& e)
+	{
+		M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+		goto err;
+	}
 	
 	rc = EXIT_SUCCESS;
 err:
@@ -285,11 +312,11 @@ err:
 	return rc;
 }
 
-int CWorld::OnCharacterList(const char* recvBuff, const int recvLen)
+int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 {
-	int i;
-	char* context = NULL;
-	char* pLine = NULL;
+	//int i;
+	//char* context = NULL;
+	//char* pLine = NULL;
 	int rc = EXIT_FAILURE;
 	size_t offset = 0;
 	std::string status, errMsg;
@@ -340,7 +367,7 @@ int CWorld::OnCharacterList(const char* recvBuff, const int recvLen)
 		}
 		else
 		{
-			strCharList.Format(L"%s,%s", strCharList, wideValue.GetString());
+			strCharList.Format(L"%s,%s", strCharList.GetString(), wideValue.GetString());
 		}
 	}
 
@@ -348,7 +375,7 @@ int CWorld::OnCharacterList(const char* recvBuff, const int recvLen)
 
 
 	rc = EXIT_SUCCESS;
-err:
+//err:
 
 	if (rc != EXIT_SUCCESS)
 	{
@@ -383,24 +410,35 @@ void CWorld::OnBnClickedButtonEnter()
 
 	std::string body, pkt;
 
-	std::vector<std::string> datas;
-	datas.push_back(std::string(CStringA(strChannelId)));
-	//body = PacketParser::MakeBody(payload);
-	body = PacketParser::MakeBody(datas);
-	pkt = PacketParser::MakePacket(PKT_SELECT_CHANNEL, body);
+	try
+	{
+		std::vector<std::string> datas;
+		datas.push_back(std::string(CStringA(strChannelId)));
+		//body = PacketParser::MakeBody(payload);
+		body = PacketParser::MakeBody(datas);
+		pkt = PacketParser::MakePacket(PKT_SELECT_CHANNEL, body);
+		//std::string utf8Packet = UTIL::AnsiToUTF8(pkt);
+		//m_pSock->SendPacket(utf8Packet);
+		m_pSock->SendPacket(pkt);
+	}
+	catch (const std::length_error& e)
+	{
+		M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+	}
+	catch (const std::exception& e)
+	{
+		M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+	}
 
 
-	//std::string utf8Packet = UTIL::AnsiToUTF8(pkt);
-	//m_pSock->SendPacket(utf8Packet);
-	m_pSock->SendPacket(pkt);
 }
 
 
-int CWorld::OnChannelSelect(const char* recvBuff, const int recvLen)
+int CWorld::OnChannelSelect(const char* recvBuff, const size_t recvLen)
 {
-	int i;
-	char* context = NULL;
-	char* pLine = NULL;
+	//int i;
+	//char* context = NULL;
+	//char* pLine = NULL;
 	int rc = EXIT_FAILURE;
 	size_t offset = 0;
 	std::string errMsg;
@@ -482,7 +520,7 @@ err:
 		CString strTmp;
 		CString wideValueIp = UTIL::Utf8ToCString(channel_ip);
 		CString wideValuePort = UTIL::Utf8ToCString(channel_port);
-		strTmp.Format(_T("Channel Select 성공 IP[%s], PORT[%s]"), wideValueIp, wideValuePort);
+		strTmp.Format(_T("Channel Select 성공 IP[%s], PORT[%s]"), wideValueIp.GetString(), wideValuePort.GetString());
 		AfxMessageBox(strTmp);
 		//this->CharacterList(); //캐릭터 선택
 		//m_pSock->m_bWorldPhase = FALSE; //로그인 끝

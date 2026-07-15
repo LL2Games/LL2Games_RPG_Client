@@ -24,6 +24,6 @@ public:
     const PlayerAnimationSet* FindAnimationSet(JobType jobtype, WeaponType weaponType) const;
 private:
     std::unordered_map<PlayerAnimationKey, PlayerAnimationSet, PlayerAnimationKeyHash> m_animationSets;
-    std::string DebugMsg;
+    std::string m_debugMsg;
 };
 

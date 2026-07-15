@@ -28,7 +28,7 @@ public:
 private:
 	stb::Player* m_player;
 
-	std::string DebugMsg;
+	std::string m_debugMsg;
 
 
 };

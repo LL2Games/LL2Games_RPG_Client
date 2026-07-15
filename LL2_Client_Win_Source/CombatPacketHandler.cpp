@@ -11,7 +11,7 @@
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 #define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
 
-void CombatPacketHandler::HandlerMosterDamage(const ParsedPacket& pkt)
+void CombatPacketHandler::HandlerMosterDamage(const ParsedPacket& /*pkt*/)
 {
 }
 

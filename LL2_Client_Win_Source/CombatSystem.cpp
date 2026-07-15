@@ -34,16 +34,16 @@ bool CombatSystem::TryBasicAttack()
 {
     if (m_player == nullptr)
     {
-        DebugMsg = "m_player is nullptr \n";
-        OutputDebugStringA(DebugMsg.c_str());
+        m_debugMsg = "m_player is nullptr \n";
+        OutputDebugStringA(m_debugMsg.c_str());
         return false;
         
     }
       
     if (!CanBasicAttack())
     {
-        DebugMsg = "Cant Basic Attack\n";
-        OutputDebugStringA(DebugMsg.c_str());
+        m_debugMsg = "Cant Basic Attack\n";
+        OutputDebugStringA(m_debugMsg.c_str());
         return false;
     }
        
@@ -57,28 +57,28 @@ bool CombatSystem::TryBasicAttack()
     return true;
 }
 
-bool CombatSystem::CanAttack(int skillId)
+bool CombatSystem::CanAttack(int /*skillId*/)
 {
   
     if (m_player == nullptr)
     {
-        DebugMsg = "m_player is nullptr \n";
-        OutputDebugStringA(DebugMsg.c_str());
+        m_debugMsg = "m_player is nullptr \n";
+        OutputDebugStringA(m_debugMsg.c_str());
         return false;
     }
         
     if (m_player->IsDead())
     {
-        DebugMsg = "player is Dead \n";
-        OutputDebugStringA(DebugMsg.c_str());
+        m_debugMsg = "player is Dead \n";
+        OutputDebugStringA(m_debugMsg.c_str());
         return false;
     }
        
 
     if (m_player->IsAttacking())
     {
-        DebugMsg = "player is Attacking \n";
-        OutputDebugStringA(DebugMsg.c_str());
+        m_debugMsg = "player is Attacking \n";
+        OutputDebugStringA(m_debugMsg.c_str());
         return false;
     }
        

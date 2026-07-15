@@ -110,6 +110,8 @@ namespace stb
             msg += '\n';
 
             Log(msg);
+#else
+            (void)fmt;
 #endif
         }
      

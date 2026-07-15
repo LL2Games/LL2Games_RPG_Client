@@ -140,7 +140,7 @@ namespace stb
 		SetState(PlayerState::Idle);
 	}
 
-	void Player::PlayAttackAnimation(int skillId)
+	void Player::PlayAttackAnimation(int /*skillId*/)
 	{
 
 

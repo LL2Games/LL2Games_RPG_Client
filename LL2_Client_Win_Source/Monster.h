@@ -62,6 +62,6 @@ private:
     std::wstring m_currentAnimation;
     MonsterScript* m_script;
 
-    std::string DebugMsg;
+    std::string m_debugMsg;
 };
 

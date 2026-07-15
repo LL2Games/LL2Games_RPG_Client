@@ -71,12 +71,12 @@ private:
 	std::vector<InventorySlotUI> m_tradeMySlots;
 	std::vector<InventorySlotUI> m_tradeTargetSlots;
 
-	static constexpr float m_slotStartX = 474;
-	static constexpr float m_slotStartY = 80;
-	static constexpr float m_slotWidth = 42;
-	static constexpr float m_slotHeight = 40;
-	static constexpr float m_slotgapX = 4.4;
-	static constexpr float m_slotgapY = 6;
+	static constexpr float m_slotStartX = 474.0f;
+	static constexpr float m_slotStartY = 80.0f;
+	static constexpr float m_slotWidth = 42.0f;
+	static constexpr float m_slotHeight = 40.0f;
+	static constexpr float m_slotgapX = 4.4f;
+	static constexpr float m_slotgapY = 6.0f;
 
 	static constexpr int m_slotCols = 4;
 	static constexpr int m_fullSlotCols = 16;

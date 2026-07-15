@@ -8,7 +8,8 @@
 #include <vector>
 #include "..\\LL2_Client_Win_Source\\Packet.h"
 #include "..\\LL2_Client_Win_Source\\PacketParser.h"
-//#include "..\\LL2_Client_Win_Source\\MySocket.h"
+#include "..\\LL2_Client_Win_Source\\stbLogger.h"
+
 #include "MySocket.h"
 
 
@@ -51,7 +52,7 @@ void CLogin::DoDataExchange(CDataExchange* pDX)
 
 BOOL CLogin::connect()
 {
-	BOOL bRet;
+	//BOOL bRet;
 	CString strHost, strPort;
 
 	m_editHost.GetWindowText(strHost);
@@ -89,7 +90,7 @@ int CLogin::Login()
 	int rc = EXIT_FAILURE;
 	char* buff = NULL;
 	int nBuffLen = 0;
-	int nSendLen = 0;
+	//int nSendLen = 0;
 	CString strID, strPasswd;
 	std::vector<std::string> datas;
 	std::string body, pkt;
@@ -111,13 +112,25 @@ int CLogin::Login()
 	datas.push_back(std::string((CStringA(strPasswd))));
 
 	g_account_id = CStringA(strID);
+	try
+	{
+		body = PacketParser::MakeBody(datas);
+		pkt = PacketParser::MakePacket(PKT_LOGIN, body);
 
-	body = PacketParser::MakeBody(datas);
-	pkt = PacketParser::MakePacket(PKT_LOGIN, body);
-
-	m_pSock->SendPacket(pkt);
+		m_pSock->SendPacket(pkt);
+	}
+	catch (const std::length_error& e)
+	{
+		M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+		goto err;
+	}
+	catch (const std::exception& e)
+	{
+		M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+		goto err;
+	}
 	
-	m_editID.GetWindowText(m_strID);
+		m_editID.GetWindowText(m_strID);
 	rc = EXIT_SUCCESS;
 err:
 	free(buff);
@@ -126,7 +139,7 @@ err:
 	return rc;
 }
 
-int CLogin::OnLogin(const char * recvBuff, const int recvLen)
+int CLogin::OnLogin(const char * recvBuff, const size_t recvLen)
 {
 	int i;
 	char* context = NULL;

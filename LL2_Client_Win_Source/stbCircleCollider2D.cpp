@@ -53,11 +53,12 @@ namespace stb
 		rightBottom.x = pos.x + offset.x + 100 * GetSize().x;
 		rightBottom.y = pos.y + offset.y + 100 * GetSize().y;
 
-		Ellipse(hdc
-			, pos.x + offset.x
-			, pos.y + offset.y
-			, rightBottom.x
-			, rightBottom.y);
+		Ellipse(
+			hdc,
+			static_cast<int>(pos.x + offset.x),
+			static_cast<int>(pos.y + offset.y),
+			static_cast<int>(rightBottom.x),
+			static_cast<int>(rightBottom.y));
 
 		SelectObject(hdc,oldBrush);
 		SelectObject(hdc, oldPen);

@@ -32,7 +32,7 @@ namespace stb
 
 	}
 
-	void Transform::Render(HDC hdc)
+	void Transform::Render(HDC /*hdc*/)
 	{
 
 	}

@@ -3,6 +3,7 @@
 #include "stbNetworkConfig.h"
 #include "Packet.h"
 #include <sstream>
+#include "..\\LL2_Client_Win_Source\\stbLogger.h"
 
 void ChannelInitPacketHandler::Execute(const ParsedPacket& pkt)
 {
@@ -59,12 +60,23 @@ void ChannelInitPacketHandler::SendChannelAuth()
     ss << "  캐릭터 ID: " << charId << "\n";
     OutputDebugStringA(ss.str().c_str());
 
-    // 패킷 생성 및 전송
-    std::string body = PacketParser::MakeBody(data);
-    std::string packet = PacketParser::MakePacket(PKT_CHANNEL_AUTH, body);
+    try
+    {
+        // 패킷 생성 및 전송
+        std::string body = PacketParser::MakeBody(data);
+        std::string packet = PacketParser::MakePacket(PKT_CHANNEL_AUTH, body);
 
-    stb::NetworkManager::getInstance()->SendPacket(PKT_CHANNEL_AUTH, data);
-    OutputDebugStringA("[PKT_CHANNEL_AUTH 전송 완료]\n\n");
+        stb::NetworkManager::getInstance()->SendPacket(PKT_CHANNEL_AUTH, data);
+        OutputDebugStringA("[PKT_CHANNEL_AUTH 전송 완료]\n\n");
+    }
+    catch (const std::length_error& e)
+    {
+        M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+    }
+    catch (const std::exception& e)
+    {
+        M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+    }
 }
 
 void ChannelInitPacketHandler::SendEnterMap(const std::string& charId, const std::string& mapId)
@@ -78,13 +90,24 @@ void ChannelInitPacketHandler::SendEnterMap(const std::string& charId, const std
     ss << "  맵 ID: " << mapId << "\n";
     OutputDebugStringA(ss.str().c_str());
 
-    // 패킷 생성 및 전송
-    std::string body = PacketParser::MakeBody(data);
-    std::string packet = PacketParser::MakePacket(PKT_ENTER_MAP, body);
+    try
+    {
+        // 패킷 생성 및 전송
+        std::string body = PacketParser::MakeBody(data);
+        std::string packet = PacketParser::MakePacket(PKT_ENTER_MAP, body);
 
-    // 패킷 내용 출력
-    
+        // 패킷 내용 출력
 
-    stb::NetworkManager::getInstance()->SendPacket(PKT_ENTER_MAP, data);
-    OutputDebugStringA("[PKT_ENTER_MAP 전송 완료]\n\n");
+
+        stb::NetworkManager::getInstance()->SendPacket(PKT_ENTER_MAP, data);
+        OutputDebugStringA("[PKT_ENTER_MAP 전송 완료]\n\n");
+    }
+    catch (const std::length_error& e)
+    {
+        M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+    }
+    catch (const std::exception& e)
+    {
+        M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+    }
 }

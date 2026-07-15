@@ -65,17 +65,17 @@ void HealthBarUI::RenderBackGround(stbD2DRenderer& renderer)
     float scaleY = rtSize.height / 768.0f;
     float scale = std::min(scaleX, scaleY);
 
-    int drawWidth = (int)(bitmap->GetSize().width * scale);
-    int drawHeight = (int)(bitmap->GetSize().height * scale);
+    float drawWidth = bitmap->GetSize().width * scale;
+    float drawHeight = bitmap->GetSize().height * scale;
 
     m_UIRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::CenterBottom,
-        10,
-        15
+        10.0f,
+        15.0f
     );
 
     renderer.DrawBitmap(
@@ -111,18 +111,18 @@ void HealthBarUI::RenderHpLayer(stbD2DRenderer& renderer)
 
     D2D1_SIZE_F bmpSize = bitmap->GetSize();
 
-    int drawWidth = (int)(bmpSize.width * scale);
-    int drawHeight = (int)(bmpSize.height * scale);
+    float drawWidth = bmpSize.width * scale;
+    float drawHeight = bmpSize.height * scale;
 
     // UI 위치 계산
     m_hpBarRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::CenterBottom,
-        10,
-        61
+        10.0f,
+        61.0f
     );
 
     int curHp = player->GetStat()->GetCurHp();
@@ -183,18 +183,18 @@ void HealthBarUI::RenderMpLayer(stbD2DRenderer& renderer)
 
     D2D1_SIZE_F bmpSize = bitmap->GetSize();
 
-    int drawWidth = (int)(bmpSize.width * scale);
-    int drawHeight = (int)(bmpSize.height * scale);
+    float drawWidth = bmpSize.width * scale;
+    float drawHeight = bmpSize.height * scale;
 
     // UI 위치 계산
     m_mpBarRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::CenterBottom,
-        10,
-        20
+        10.0f,
+        20.0f
     );
 
     int curMp = player->GetStat()->GetCurMp();
@@ -300,7 +300,7 @@ void HealthBarUI::RenderHpText(stbD2DRenderer& renderer)
         if (c >= L'0' && c <= L'9')
         {
             int digit = c - L'0';
-            tex = m_numbers[c - L'0'];
+            tex = m_numbers[digit];
         }
         else if (c == L'/')
         {
@@ -403,7 +403,7 @@ void HealthBarUI::RenderMpText(stbD2DRenderer& renderer)
         if (c >= L'0' && c <= L'9')
         {
             int digit = c - L'0';
-            tex = m_numbers[c - L'0'];
+            tex = m_numbers[digit];
         }
         else if (c == L'/')
         {

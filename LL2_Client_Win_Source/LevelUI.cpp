@@ -29,7 +29,7 @@ void LevelUI::Update()
 
 }
 
-void LevelUI::Render(HDC hdc)
+void LevelUI::Render(HDC /*hdc*/)
 {
 
 }
@@ -60,24 +60,21 @@ void LevelUI::RenderBackground(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     // 기준 해상도 대비 UI 전체 스케일
-    float scaleX = rtSize.width / 1366.0f;
+    /*float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
-    float scale = min(scaleX, scaleY);
-
-    // int drawWidth = (int)(BASE_BG_WIDTH * scale);
-    // int drawHeight = (int)(BASE_BG_HEIGHT * scale);
-
-    int drawWidth = (int)(m_background->GetWidth() * 1);
-    int drawHeight = (int)(m_background->GetHeight() * 1);
+    float scale = min(scaleX, scaleY);*/
+        
+    float drawWidth = static_cast<float>(m_background->GetWidth() * 1);
+    float drawHeight = static_cast<float>(m_background->GetHeight() * 1);
 
     m_UIRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::BottomLeft,
-        0,
-        14
+        0.0f,
+        14.0f
     );
 
     renderer.DrawBitmap(
@@ -109,24 +106,21 @@ void LevelUI::RenderLevelImg(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     // 기준 해상도 대비 UI 전체 스케일
-    float scaleX = rtSize.width / 1366.0f;
+    /*float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
-    float scale = min(scaleX, scaleY);
+    float scale = min(scaleX, scaleY);*/
 
-    // int drawWidth = (int)(BASE_BG_WIDTH * scale);
-    // int drawHeight = (int)(BASE_BG_HEIGHT * scale);
-
-    int drawWidth = (int)(m_levelImg->GetWidth() * 1);
-    int drawHeight = (int)(m_levelImg->GetHeight() * 1);
+    float drawWidth = static_cast<float>(m_levelImg->GetWidth() * 1);
+    float drawHeight = static_cast<float>(m_levelImg->GetHeight() * 1);
 
     m_UIRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::BottomLeft,
-        5,
-        20
+        5.0f,
+        20.0f
     );
 
     renderer.DrawBitmap(
@@ -168,13 +162,13 @@ void LevelUI::RenderLevel(stbD2DRenderer& renderer)
     }
 
     UIRect baseRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
-        baseTex->GetWidth(),
-        baseTex->GetHeight(),
+        rtSize.width,
+        rtSize.height,
+        static_cast<float>(baseTex->GetWidth()),
+        static_cast<float>(baseTex->GetHeight()),
         UIAnchor::BottomLeft,
-        25,
-        20
+        25.0f,
+        20.0f
     );
 
     float drawX = 0.0f;
@@ -234,13 +228,13 @@ void LevelUI::RenderNickName(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     UIRect temp = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
-        100,
-        25,
+        rtSize.width,
+        rtSize.height,
+        100.0f,
+        25.0f,
         UIAnchor::BottomLeft,
-        60,
-        13
+        60.0f,
+        13.0f
     );
 
     D2D1_RECT_F textRect = UILayout::ToD2DRect(temp);

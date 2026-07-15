@@ -25,7 +25,7 @@ namespace stb
 			std::function<void()> mEvent;
 		};
 
-		static struct EventNames
+		struct EventNames
 		{
 			std::wstring startEventName;
 			std::wstring completeEventName;
@@ -65,6 +65,19 @@ namespace stb
 			, UINT spriteLength
 			, float duration);
 
+		/**
+		* Func Name: CreateAnimationByFolder
+		* @brief 폴더에 저장된 이미지들로 프레임 애니메이션을 생성한다.
+		*
+		* @param name 애니메이션 이름
+		* @param path 이미지 폴더 경로
+		* @param offset 프레임 렌더링 오프셋
+		* @param duration 프레임당 재생 시간
+		*
+		* @throws std::overflow_error
+		*         생성되는 스프라이트 시트의 좌표 또는 크기가
+		*         GDI에서 지원하는 int 범위를 초과하는 경우
+		*/
 		void CreateAnimationByFolder(const std::wstring& name
 			, const std::wstring& path
 			, Vector2 offset, float duration);
@@ -113,6 +126,6 @@ namespace stb
 
 		
 
-		std::string DebugMsg;
+		std::string m_debugMsg;
 	};
 }

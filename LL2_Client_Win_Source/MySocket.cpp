@@ -32,7 +32,7 @@ bool MySocket::Connect(const char* ip, int port)
 
     sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(port);
+    serverAddr.sin_port = htons(static_cast<u_short>(port));
     inet_pton(AF_INET, ip, &serverAddr.sin_addr);
 
     int result = connect(m_socket, (sockaddr*)&serverAddr, sizeof(serverAddr));

@@ -23,7 +23,7 @@ namespace stb
 			image->SetHegith(height);
 
 			HDC hdc = M_APP->GetHDC();
-			HWND hwnd = M_APP->GetHWND();
+			//HWND hwnd = M_APP->GetHWND();
 
 			image->mBitmap = CreateCompatibleBitmap(hdc, width, height);
 
@@ -102,7 +102,7 @@ namespace stb
 			{
 				mAlpha = true;
 			}
-			else if (info.bmBitsPixel = 24)
+			else if (info.bmBitsPixel == 24)
 			{
 				mAlpha = false;
 			}

@@ -43,12 +43,12 @@ void QuickSlotManager::SetSlot(QuickSlotData& quickSlotData)
     m_slots[quickSlotData.slot_index] = quickSlotData;
 }
 
-void QuickSlotManager::SetSlotSkill(int slotIndex, int skillId)
+void QuickSlotManager::SetSlotSkill(int /*slotIndex*/, int /*skillId*/)
 {
 
 }
 
-void QuickSlotManager::SetSlotItem(int slotIndex, int inventoryType, int slotPos)
+void QuickSlotManager::SetSlotItem(int /*slotIndex*/, int /*inventoryType*/, int /*slotPos*/)
 {
 
 }
@@ -62,7 +62,7 @@ void QuickSlotManager::RequestSetSlot(const QuickSlotData& quickSlotData)
 
 }
 
-void QuickSlotManager::ClearSlot(int slotIndex)
+void QuickSlotManager::ClearSlot(int /*slotIndex*/)
 {
 
 }

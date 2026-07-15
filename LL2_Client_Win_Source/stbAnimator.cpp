@@ -135,15 +135,34 @@ namespace stb
 		UINT imageWidth = images[0]->GetWidth();
 		UINT imageHeight = images[0]->GetHeight();
 
-		for (size_t i = 0; i < images.size(); i++)
+		for (std::size_t i = 0; i < images.size(); ++i)
 		{
-			BitBlt(spriteSheet->GetHdc(), i * imageWidth, 0
-				, imageWidth, imageHeight
-				, images[i]->GetHdc(), 0, 0, SRCCOPY);
+			const std::size_t destXSize =
+				i * static_cast<std::size_t>(imageWidth);
+
+			if (destXSize >
+				static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+			{
+				throw std::overflow_error("sprite sheet width exceeds int range");
+			}
+
+			const int destX = static_cast<int>(destXSize);
+
+			BitBlt(
+				spriteSheet->GetHdc(),
+				destX,
+				0,
+				imageWidth,
+				imageHeight,
+				images[i]->GetHdc(),
+				0,
+				0,
+				SRCCOPY
+			);
 		}
 
 		CreateAnimation(name, spriteSheet
-			, Vector2(0.0f, 0.0f), Vector2(imageWidth, imageHeight)
+			, Vector2(0.0f, 0.0f), Vector2(static_cast<float>(imageWidth), static_cast<float>(imageHeight))
 			, offset, fileCount, duration);
 
 	}
@@ -228,8 +247,8 @@ namespace stb
 
 		if (animation == nullptr)
 		{
-			DebugMsg = "animation is nullptr \n";
-			OutputDebugStringA(DebugMsg.c_str());
+			m_debugMsg = "animation is nullptr \n";
+			OutputDebugStringA(m_debugMsg.c_str());
 			return;
 		}
 
