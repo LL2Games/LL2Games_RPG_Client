@@ -40,6 +40,16 @@ struct MonsterUpdateInfo
 };
 
 
+struct MonsterProjectileData {
+	int id;
+	/*float damage;
+	float speed;
+	float range;
+	int64_t coolDown;*/
+
+	CollierInfo colliderInfo{};
+};
+
 struct MonsterData
 {
 	int monster_id = 0;
@@ -51,6 +61,10 @@ struct MonsterData
 	std::vector<AnimationInfo> animations;
 
 	CollierInfo colliderInfo{};
+
+	//투사체 정보
+	bool isRanged;
+	MonsterProjectileData projectileData;
 };
 
 

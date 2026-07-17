@@ -121,6 +121,26 @@ bool MonsterDataManager::LoadJsonFile(const std::string& path, MonsterData& mons
     monsterData.UIPos.x = ui.value("x", 0.0f);
     monsterData.UIPos.y = ui.value("y", 0.0f);
 
+    const auto& isRanged = j.at("isRanged");
+    if (isRanged)
+    {
+        const auto& projectile = j.at("projectile");
+        monsterData.projectileData.id = projectile.value("id", 0);
+
+        const auto& projectileCollider = projectile.at("collider");
+
+        monsterData.projectileData.colliderInfo.colliderType = 
+            stb::enums::SetColliderType(projectileCollider.value("type", "None"));
+
+        const auto& projectileOffset = projectileCollider.at("offset");
+        monsterData.projectileData.colliderInfo.offset.x = projectileOffset.value("x", 0.0f);
+        monsterData.projectileData.colliderInfo.offset.y = projectileOffset.value("y", 0.0f);
+
+        const auto& projectileHalf = projectileCollider.at("half");
+        monsterData.projectileData.colliderInfo.halfSize.x = projectileHalf.value("w", 0.0f);
+        monsterData.projectileData.colliderInfo.halfSize.y = projectileHalf.value("h", 0.0f);
+    }
+
     return true;
 }
 

@@ -50,5 +50,7 @@
       }
     },
 
-  "moveSpeed": 10
+  "moveSpeed": 10,
+
+  "isRanged" : false
 }

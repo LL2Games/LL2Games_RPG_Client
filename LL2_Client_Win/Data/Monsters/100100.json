@@ -32,6 +32,15 @@
       "event" : {
         "complete" : "MonsterDieEnd"
       }
+    },
+    "projectile": {
+      "path": "Monster/Projectile/1",
+      "frame_prefix": "projectile1.",
+      "frame_count": 3,
+      "delay_ms": 120,
+      "event" : {
+        "complete" : "MonsterDieEnd"
+      }
     }
   },
 
@@ -58,5 +67,15 @@
       }
     },
 
-  "moveSpeed": 10
+  "moveSpeed": 10,
+
+  "isRanged" : true,
+  "projectile" :{
+        "id" : 1,
+        "collider" : {
+            "type" : "Rect2D",
+            "offset" : {"x" : 0, "y" : 0},
+            "half"      :   {"w" :2, "h": 2}
+        }
+    }
 }
