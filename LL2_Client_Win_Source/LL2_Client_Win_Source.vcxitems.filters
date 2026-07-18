@@ -219,6 +219,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.cpp">
       <Filter>PacketHandler\OtherPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Projectile.cpp">
+      <Filter>Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileManager.cpp">
+      <Filter>Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileDataManager.cpp">
+      <Filter>Game\Projectile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -499,6 +508,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.h">
       <Filter>PacketHandler\OtherPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Projectile.h">
+      <Filter>Game\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileManager.h">
+      <Filter>Game\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileDataManager.h">
+      <Filter>Game\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">
@@ -650,6 +668,9 @@
     </Filter>
     <Filter Include="PacketHandler\OtherPlayer">
       <UniqueIdentifier>{76710acb-d664-4283-a532-ecb7d7b5e4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Projectile">
+      <UniqueIdentifier>{c21a13b4-24d4-469a-8853-0c3fa21edc59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

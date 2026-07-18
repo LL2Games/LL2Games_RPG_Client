@@ -31,6 +31,9 @@ namespace stb
 
 		// 몬스터 이미지 로드
 		RESOURCEMANAGER->LoadMonsterTextures();
+		
+		// 투사체 이미지 로드
+		//RESOURCEMANAGER->LoadProjectileTextures();
 
 		// 아이템 리소스
 		RESOURCEMANAGER->LoadItemTextures();

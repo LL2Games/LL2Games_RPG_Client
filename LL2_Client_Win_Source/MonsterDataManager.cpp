@@ -125,7 +125,7 @@ bool MonsterDataManager::LoadJsonFile(const std::string& path, MonsterData& mons
     if (isRanged)
     {
         const auto& projectile = j.at("projectile");
-        monsterData.projectileData.id = projectile.value("id", 0);
+        monsterData.projectileData.instanceId = projectile.value("id", 0);
 
         const auto& projectileCollider = projectile.at("collider");
 
