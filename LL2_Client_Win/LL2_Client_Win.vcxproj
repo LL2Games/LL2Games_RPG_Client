@@ -180,9 +180,6 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
     <ClCompile Include="LL2_Client_Win.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LL2_Client_Win.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="small.ico" />
     <Image Include="LL2_Client_Win.ico" />
   </ItemGroup>
@@ -190,6 +187,13 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
     <ProjectReference Include="..\LL2_Client_Win_lib\LL2_Client_Win_lib.vcxproj">
       <Project>{601204ea-c3bf-419b-bebf-fc9cac06a8de}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LL2_Client_Win.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" />
+    <None Include="..\.gitattributes" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

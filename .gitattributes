@@ -40,3 +40,7 @@
 *.lib            binary
 *.exe            binary
 *.pdb            binary
+
+# Visual Studio resource scripts: preserve exact bytes
+*.rc -text
+*.rc2 -text
