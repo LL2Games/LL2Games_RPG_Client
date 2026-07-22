@@ -26,24 +26,24 @@ namespace stb
 	{	 
 	}	 
 		 
-	void Collider::Render(HDC hdc)
+	void Collider::Render(HDC /*hdc*/)
 	{	 
 	}	 
 
-	void Collider::Render(stbD2DRenderer& renderer)
+	void Collider::Render(stbD2DRenderer& /*renderer*/)
 	{
 
 	}
 		 
-	void Collider::OnCollisionEnter(Collider* other)
+	void Collider::OnCollisionEnter(Collider* /*other*/)
 	{	 
 	}	 
 		 
-	void Collider::OnCollisionStay(Collider* other)
+	void Collider::OnCollisionStay(Collider* /*other*/)
 	{	 
 	}	 
 		 
-	void Collider::OnCollisionEnd(Collider* other)
+	void Collider::OnCollisionEnd(Collider* /*other*/)
 	{
 	}
 }

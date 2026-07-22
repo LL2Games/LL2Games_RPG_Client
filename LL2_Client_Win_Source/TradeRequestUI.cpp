@@ -66,7 +66,7 @@ void TradeRequestUI::Update()
     }
 }
 
-void TradeRequestUI::Render(HDC hdc)
+void TradeRequestUI::Render(HDC /*hdc*/)
 {
 }
 

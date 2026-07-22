@@ -7,6 +7,8 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include "..\\LL2_Client_Win_Source\\stbLogger.h"
+
 
 namespace stb
 {
@@ -120,16 +122,31 @@ namespace stb
         ss << "  패킷 타입: 0x" << std::hex << PKT_CHANNEL_AUTH << " (" << std::dec << PKT_CHANNEL_AUTH << ")\n";
         ss << "  캐릭터 ID: " << charId << "\n";
         OutputDebugStringA(ss.str().c_str());
-        
-        // 패킷 생성 및 전송
-        std::string body = PacketParser::MakeBody(data);
-        std::string packet = PacketParser::MakePacket(PKT_CHANNEL_AUTH, body);
-        
-        // 패킷 내용 출력
-        PrintPacketHex(packet, "  전송 패킷");
+        try
+        {
+            // 패킷 생성 및 전송
+            std::string body = PacketParser::MakeBody(data);
+            std::string packet = PacketParser::MakePacket(PKT_CHANNEL_AUTH, body);
+
+            // 패킷 내용 출력
+            PrintPacketHex(packet, "  전송 패킷");
+        }
+        catch (const std::length_error& e)
+        {
+            M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+            goto err;
+        }
+        catch (const std::exception& e)
+        {
+            M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+            goto err;
+        }
         
         NetworkManager::getInstance()->SendPacket(PKT_CHANNEL_AUTH, data);
         OutputDebugStringA("[PKT_CHANNEL_AUTH 전송 완료]\n\n");
+
+    err:
+        return;
     }
 
     // 맵 입장 패킷 전송 (캐릭터 ID, 맵 ID)
@@ -143,16 +160,31 @@ namespace stb
         ss << "  캐릭터 ID: " << charId << "\n";
         ss << "  맵 ID: " << mapId << "\n";
         OutputDebugStringA(ss.str().c_str());
+        try
+        {
+            // 패킷 생성 및 전송
+            std::string body = PacketParser::MakeBody(data);
+            std::string packet = PacketParser::MakePacket(PKT_ENTER_MAP, body);
+            // 패킷 내용 출력
+            PrintPacketHex(packet, "  전송 패킷");
+        }
+        catch (const std::length_error& e)
+        {
+            M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+            goto err;
+        }
+        catch (const std::exception& e)
+        {
+            M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+            goto err;
+        }
+
+
+         NetworkManager::getInstance()->SendPacket(PKT_ENTER_MAP, data);
+         OutputDebugStringA("[PKT_ENTER_MAP 전송 완료]\n\n");
         
-        // 패킷 생성 및 전송
-        std::string body = PacketParser::MakeBody(data);
-        std::string packet = PacketParser::MakePacket(PKT_ENTER_MAP, body);
-        
-        // 패킷 내용 출력
-        PrintPacketHex(packet, "  전송 패킷");
-        
-        NetworkManager::getInstance()->SendPacket(PKT_ENTER_MAP, data);
-        OutputDebugStringA("[PKT_ENTER_MAP 전송 완료]\n\n");
+     err:
+         return;
     }
 
     // 플레이어 이동 패킷 전송 (x, y, speed)

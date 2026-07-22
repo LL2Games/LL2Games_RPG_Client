@@ -119,7 +119,7 @@ namespace stb
 		
 		bool m_isLocalPlayer;
 
-		std::string DebugMsg;
+		std::string m_debugMsg;
 
 	};
 

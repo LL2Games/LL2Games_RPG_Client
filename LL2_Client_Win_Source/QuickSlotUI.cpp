@@ -63,28 +63,25 @@ void QuickSlotUI::Render(stbD2DRenderer& renderer)
 
     m_scale = scale;
 
-    // int drawWidth = (int)(BASE_BG_WIDTH * scale);
-    // int drawHeight = (int)(BASE_BG_HEIGHT * scale);
-
-    int drawWidth = (int)(BASE_BG_WIDTH * 1);
-    int drawHeight = (int)(BASE_BG_HEIGHT * 1);
+    float drawWidth = BASE_BG_WIDTH * 1.0f;
+    float drawHeight = BASE_BG_HEIGHT * 1.0f;
 
     m_UIRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::BottomRight,
-        2,
-        15
+        2.0f,
+        15.0f
     );
 
     renderer.DrawBitmap(
         bitmap,
-        (FLOAT)m_UIRect.x,
-        (FLOAT)m_UIRect.y,
-        (FLOAT)m_UIRect.width,
-        (FLOAT)m_UIRect.height,
+        static_cast<FLOAT>(m_UIRect.x),
+        static_cast<FLOAT>(m_UIRect.y),
+        static_cast<FLOAT>(m_UIRect.width),
+        static_cast<FLOAT>(m_UIRect.height),
         0.3f
     );
     CreateSlotRect();
@@ -157,8 +154,8 @@ void QuickSlotUI::RenderItemSlot(stbD2DRenderer& renderer, const QuickSlotData& 
     if (bitmap == nullptr)
         return;
 
-    int itemWidth = texture->GetWidth();
-    int itemHeight = texture->GetHeight();
+    float itemWidth = static_cast<float>(texture->GetWidth());
+    float itemHeight = static_cast<float>(texture->GetHeight());
 
     if (itemWidth > rect.width)
         itemWidth = rect.width;
@@ -166,8 +163,8 @@ void QuickSlotUI::RenderItemSlot(stbD2DRenderer& renderer, const QuickSlotData& 
     if (itemHeight > rect.height)
         itemHeight = rect.height;
 
-    int itemX = rect.x + (rect.width - itemWidth) / 2.0f;
-    int itemY = rect.y + (rect.height - itemHeight) / 2.0f;
+    float itemX = rect.x + (rect.width - itemWidth) / 2.0f;
+    float itemY = rect.y + (rect.height - itemHeight) / 2.0f;
 
     renderer.DrawBitmap(
         bitmap,
@@ -197,7 +194,7 @@ void QuickSlotUI::RenderItemSlot(stbD2DRenderer& renderer, const QuickSlotData& 
     
 }
 
-void QuickSlotUI::RenderSkillSlot(stbD2DRenderer& renderer, const QuickSlotData& slot, const UIRect& rect)
+void QuickSlotUI::RenderSkillSlot(stbD2DRenderer& /*renderer*/, const QuickSlotData& /*slot*/, const UIRect& /*rect*/)
 {
 }
 
@@ -252,10 +249,10 @@ void QuickSlotUI::CreateSlotRect()
         float bottom = top + slotHeight;
 
         UIRect rect;
-        rect.x = (int)roundf(left);
-        rect.y = (int)roundf(top);
-        rect.width = (int)roundf(right) - rect.x;
-        rect.height = (int)roundf(bottom) - rect.y;
+        rect.x = roundf(left);
+        rect.y = roundf(top);
+        rect.width = roundf(right) - rect.x;
+        rect.height = roundf(bottom) - rect.y;
 
         m_slotRects.push_back(rect);
     }
@@ -280,11 +277,11 @@ int QuickSlotUI::GetSlotIndexByPoint(int mouseX, int mouseY)
     return -1;
 }
 
-void QuickSlotUI::HandleClickSlot(int slotIndex)
+void QuickSlotUI::HandleClickSlot(int /*slotIndex*/)
 {
-    stb::eKeyCode key = m_quickSlotKeys[slotIndex];
+    //stb::eKeyCode key = m_quickSlotKeys[slotIndex];
 
-    stb::KeyBindInfo bind;
+    //stb::KeyBindInfo bind;
     //if (!M_INPUT->GetBindInfo(key, bind))
     //    return;
     //

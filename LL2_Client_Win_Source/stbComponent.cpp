@@ -28,12 +28,12 @@ namespace stb
 
 	}
 
-	void Component::Render(HDC hdc)
+	void Component::Render(HDC /*hdc*/)
 	{
 
 	}
 
-	void Component::Render(stbD2DRenderer& renderer)
+	void Component::Render(stbD2DRenderer& /*renderer*/)
 	{
 
 	}

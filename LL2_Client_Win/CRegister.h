@@ -26,7 +26,7 @@ protected:
 
 public:
 	int Register(const CString& strID, const CString strNick, const CString& strPW);
-	int OnRegister(const char *pID, const int nIDLen);
+	int OnRegister(const char *pID, const size_t nIDLen);
 
 public:
 	CMySocket* m_pSock;

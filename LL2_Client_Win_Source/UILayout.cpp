@@ -2,16 +2,14 @@
 #include "UILayout.h"
 #include <algorithm>
 
-
-
 UIRect UILayout::CalcRect(
-    int windowWidth,
-    int windowHeight,
-    int uiWidth,
-    int uiHeight,
+    float windowWidth,
+    float windowHeight,
+    float uiWidth,
+    float uiHeight,
     UIAnchor anchor,
-    int offsetX,
-    int offsetY)
+    float offsetX,
+    float offsetY)
 {
     UIRect rc{};
     rc.width = uiWidth;
@@ -40,23 +38,21 @@ UIRect UILayout::CalcRect(
         break;
 
     case UIAnchor::Center:
-        rc.x = (windowWidth - uiWidth) / 2 + offsetX;
-        rc.y = (windowHeight - uiHeight) / 2 + offsetY;
+        rc.x = (windowWidth - uiWidth) * 0.5f + offsetX;
+        rc.y = (windowHeight - uiHeight) * 0.5f + offsetY;
         break;
 
     case UIAnchor::CenterBottom:
-        rc.x = (windowWidth - uiWidth) / 2 + offsetX;
+        rc.x = (windowWidth - uiWidth) * 0.5f + offsetX;
         rc.y = windowHeight - uiHeight - offsetY;
         break;
-
     }
 
-    rc.x = std::max(0, rc.x);
-    rc.y = std::max(0, rc.y);
+    rc.x = std::max(0.0f, rc.x);
+    rc.y = std::max(0.0f, rc.y);
 
     return rc;
 }
-
 
  D2D1_RECT_F UILayout::ToD2DRect(const UIRect& rc)
  {

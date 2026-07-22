@@ -3,6 +3,8 @@
 #include <WS2tcpip.h>
 #include <sstream>
 #include <iomanip>
+#include "..\\LL2_Client_Win_Source\\stbLogger.h"
+
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -126,11 +128,25 @@ namespace stb
         {
             return;
         }
+        try
+        {
+            std::string body = PacketParser::MakeBody(datas);
+            std::string packet = PacketParser::MakePacket(type, body);
+            m_socket.SendPacket(packet);
+        }
+        catch (const std::length_error& e)
+        {
+            M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+            goto err;
+        }
+        catch (const std::exception& e)
+        {
+            M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+            goto err;
+        }
 
-        std::string body = PacketParser::MakeBody(datas);
-        std::string packet = PacketParser::MakePacket(type, body);
-
-        m_socket.SendPacket(packet);
+    err:
+        return;
     }
 
     void NetworkManager::ProcessReceivedData()

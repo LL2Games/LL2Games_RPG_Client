@@ -219,7 +219,7 @@ void PlayerDataPacketHandler::HandleLocalPlayerGetExp(const ParsedPacket& pkt)
 		
 		ExpUpdateResult expResult{};
 		
-		bool isLevelUp = false;
+		//bool isLevelUp = false;
 
 		if (!PacketParser::ParseNextInt64Field(data, payloadSize, offset, expResult.gainedExp, errMsg))
 		{
@@ -302,12 +302,12 @@ void PlayerDataPacketHandler::HandlePlayerOnDamaged(const ParsedPacket& pkt)
 
 		if (inputs.size() == 6) //자기 자신의 온데미지
 		{
-			int player_id = std::stoi(inputs[0]);
-			int attacker_instance_id = std::stoi(inputs[1]);
+			//int player_id = std::stoi(inputs[0]);
+			//int attacker_instance_id = std::stoi(inputs[1]);
 			int damage = std::stoi(inputs[2]);
 			int cur_hp = std::stoi(inputs[3]);
-			int max_hp = std::stoi(inputs[4]);
-			int player_state = std::stoi(inputs[5]);
+			//int max_hp = std::stoi(inputs[4]);
+			//int player_state = std::stoi(inputs[5]);
 
 			//localPlayer->GetStat()->SetCurHp(cur_hp);
 			//TODO
@@ -317,9 +317,9 @@ void PlayerDataPacketHandler::HandlePlayerOnDamaged(const ParsedPacket& pkt)
 		else if (inputs.size() == 4) //타인의 온데미지
 		{
 			int target_player_id = std::stoi(inputs[0]);
-			int attacker_instance_id = std::stoi(inputs[1]);
+			//int attacker_instance_id = std::stoi(inputs[1]);
 			int damage = std::stoi(inputs[2]);
-			int player_state = std::stoi(inputs[3]);
+			//int player_state = std::stoi(inputs[3]);
 			
 			auto targetPlayer = playerManager->FindPlayer(target_player_id);
 			if (!targetPlayer)

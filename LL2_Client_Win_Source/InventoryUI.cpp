@@ -196,7 +196,7 @@ void InventoryUI::Update()
     }
 }
 
-void InventoryUI::Render(HDC hdc)
+void InventoryUI::Render(HDC /*hdc*/)
 {
 
 }
@@ -268,8 +268,8 @@ void InventoryUI::RenderSlotItem(stbD2DRenderer& renderer)
         if (bitmap == nullptr)
             continue;
 
-        int itemWidth = texture->GetWidth();
-        int itemHeight = texture->GetHeight();
+        float itemWidth = static_cast<float>(texture->GetWidth());
+        float itemHeight = static_cast<float>(texture->GetHeight());
 
         if (itemWidth > slot.width)
             itemWidth = slot.width;
@@ -277,8 +277,8 @@ void InventoryUI::RenderSlotItem(stbD2DRenderer& renderer)
         if (itemHeight > slot.height)
             itemHeight = slot.height;
 
-        int itemX = slot.x + (slot.width - itemWidth) / 2.0f;
-        int itemY = slot.y + (slot.height - itemHeight) / 2.0f;
+        float itemX = slot.x + (slot.width - itemWidth) / 2.0f;
+        float itemY = slot.y + (slot.height - itemHeight) / 2.0f;
 
         renderer.DrawBitmap(
             bitmap,
@@ -335,8 +335,8 @@ void InventoryUI::RenderDraggingItem(stbD2DRenderer& renderer)
         bitmap,
         drawX,
         drawY,
-        texture->GetWidth(),
-        texture->GetHeight(),
+        static_cast<float>(texture->GetWidth()),
+        static_cast<float>(texture->GetHeight()),
         0.8f
     );
 }

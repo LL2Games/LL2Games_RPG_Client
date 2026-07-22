@@ -2,7 +2,7 @@
 #include "stbObject.h"
 
 
-stb::Player* PlayerManager::CreateLocalPlayer(stb::enums::eLayerType layer, const stb::math::Vector2& pos)
+stb::Player* PlayerManager::CreateLocalPlayer(stb::enums::eLayerType layer, const stb::math::Vector2& /*pos*/)
 {
     stb::Player* player = stb::object::Instantiate<stb::Player>(layer);
     if (player == nullptr)

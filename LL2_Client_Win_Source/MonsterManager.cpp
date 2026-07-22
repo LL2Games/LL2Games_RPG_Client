@@ -48,7 +48,7 @@ void MonsterManager::SpawnMonster(const MonsterSpawnInfo& info)
     m_monsters.emplace(info.instanceId, std::move(monster));
 }
 
-void MonsterManager::RemoveMonster(int instanceId)
+void MonsterManager::RemoveMonster(int /*instanceId*/)
 {
 
 }

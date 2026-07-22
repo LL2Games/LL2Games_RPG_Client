@@ -80,8 +80,8 @@ DropItemData* DropItemManager::GetDropItem(int dropId)
 }
 
 void DropItemManager::RequestPickup(const Vector2& playerPos)
-{
-    int dropId = FindPickupItem(playerPos);
+{   
+    int64_t dropId = FindPickupItem(playerPos);
 
     if (dropId < 0)
         return;

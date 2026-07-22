@@ -69,27 +69,61 @@ namespace stb
 				 _In_ int hSrc,
 				 _In_ BLENDFUNCTION ftn
 								*/
-				AlphaBlend(hdc
-					, pos.x, pos.y
-					, mTexture->GetWidth()  * mSize.x * scale.x
-					, mTexture->GetHeight() * mSize.y * scale.y
-					, mTexture->GetHdc()
-					, 0, 0
-					, mTexture->GetWidth()
-					, mTexture->GetHeight()
-					, func);
+				const int destX = static_cast<int>(std::lround(
+					pos.x));
+				const int destY = static_cast<int>(std::lround(
+					pos.y));
+				const int destWidth = static_cast<int>(std::lround(
+					mTexture->GetWidth() * mSize.x * scale.x));
+				const int destHeight = static_cast<int>(std::lround(
+					mTexture->GetHeight() * mSize.y * scale.y));
+				const int srcX = 0;
+				const int srcY = 0;
+				const int srcWidth = static_cast<int>(std::lround(mTexture->GetWidth()));
+				const int srcHeight = static_cast<int>(std::lround(mTexture->GetHeight()));
+
+				AlphaBlend(
+					hdc,
+					destX,
+					destY,
+					destWidth,
+					destHeight,
+					mTexture->GetHdc(),
+					srcX,
+					srcY,
+					srcWidth,
+					srcHeight,
+					func
+				);
 			}
 			else
 			{
-				TransparentBlt(hdc
-					, pos.x, pos.y
-					, mTexture->GetWidth() *  mSize.x * scale.x
-				    , mTexture->GetHeight() * mSize.y * scale.y
-					, mTexture->GetHdc()
-					, 0,0
-					, mTexture->GetWidth()
-				    , mTexture->GetHeight()
-					, RGB(255,0,255));
+				const int destX = static_cast<int>(std::lround(
+					pos.x));
+				const int destY = static_cast<int>(std::lround(
+					pos.y));
+				const int destWidth = static_cast<int>(std::lround(
+					mTexture->GetWidth() * mSize.x * scale.x));
+				const int destHeight = static_cast<int>(std::lround(
+					mTexture->GetHeight() * mSize.y * scale.y));
+				const int srcX = 0;
+				const int srcY = 0;
+				const int srcWidth = static_cast<int>(std::lround(mTexture->GetWidth()));
+				const int srcHeight = static_cast<int>(std::lround(mTexture->GetHeight()));
+
+
+				TransparentBlt(
+					hdc,
+					destX,
+					destY,
+					destWidth,
+					destHeight,
+					mTexture->GetHdc(),
+					srcX,
+					srcY,
+					srcWidth,
+					srcHeight, 
+					RGB(255,0,255));
 			}
 
 			/*
@@ -125,16 +159,23 @@ namespace stb
 			graphics.RotateTransform(rot);
 			graphics.TranslateTransform(-pos.x, -pos.y);
 
-			graphics.DrawImage(mTexture->GetImage() 
-				, Gdiplus::Rect(
-					pos.x, pos.y
-					, mTexture->GetWidth() * mSize.x * scale.x
-					, mTexture->GetHeight() * mSize.y * scale.y
-				)
-				, 0, 0
-				, mTexture->GetWidth(), mTexture->GetHeight()
-				, Gdiplus::UnitPixel
-				, nullptr);
+			const Gdiplus::RectF destRect(
+				pos.x,
+				pos.y,
+				static_cast<float>(mTexture->GetWidth())* mSize.x* scale.x,
+				static_cast<float>(mTexture->GetHeight())* mSize.y* scale.y
+			);
+
+			graphics.DrawImage(
+				mTexture->GetImage(),
+				destRect,
+				0.0f,
+				0.0f,
+				static_cast<float>(mTexture->GetWidth()),
+				static_cast<float>(mTexture->GetHeight()),
+				Gdiplus::UnitPixel,
+				nullptr
+			);
 			
 		}
 	}

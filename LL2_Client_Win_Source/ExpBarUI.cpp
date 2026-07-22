@@ -55,7 +55,7 @@ void ExpBarUI::Update()
 {
 }
 
-void ExpBarUI::Render(HDC hdc)
+void ExpBarUI::Render(HDC /*hdc*/)
 {
    
 }
@@ -85,24 +85,21 @@ void ExpBarUI::RenderBackground(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     // 기준 해상도 대비 UI 전체 스케일
-    float scaleX = rtSize.width / 1366.0f;
+    /*float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
-    float scale = std::min(scaleX, scaleY);
+    float scale = std::min(scaleX, scaleY);*/
 
-    // int drawWidth = (int)(BASE_BG_WIDTH * scale);
-    // int drawHeight = (int)(BASE_BG_HEIGHT * scale);
-
-    int drawWidth = (int)(m_background->GetWidth() * 1);
-    int drawHeight = (int)(m_background->GetHeight() * 1);
+    float drawWidth = static_cast<float>(m_background->GetWidth() * 1);
+    float drawHeight = static_cast<float>(m_background->GetHeight() * 1);
 
     m_UIRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::BottomLeft,
-        0,
-        1
+        0.0f,
+        1.0f
     );
 
     renderer.DrawBitmap(
@@ -136,32 +133,37 @@ void ExpBarUI::RenderGuage(stbD2DRenderer& renderer)
 
     D2D1_SIZE_F bmpSize = bitmap->GetSize();
 
-    int drawWidth = (int)(bmpSize.width * scale);
-    int drawHeight = (int)(bmpSize.height * scale);
+    float drawWidth = (bmpSize.width * scale);
+    float drawHeight = (bmpSize.height * scale);
 
     // UI 위치 계산
     UIRect uiRect = UILayout::CalcRect(
-        (int)rtSize.width,
-        (int)rtSize.height,
+        rtSize.width,
+        rtSize.height,
         drawWidth,
         drawHeight,
         UIAnchor::BottomLeft,
-        0,
-        1
+        0.0f,
+        1.0f
     );
 
-    int curExp = player->GetStat()->GetExp();
-    int needExp = player->GetStat()->GetNeedExp();
+    const int64_t curExp = player->GetStat()->GetExp();
+    const int64_t needExp = player->GetStat()->GetNeedExp();
 
-    float expRatio = 0.0f;
+    //exp는 값이 크므로 float으로 형변환은 비율 오차가 클수있어 double로 바꾸고, 비율계산 이후에 float으로 재변환
+    double expRatio = 0.0;
     if (needExp > 0)
     {
-        expRatio = (float)curExp / (float)needExp;
+        expRatio =
+            static_cast<double>(curExp) /
+            static_cast<double>(needExp);
+
+        expRatio = std::clamp(expRatio, 0.0, 1.0);
     }
-    expRatio = std::clamp(expRatio, 0.0f, 1.0f);
 
+    const float renderRatio = static_cast<float>(expRatio);
 
-    float hpDrawWidth = uiRect.width * expRatio;
+    float hpDrawWidth = uiRect.width * renderRatio;
 
     // 출력 영역
     D2D1_RECT_F destRect = D2D1::RectF(
@@ -175,7 +177,7 @@ void ExpBarUI::RenderGuage(stbD2DRenderer& renderer)
     D2D1_RECT_F srcRect = D2D1::RectF(
         0.0f,
         0.0f,
-        bmpSize.width * expRatio,
+        bmpSize.width * renderRatio,
         bmpSize.height
     );
 
@@ -224,13 +226,13 @@ void ExpBarUI::RenderExpText(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     UIRect expRect = UILayout::CalcRect(
-        static_cast<int>(rtSize.width),
-        static_cast<int>(rtSize.height),
-        100,    // 텍스트 영역 너비
-        10,     // 텍스트 영역 높이
+        rtSize.width,
+        rtSize.height,
+        100.0f,    // 텍스트 영역 너비
+        10.0f,     // 텍스트 영역 높이
         UIAnchor::CenterBottom,
-        0,
-        1
+        0.0f,
+        1.0f
     );
 
     D2D1_RECT_F textRect = D2D1::RectF(

@@ -66,8 +66,8 @@ bool SkillDataManager::LoadJsonFile(const std::string& path, SkillData& skillDat
     skillData.coolTimeMs    = j.at("cooldown_ms").get<int>();
     skillData.mp_cost       = j.at("mp_cost").get<int>();
     skillData.type          = Skill::SetSkillType(j.at("type").get<std::string>());
-    skillData.range         = j.at("range").get<int>();
-    skillData.angle_deg     = j.at("angle_deg").get<int>();
+    skillData.range         = j.at("range").get<float>();
+    skillData.angle_deg     = j.at("angle_deg").get<float>();
 
     
     const auto& ue = j.at("client").at(0);

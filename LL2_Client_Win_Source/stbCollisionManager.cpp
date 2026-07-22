@@ -42,11 +42,11 @@ namespace stb
 	{
 	}
 
-	void CollisionManager::Render(HDC hdc)
+	void CollisionManager::Render(HDC /*hdc*/)
 	{
 	}
 
-	void CollisionManager::Render(stbD2DRenderer& renderer)
+	void CollisionManager::Render(stbD2DRenderer& /*renderer*/)
 	{
 
 	}
@@ -76,10 +76,10 @@ namespace stb
 		mCollisionLayerMatrix[row][col] = enable;
 	}
 
-	void CollisionManager::LayerCollosion(Scene* scene, eLayerType left, eLayerType right)
+	void CollisionManager::LayerCollosion(Scene* /*scene*/, eLayerType leftLayer, eLayerType rightLayer)
 	{
-		const std::vector<GameObject*>& lefts = M_SceneManager->GetGameObjects(left);
-		const std::vector<GameObject*>& rights = M_SceneManager->GetGameObjects(right);
+		const std::vector<GameObject*>& lefts = M_SceneManager->GetGameObjects(leftLayer);
+		const std::vector<GameObject*>& rights = M_SceneManager->GetGameObjects(rightLayer);
 
 		for (GameObject* left : lefts)
 		{
@@ -109,8 +109,8 @@ namespace stb
 	void CollisionManager::ColliderCollision(Collider* left, Collider* right)
 	{
 		ColliderID id = {};
-		id.left = left->GetID();
-		id.right = right->GetID();
+		id.value.left = left->GetID();
+		id.value.right = right->GetID();
 
 
 		auto iter = mCollisionMap.find(id.id);
@@ -214,7 +214,11 @@ namespace stb
 			}
 
 
-			RECT reSizeRect = { RectPos.x - radius, RectPos.y - radius, RectPos.x + radius, RectPos.y + radius };
+			RECT reSizeRect = { 
+				static_cast<LONG>(RectPos.x - radius),
+				static_cast<LONG>(RectPos.y - radius),
+				static_cast<LONG>(RectPos.x + radius),
+				static_cast<LONG>(RectPos.y + radius)};
 
 			if (reSizeRect.left < CirclePos.x && CirclePos.x < reSizeRect.right
 				&& reSizeRect.top < CirclePos.y && CirclePos.y < reSizeRect.bottom)

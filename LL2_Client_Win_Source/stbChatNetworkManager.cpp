@@ -3,6 +3,8 @@
 #include <WS2tcpip.h>
 #include <sstream>
 #include <iomanip>
+#include "..\\LL2_Client_Win_Source\\stbLogger.h"
+
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -110,10 +112,21 @@ namespace stb
             return;
         }
 
-        std::string body = PacketParser::MakeBody(datas);
-        std::string packet = PacketParser::MakePacket(type, body);
+        try
+        {
+            std::string body = PacketParser::MakeBody(datas);
+            std::string packet = PacketParser::MakePacket(type, body);
 
-        m_socket.SendPacket(packet);
+            m_socket.SendPacket(packet);
+        }
+        catch (const std::length_error& e)
+        {
+            M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+        }
+        catch (const std::exception& e)
+        {
+            M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+        }
     }
 
     void ChatNetworkManager::ProcessReceivedData()

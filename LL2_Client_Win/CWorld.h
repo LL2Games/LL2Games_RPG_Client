@@ -46,9 +46,9 @@ public:
 
 
 	//Receive
-	int OnInitWorld(const char* recvBuff, const int recvLen);
-	int OnCharacterList(const char* recvBuff, const int recvLen);
-	int OnChannelSelect(const char* recvBuff, const int recvLen);
+	int OnInitWorld(const char* recvBuff, const size_t recvLen);
+	int OnCharacterList(const char* recvBuff, const size_t recvLen);
+	int OnChannelSelect(const char* recvBuff, const size_t recvLen);
 
 	afx_msg void OnBnClickedButtonEnter();
 

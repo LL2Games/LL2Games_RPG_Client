@@ -17,15 +17,31 @@ std::string PacketParser::MakeBody(const std::vector<std::string>& datas)
     return body;
 }
 
-std::string PacketParser::MakePacket(uint16_t type, const std::string& body)
+std::string PacketParser::MakePacket(
+    uint16_t type,
+    const std::string& body)
 {
-    PacketHeader hdr;
-    std::string packet;
+    constexpr std::size_t headerSize = sizeof(PacketHeader);
+    constexpr std::size_t maxPacketSize = 
+        (std::numeric_limits<uint16_t>::max)();
 
+    if (body.size() > maxPacketSize - headerSize)
+    {
+        throw std::length_error("Packet body is too large");
+    }
+
+    PacketHeader hdr{};
     hdr.type = type;
-    hdr.length = sizeof(PacketHeader) + body.size();
+    hdr.length = static_cast<uint16_t>(headerSize + body.size());
 
-    packet.append((char*)&hdr, sizeof(hdr));
+    std::string packet;
+    packet.reserve(hdr.length);
+
+    packet.append(
+        reinterpret_cast<const char*>(&hdr),
+        sizeof(hdr)
+    );
+
     packet.append(body);
 
     return packet;

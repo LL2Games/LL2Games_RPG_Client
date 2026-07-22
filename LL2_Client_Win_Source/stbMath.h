@@ -3,10 +3,27 @@
 
 namespace stb::math
 {
-	#define PI 3.141592
+	inline constexpr float PI = 3.14159265358979323846f;
 
-	// 라디안 -> 각도
-	static float ConvertDegree(float radian) { return (radian * (180.0f / PI)); }
+	// 라디안 단위의 각도를 도(degree) 단위로 변환한다.
+	// 예: PI 라디안 → 180도
+	// maybe_unused: 현재 사용 안할때 넣는 키워드
+	// nodiscard: 반환값이 무시되지 않게 컴파일러가 확인해줌
+	[[maybe_unused, nodiscard]]
+	constexpr float ConvertDegree(float radian) noexcept
+	{
+		return radian * (180.0f / PI);
+	}
+
+	// 도(degree) 단위의 각도를 라디안 단위로 변환한다.
+	// 예: 180도 → PI 라디안
+	// maybe_unused: 현재 사용 안할때 넣는 키워드
+	// nodiscard: 반환값이 무시되지 않게 컴파일러가 확인해줌
+	[[maybe_unused, nodiscard]]
+	constexpr float ConvertRadian(float degree) noexcept
+	{
+		return degree * (PI / 180.0f);
+	}
 
 	struct Vector2
 	{

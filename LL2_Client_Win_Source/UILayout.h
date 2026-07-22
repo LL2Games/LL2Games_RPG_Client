@@ -15,23 +15,23 @@ enum class UIAnchor
 
 struct UIRect
 {
-    int x;
-    int y;
-    int width;
-    int height;
+    float x = 0.0f;
+    float y = 0.0f;
+    float width = 0.0f;
+    float height = 0.0f;
 };
 
 class UILayout
 {
 public:
     static UIRect CalcRect(
-        int windowWidth,
-        int windowHeight,
-        int uiWidth,
-        int uiHeight,
+        float windowWidth,
+        float windowHeight,
+        float uiWidth,
+        float uiHeight,
         UIAnchor anchor,
-        int offsetX,
-        int offsetY);
+        float offsetX,
+        float offsetY);
 
     static D2D1_RECT_F ToD2DRect(const UIRect& rc);
 };

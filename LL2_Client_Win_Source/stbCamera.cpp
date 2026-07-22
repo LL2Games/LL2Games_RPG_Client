@@ -22,8 +22,8 @@ namespace stb
 
 	void Camera::Initialize()
 	{
-		mResolution.x = M_APP->GetWidth();
-		mResolution.y = M_APP->GetHeight();
+		mResolution.x = static_cast<float>(M_APP->GetWidth());
+		mResolution.y = static_cast<float>(M_APP->GetHeight());
 	}
 
 	void Camera::Update()
@@ -49,7 +49,7 @@ namespace stb
 
 	}
 
-	void Camera::Render(HDC hdc)
+	void Camera::Render(HDC /*hdc*/)
 	{
 
 	}

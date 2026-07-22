@@ -44,6 +44,6 @@ public:
 	virtual BOOL OnInitDialog();
 	void OnSocketConnect(BOOL bConnect);
 	int Login();
-	int OnLogin(const char *recvBuf, const int recvLen);
+	int OnLogin(const char *recvBuf, const size_t recvLen);
 
 };

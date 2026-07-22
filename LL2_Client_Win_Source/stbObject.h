@@ -38,13 +38,22 @@ namespace stb::object
 		return gameObject;
 	}
 
-	static void SetDontDestroyOnLoad(GameObject* gameObject)
+	// 지정한 GameObject를 씬 전환 후에도 유지되는 전용 씬으로 이동시킨다.
+	// TODO: 기존 Scene에서 객체 제거 및 중복 등록 방지 처리 추가
+	// maybe_unused: 현재 사용 안할때 넣는 키워드
+	[[maybe_unused]]
+	inline void SetDontDestroyOnLoad(GameObject* gameObject)
 	{
-		Scene* activeScene = M_SCENEMANAGER->GetActiveScene();
-		
-		Scene* dontDestroyOnLoad = M_SCENEMANAGER->GetDontDestroyOnLoad();
-		dontDestroyOnLoad->AddGameObject(gameObject, gameObject->GetLayerType());
-	}
+		if (gameObject == nullptr)
+			return;
 
+		Scene* dontDestroyOnLoad =
+			M_SCENEMANAGER->GetDontDestroyOnLoad();
+
+		dontDestroyOnLoad->AddGameObject(
+			gameObject,
+			gameObject->GetLayerType()
+		);
+	}
 
 }
