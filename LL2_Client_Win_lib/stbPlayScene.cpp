@@ -2,7 +2,6 @@
 #include "stbGameObject.h"
 #include "stbPlayer.h"
 #include "stbObject.h"
-#include "stbTransform.h"
 #include "stbTexture.h"
 #include "stbResourceManager.h"
 #include "stbSpriteRenderer.h"
@@ -48,22 +47,10 @@ namespace stb
 		mPlayer = M_PLMANAGER->CreateLocalPlayer(enums::eLayerType::Player, Vector2(300.0f, 300.0f));
 		mBackground = M_REMANAGER->Find<Texture>(L"Forest_ground_1");
 		mBGM = M_REMANAGER->Find<AudioClip>(L"BGM_Forest_ground_1");
-
-
-#if 0 //누락된 코드
-		Transform* tr = mPlayer->AddComponent<Transform>();
-		int charId = atoi(stb::NetworkConfig::GetCharacterId());
-		mPlayer = object::Instantiate<Player>(enums::eLayerType::Player);
-		tr->SetPosition(Vector2(300.0f, 300.0f));
-
-		PlayerScript* playerScript = mPlayer->AddComponent<PlayerScript>();
-		playerScript->SetOwner(mPlayer);
-		M_PLMANAGER->SetLocalPlayer(mPlayer);
-#endif
 		
 		M_UIMANAGER->Init();
 
-#if 1 /*gunoo22 260518 ?³¸??? ±×¸®±?*/
+#if 1 
 		Texture* spartaTex = M_REMANAGER->Find<Texture>(L"Sparta");
 		Animator* spartaAnim = mPlayer->AddComponent<Animator>();
 		if (spartaTex != nullptr)
@@ -92,6 +79,7 @@ namespace stb
 	void PlayScene::Update()
 	{
 		Scene::Update();
+		
 		M_UIMANAGER->Update();
 		M_MONSTERAMANGER->Update(M_TIME->GetDeltaTime());
 	}

@@ -89,4 +89,18 @@ namespace stb
 		mGameObjects.push_back(gameObject);
 	}
 
+	bool Layer::RemoveGameObject(GameObject* gameObject)
+	{
+		auto iter = std::find(
+			mGameObjects.begin(),
+			mGameObjects.end(),
+			gameObject
+		);
+
+		if (iter == mGameObjects.end())
+			return false;
+
+		mGameObjects.erase(iter);
+		return true;
+	}
 }

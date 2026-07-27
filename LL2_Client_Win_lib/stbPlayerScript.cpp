@@ -113,7 +113,7 @@ namespace stb
 	void PlayerScript::Idle(bool changeState)
 	{
 		if (M_UIMANAGER->IsInputFocused())
-			return; //ä�� �Է��� -> �̵�/���� ����
+			return; 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		if (tr == nullptr)
 			return;
@@ -125,7 +125,7 @@ namespace stb
 		{
 			if (M_INPUT->GetAction(eActionCode::MoveRight))
 			{
-				pos.x += 100.0f * M_TIME->GetDeltaTime();
+				pos.x += 200.0f * M_TIME->GetDeltaTime();
 				m_player->SetFacing(FacingDirection::Right);
 				m_animator->SetFlipX(true);
 				moved = true;
@@ -133,7 +133,7 @@ namespace stb
 
 			if (M_INPUT->GetAction(eActionCode::MoveLeft))
 			{
-				pos.x -= 100.0f * M_TIME->GetDeltaTime();
+				pos.x -= 200.0f * M_TIME->GetDeltaTime();
 				m_player->SetFacing(FacingDirection::Left);
 				m_animator->SetFlipX(false);
 				moved = true;
@@ -141,13 +141,13 @@ namespace stb
 
 			if (M_INPUT->GetAction(eActionCode::MoveUp))
 			{
-				pos.y -= 100.0f * M_TIME->GetDeltaTime();
+				pos.y -= 200.0f * M_TIME->GetDeltaTime();
 				moved = true;
 			}
 
 			if (M_INPUT->GetAction(eActionCode::MoveDown))
 			{
-				pos.y += 100.0f * M_TIME->GetDeltaTime();
+				pos.y += 200.0f * M_TIME->GetDeltaTime();
 				moved = true;
 			}
 

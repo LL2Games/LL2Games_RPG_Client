@@ -16,6 +16,28 @@
     <ClInclude Include="stbAudioClip.h">
       <Filter>Audio</Filter>
     </ClInclude>
+    <ClInclude Include="GameSession.h" />
+    <ClInclude Include="Map_100000001.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MapScene.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MapInfo.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MapDataManager.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map_100000000.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map_100000002.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stbPlayScene.cpp" />
@@ -31,6 +53,25 @@
     <ClCompile Include="stbAudioClip.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClCompile Include="GameSession.cpp" />
+    <ClCompile Include="Map_100000001.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MapDataManager.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map_100000000.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map_100000002.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
@@ -44,6 +85,9 @@
     </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{e1b4e7cf-02bc-498b-8806-14e6b823392f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{e6343be0-11a1-4279-b671-7730c9198747}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

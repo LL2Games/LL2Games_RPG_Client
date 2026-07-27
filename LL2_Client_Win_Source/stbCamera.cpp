@@ -2,6 +2,7 @@
 #include "stbGameObject.h"
 #include "stbTransform.h"
 #include "stbApplication.h"
+#include <algorithm>
 
 #define M_APP stb::SingletonBase<stb::Application>::getInstance()
 
@@ -28,20 +29,24 @@ namespace stb
 
 	void Camera::Update()
 	{
-		if (mTarget)
-		{
-			Transform* tr = mTarget->GetComponent<Transform>();
-			mLookPosition = tr->GetPosition();
-		}
-		else
-		{
-			Transform* cameraTr = GetOwner()->GetComponent<Transform>();
-			mLookPosition = cameraTr->GetPosition();
-		}
+        if (mTarget != nullptr)
+        {
+            Transform* transform = mTarget->GetComponent<Transform>();
+            mLookPosition = transform->GetPosition();
+        }
+        else
+        {
+            Transform* cameraTransform = GetOwner()->GetComponent<Transform>();
 
-		// 화면 크기의 중간 위치에서 위치를 빼기
+            mLookPosition = cameraTransform->GetPosition();
+        }
 
-		mDistance = mLookPosition - (mResolution / 2.0f);
+        Vector2 desiredDistance = (mLookPosition + mLookOffset) - (mResolution / 2.0f);
+
+        float maxX = std::max(0.0f, mWorldSize.x - mResolution.x);
+        float maxY = std::max(0.0f, mWorldSize.y - mResolution.y);
+        mDistance.x = std::max(0.0f, std::min(desiredDistance.x, maxX));
+        mDistance.y = std::max(0.0f,std::min(desiredDistance.y, maxY));
 	}
 
 	void Camera::LateUpdate()

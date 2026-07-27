@@ -8,6 +8,7 @@
 #include "ItemDataManager.h"
 #include "QuickSlotManager.h"
 #include "PlayerManager.h"
+#include <algorithm>
 
 #define M_REMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
 #define M_APP stb::SingletonBase<stb::Application>::getInstance()
@@ -59,7 +60,7 @@ void QuickSlotUI::Render(stbD2DRenderer& renderer)
     // 기준 해상도 대비 UI 전체 스케일
     float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
-    float scale = min(scaleX, scaleY);
+    float scale = (std::min)(scaleX, scaleY);
 
     m_scale = scale;
 
