@@ -60,11 +60,13 @@ namespace stb
 
 		// 1. 월드 / 배경 리소스
 		void LoadMapTextures();
+		void LoadPortalTextures();
 
 		// 2. 게임 오브젝트 리소스
 		void LoadPlayerTextures();
 		void LoadMonsterTextures();
 		void LoadItemTextures();
+		
 
 		// 3. UI 리소스
 		void LoadInventoryTextures();

@@ -24,7 +24,6 @@ namespace stb
 	{
 		GameObject::Initialize();
 		m_transform = AddComponent<stb::Transform>();
-		m_transform->SetPosition(Vector2(300.0f, 100.0f));
 		m_animator = AddComponent<stb::Animator>();
 		m_damageText = AddComponent<stb::DamageText>();
 		m_collider = AddComponent<stb::BoxCollider2D>();

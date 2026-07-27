@@ -1,6 +1,6 @@
 ﻿#include "PlayerManager.h"
 #include "stbObject.h"
-
+#include "stbTransform.h"
 
 stb::Player* PlayerManager::CreateLocalPlayer(stb::enums::eLayerType layer, const stb::math::Vector2& pos)
 {
@@ -13,6 +13,15 @@ stb::Player* PlayerManager::CreateLocalPlayer(stb::enums::eLayerType layer, cons
     m_localPlayer = player;
 
     player->Initialize();
+
+    stb::Transform* transform =player->GetComponent<stb::Transform>();
+
+    if (transform != nullptr)
+    {
+        transform->SetPosition(pos);
+    }
+
+    player->GetPlayerLocation()->pos = pos;
     return player;
 }
 

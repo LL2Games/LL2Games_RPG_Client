@@ -69,6 +69,7 @@ namespace stb
 	void ChatScene::Update()
 	{
 		Scene::Update();
+		M_UIMANAGER->Update();
 		// Enter 키 → 입력 모드 토글 OR 전송
 		if (M_INPUT->GetKeyDown(eKeyCode::Enter))
 		{

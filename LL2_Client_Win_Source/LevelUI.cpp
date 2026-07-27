@@ -62,7 +62,7 @@ void LevelUI::RenderBackground(stbD2DRenderer& renderer)
     // 기준 해상도 대비 UI 전체 스케일
     float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
-    float scale = min(scaleX, scaleY);
+    float scale = (std::min)(scaleX, scaleY);
 
     // int drawWidth = (int)(BASE_BG_WIDTH * scale);
     // int drawHeight = (int)(BASE_BG_HEIGHT * scale);
@@ -111,7 +111,7 @@ void LevelUI::RenderLevelImg(stbD2DRenderer& renderer)
     // 기준 해상도 대비 UI 전체 스케일
     float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
-    float scale = min(scaleX, scaleY);
+    float scale = (std::min)(scaleX, scaleY);
 
     // int drawWidth = (int)(BASE_BG_WIDTH * scale);
     // int drawHeight = (int)(BASE_BG_HEIGHT * scale);

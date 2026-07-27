@@ -19,6 +19,9 @@ namespace stb
 
 	 void SetTarget(GameObject* target) { mTarget = target; }
 
+	 void SetWorldSize(const Vector2& size){ mWorldSize = size;}
+	 void SetLookOffset(const Vector2& offset){mLookOffset = offset;}
+	 const Vector2& GetDistance() const { return mDistance;}
 	private:
 		class GameObject* mTarget;
 
@@ -28,8 +31,8 @@ namespace stb
 		// 타켓의 위치
 		Vector2 mLookPosition;
 
-
-
+		Vector2 mWorldSize = Vector2::Zero;
+		Vector2 mLookOffset = Vector2::Zero;
 	};
 }
 
