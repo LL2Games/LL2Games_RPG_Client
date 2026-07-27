@@ -11,7 +11,7 @@
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
 
 
-void ItemPacketHandler::Execute(const ParsedPacket& pkt)
+void ItemPacketHandler::Execute(const ParsedPacket& /*pkt*/)
 {
 
 }
@@ -260,7 +260,7 @@ void ItemPacketHandler::SendUseItem(InventoryItemInfo* inventoryitemInfo)
     OutputDebugStringA("[PKT_PLAYER_USE_ITEM 전송 완료]\n\n");
 }
 
-void ItemPacketHandler::SendPickupDropItem(int dropId)
+void ItemPacketHandler::SendPickupDropItem(int64_t dropId)
 {
     std::vector<std::string> payload;
 

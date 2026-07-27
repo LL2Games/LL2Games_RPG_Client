@@ -30,8 +30,9 @@
 #define IDC_EDIT_PASSWD_CHECK           1007
 #define ID_BUTTON_LOGIN                 1008
 #define IDC_EDIT_NICK                   1008
+#ifndef IDC_STATIC
 #define IDC_STATIC                      -1
-
+#endif
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED

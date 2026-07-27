@@ -37,11 +37,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="LL2_Client_Win.rc">
-      <Filter>리소스 파일</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="small.ico">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -63,5 +58,14 @@
     <ClCompile Include="CWorld.cpp">
       <Filter>WORLD</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LL2_Client_Win.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" />
+    <None Include="..\.gitattributes" />
   </ItemGroup>
 </Project>

@@ -46,9 +46,9 @@ namespace stb
 		float fps = 1.0f / deltaTime;
 
 		wchar_t str[50] = L"";
-		swprintf_s(str, 50, L"Time : %d", (int)fps);
+		swprintf_s(str, 50, L"Time : %d", static_cast<int>(fps));
 
-		int len = wcsnlen_s(str, 50);
+		int len = static_cast<int>(wcsnlen_s(str, 50));
 
 
 		TextOut(hdc, 0, 0, str, len);
@@ -65,7 +65,7 @@ namespace stb
 		wchar_t str[50] = L"";
 		swprintf_s(str, 50, L"Time : %d", (int)fps);
 
-		int len = wcsnlen_s(str, 50);
+		//int len = wcsnlen_s(str, 50);
 		
 		renderer.DrawTextString(
 			str,

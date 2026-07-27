@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <optional>
-
+#include <stdexcept>
 #include "Packet.h"
 
 class PacketParser

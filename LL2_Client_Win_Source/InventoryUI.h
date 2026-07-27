@@ -94,12 +94,12 @@ private:
 	static constexpr int m_fullInventoryClickWidth = 710;
 	static constexpr int m_fullInventoryClickHeight = 30;
 	
-	static constexpr float m_slotStartX = 30;
-	static constexpr float m_slotStartY = 100;
-	static constexpr float m_slotWidth = 42;
-	static constexpr float m_slotHeight = 40;
-	static constexpr float m_slotgapX = 4.2;
-	static constexpr float m_slotgapY = 6;
+	static constexpr float m_slotStartX = 30.0f;
+	static constexpr float m_slotStartY = 100.0f;
+	static constexpr float m_slotWidth = 42.0f;
+	static constexpr float m_slotHeight = 40.0f;
+	static constexpr float m_slotgapX = 4.2f;
+	static constexpr float m_slotgapY = 6.0f;
 	
 	static constexpr int m_slotCols = 4;
 	static constexpr int m_fullSlotCols = 16;

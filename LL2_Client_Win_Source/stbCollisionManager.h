@@ -13,7 +13,7 @@ namespace stb
 		{
 			UINT32 left;
 			UINT32 right;
-		};
+		} value;
 
 		UINT64 id;
 	};

@@ -53,11 +53,12 @@ namespace stb
 		rightBottom.x = pos.x + offset.x + 100 * GetSize().x;
 		rightBottom.y = pos.y + offset.y + 100 * GetSize().y;
 
-		Rectangle(hdc
-			, pos.x + offset.x
-			, pos.y + offset.y
-			, rightBottom.x
-			, rightBottom.y);
+		//std::lround (좌표를 가장 가까운 정수로 반올림)
+		Rectangle(hdc,
+			static_cast<int>(std::lround(pos.x + offset.x)),
+			static_cast<int>(std::lround(pos.y + offset.y)),
+			static_cast<int>(std::lround(rightBottom.x)),
+			static_cast<int>(std::lround(rightBottom.y)));
 
 		SelectObject(hdc, oldBrush);
 		SelectObject(hdc, oldPen);
@@ -67,6 +68,7 @@ namespace stb
 
 	void BoxCollider2D::Render(stbD2DRenderer& renderer)
 	{
+#ifdef __DEV_COLLIDER
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		if (tr == nullptr)
 			return;
@@ -90,7 +92,10 @@ namespace stb
 		float width = halfSize.x * 2.0f;
 		float height = halfSize.y * 2.0f;
 
-		//renderer.DrawRect(left, top, width, height, D2D1::ColorF::Black);
+		renderer.DrawRect(left, top, width, height, D2D1::ColorF::Black);
+#else
+		(void)renderer;
+#endif
 	}
 }
 

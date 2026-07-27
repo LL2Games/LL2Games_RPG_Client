@@ -1,6 +1,7 @@
 ﻿//#include "pch.h"
 
 #include "MySocket.h"
+#include "../../LL2_Client_Win_Source/stbLogger.h"
 
 CMySocket::CMySocket(CDialogEx* pDlg, e_Status eStatus) : m_dlg(pDlg), m_status(eStatus)
 //CMySocket::CMySocket()
@@ -13,9 +14,9 @@ CMySocket::~CMySocket() {}
 void CMySocket::OnReceive(int nErrorCode)
 {
         std::string buf = RecevieBuff();
-        int len = buf.size();
+        size_t len = buf.size();
 
-        { char szTmp[2058]; sprintf_s(szTmp, sizeof(szTmp), "[%s][%d]gunoo22_TEST m_bLoginPhase[%d]", __FUNCTION__, __LINE__, m_bLoginPhase); OutputDebugStringA(szTmp); }
+        M_LOGGER("m_bLoginPhase[%d]", m_bLoginPhase);
 
         switch (m_status)
         {
@@ -63,8 +64,7 @@ void CMySocket::OnReceive(int nErrorCode)
 
         }
        
-
-        { char szTmp[2058]; sprintf_s(szTmp, sizeof(szTmp), "[%s][%d] gunoo22_TEST recvBuff[%s]", __FUNCTION__, __LINE__, buf); OutputDebugStringA(szTmp); }
+        M_LOGGER("recvBuff[%s]", buf.c_str());
 
         CAsyncSocket::OnReceive(nErrorCode);
 }

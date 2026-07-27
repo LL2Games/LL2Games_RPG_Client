@@ -74,8 +74,8 @@ bool PlayerAnimationManager::LoadJsonFile(const std::string& path, PlayerAnimati
     animData.key.jobType = PlayerTypeUtil::StringToJobType(j.at("job").get<std::string>());
     animData.key.weaponType = Weapon::StringToWeaponType(j.value("weapon", "Unknown"));
   
-    DebugMsg = "jobType : " + j.at("job").get<std::string>() + "weapon : " + j.value("weapon", "Unknown") + "\n";
-    OutputDebugStringA(DebugMsg.c_str());
+    m_debugMsg = "jobType : " + j.at("job").get<std::string>() + "weapon : " + j.value("weapon", "Unknown") + "\n";
+    OutputDebugStringA(m_debugMsg.c_str());
     const auto& anims = j.at("animations");
 
     // get은 필수 값 없어서는 안되는 값
@@ -192,8 +192,10 @@ bool PlayerAnimationManager::SetupPlayerAnimations(stb::Player* player, JobType 
 
 bool PlayerAnimationManager::SetupOtherPlayerAnimations(stb::OtherPlayer* otherPlayer, JobType jobtype, WeaponType weaponType)
 {
-    std::string msg = "SetupOtherPlayerAnimation jobtype : " + std::to_string(static_cast<int>(jobtype)) + "weaponType :" + std::to_string(static_cast<int>(weaponType)) + "\n";
-    OutputDebugStringA(msg.c_str());
+    {
+        std::string msg = "SetupOtherPlayerAnimation jobtype : " + std::to_string(static_cast<int>(jobtype)) + "weaponType :" + std::to_string(static_cast<int>(weaponType)) + "\n";
+        OutputDebugStringA(msg.c_str());
+    }
     if (otherPlayer == nullptr)
         return false;
 

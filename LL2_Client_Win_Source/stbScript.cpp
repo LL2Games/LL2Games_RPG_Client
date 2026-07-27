@@ -22,7 +22,7 @@ namespace stb
 	{
 	}
 
-	void Script::Render(HDC hdc)
+	void Script::Render(HDC /*hdc*/)
 	{
 	}
 

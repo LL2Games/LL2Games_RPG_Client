@@ -16,7 +16,7 @@
 namespace stb
 {
 	Player::Player() : m_inven(InventoryManager::getInstance()), m_playerState(PlayerState::None),
-					   m_transform(nullptr), m_animator(nullptr), m_damageText(nullptr), m_collider(nullptr), m_script(nullptr), m_isLocalPlayer(false)
+					   m_transform(nullptr), m_animator(nullptr), m_damageText(nullptr), m_collider(nullptr), m_script(nullptr), m_isLocalPlayer(false), m_moveSpeed(0.0f)
 	{
 		m_combatSystem.SetOwner(this);
 	}
@@ -139,7 +139,7 @@ namespace stb
 		SetState(PlayerState::Idle);
 	}
 
-	void Player::PlayAttackAnimation(int skillId)
+	void Player::PlayAttackAnimation(int /*skillId*/)
 	{
 
 

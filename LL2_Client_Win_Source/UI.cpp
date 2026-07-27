@@ -8,11 +8,11 @@ void UI::Update()
 {
 
 }
-void UI::Render(HDC hdc)
+void UI::Render(HDC /*hdc*/)
 {
 
 }
-void UI::Render(stbD2DRenderer & renderer)
+void UI::Render(stbD2DRenderer & /*renderer*/)
 {
 
 }

@@ -101,35 +101,70 @@ namespace stb
 				func.AlphaFormat = AC_SRC_ALPHA;
 				func.SourceConstantAlpha = 255;  // 0(Transparent) ~255(Opaque);
 
-				AlphaBlend(hdc
-					, pos.x - (sprite.size.x / 2.0f) + sprite.offset.x
-					, pos.y - (sprite.size.y / 2.0f) + sprite.offset.y
-					, sprite.size.x * scale.x
-					, sprite.size.y * scale.y
-					, imgHDC
-					, sprite.leftTop.x
-					, sprite.leftTop.y
-					, sprite.size.x
-					, sprite.size.y
-					, func);
+
+				const int destX = static_cast<int>(std::lround(
+					pos.x - sprite.size.x * 0.5f + sprite.offset.x));
+				const int destY = static_cast<int>(std::lround(
+					pos.y - sprite.size.y * 0.5f + sprite.offset.y));
+				const int destWidth = static_cast<int>(std::lround(
+					sprite.size.x * scale.x));
+				const int destHeight = static_cast<int>(std::lround(
+					sprite.size.y * scale.y));
+				const int srcX = static_cast<int>(std::lround(sprite.leftTop.x));
+				const int srcY = static_cast<int>(std::lround(sprite.leftTop.y));
+				const int srcWidth = static_cast<int>(std::lround(sprite.size.x));
+				const int srcHeight = static_cast<int>(std::lround(sprite.size.y));
+
+				AlphaBlend(
+					hdc,
+					destX,
+					destY,
+					destWidth,
+					destHeight,
+					imgHDC,
+					srcX,
+					srcY,
+					srcWidth,
+					srcHeight,
+					func
+				);
 			}
 			else
 			{
-				TransparentBlt(hdc
-					, pos.x - (sprite.size.x / 2.0f) + sprite.offset.x
-					, pos.y - (sprite.size.y / 2.0f) + sprite.offset.y
-					, sprite.size.x * scale.x
-					, sprite.size.y * scale.y
-					, imgHDC
-					, sprite.leftTop.x
-					, sprite.leftTop.y
-					, sprite.size.x
-					, sprite.size.y
-					, RGB(255, 0, 255));
+				const int destX = static_cast<int>(std::lround(
+					pos.x - sprite.size.x * 0.5f + sprite.offset.x));
+				const int destY = static_cast<int>(std::lround(
+					pos.y - sprite.size.y * 0.5f + sprite.offset.y));
+				const int destWidth = static_cast<int>(std::lround(
+					sprite.size.x * scale.x));
+				const int destHeight = static_cast<int>(std::lround(
+					sprite.size.y * scale.y));
+				const int srcX = static_cast<int>(std::lround(sprite.leftTop.x));
+				const int srcY = static_cast<int>(std::lround(sprite.leftTop.y));
+				const int srcWidth = static_cast<int>(std::lround(sprite.size.x));
+				const int srcHeight = static_cast<int>(std::lround(sprite.size.y));
+
+				TransparentBlt(
+					hdc,
+					destX,
+					destY,
+					destWidth,
+					destHeight,
+					imgHDC,
+					srcX,
+					srcY,
+					srcWidth,
+					srcHeight,
+					RGB(255, 0, 255));
 			}
 
 
-			Rectangle(hdc, pos.x, pos.y, pos.x + 10, pos.y + 10);
+			Rectangle(
+				hdc, 
+				static_cast<int>(pos.x), 
+				static_cast<int>(pos.y), 
+				static_cast<int>(pos.x + 10), 
+				static_cast<int>(pos.y + 10));
 
 		}
 		else if (type == Texture::eTextureType::Png)
@@ -140,14 +175,15 @@ namespace stb
 			graphics.RotateTransform(rot);
 			graphics.TranslateTransform(-pos.x, -pos.y);
 
+			const Gdiplus::RectF destRect(
+				pos.x - sprite.size.x * 0.5f,
+				pos.y - sprite.size.y * 0.5f,
+				sprite.size.x * scale.x,
+				sprite.size.y * scale.y
+			);
+
 			graphics.DrawImage(mTexture->GetImage()
-				, Gdiplus::Rect
-				(
-					pos.x - (sprite.size.x / 2.0f)
-					, pos.y - (sprite.size.y / 2.0f)
-					, sprite.size.x * scale.x
-					, sprite.size.y * scale.y
-				)
+				, destRect
 				, sprite.leftTop.x
 				, sprite.leftTop.y
 				, sprite.size.x
@@ -271,7 +307,7 @@ namespace stb
 
 	}
 
-    void Animation::CreateAnimation(const std::wstring& name
+    void Animation::CreateAnimation(const std::wstring& /*name*/
         , Texture* spriteTexture
         , Vector2 leftTop
         , Vector2 size
@@ -314,7 +350,7 @@ namespace stb
 	//	}
 	//}
 
-	void Animation::CreateFrameAnimation(const std::wstring& name, const std::vector<Texture*>& frames, Vector2 baseOffset, const std::vector<stb::math::Vector2>& frameOffsets, float duration)
+	void Animation::CreateFrameAnimation(const std::wstring& /*name*/, const std::vector<Texture*>& frames, Vector2 baseOffset, const std::vector<stb::math::Vector2>& frameOffsets, float duration)
 	{
 		mTexture = nullptr;
 		mAnimationSheet.clear();
@@ -385,7 +421,7 @@ namespace stb
         mbComplete = false;
     }
 
-    HRESULT Animation::Load(const std::wstring& path)
+    HRESULT Animation::Load(const std::wstring& /*path*/)
     {
         return E_NOTIMPL;
     }

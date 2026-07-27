@@ -125,9 +125,10 @@ namespace stb
 	{
 		Scene::OnEnter();
 
+#ifndef __NO_BGM
 		if (mBGM != nullptr)
-			//mBGM->Play();
-			;
+			mBGM->Play();
+#endif
 	}
 }
 

@@ -44,7 +44,7 @@ void Monster::Update(float deltaTime)
 
 	if (dist > 1.0f)
 	{
-		float correctionSpeed = m_moveSpeed;
+		float correctionSpeed = static_cast<float>(m_moveSpeed);
 		//float correctionSpeed = m_moveSpeed * 2.0f;
 		float moveDist = correctionSpeed * deltaTime;
 
@@ -97,8 +97,8 @@ void Monster::SetState(MonsterState state)
 	stb::Animator* animator = GetComponent<stb::Animator>();
 	if (animator != nullptr)
 	{
-		DebugMsg ="current State : " + std::to_string(static_cast<int>(m_state)) + "\n";
-		OutputDebugStringA(DebugMsg.c_str());
+		m_debugMsg ="current State : " + std::to_string(static_cast<int>(m_state)) + "\n";
+		OutputDebugStringA(m_debugMsg.c_str());
 		bool isLoop = false;
 		if (m_currentAnimation != L"die") isLoop = true;
 		animator->PlayAnimation(m_currentAnimation, isLoop);
@@ -107,7 +107,7 @@ void Monster::SetState(MonsterState state)
 
 
 }
-void Monster::SetPosition(float x, float y)
+void Monster::SetPosition(float /*x*/, float /*y*/)
 {
 
 }
@@ -197,11 +197,11 @@ void Monster::BindAnimationEvents()
 
 		});
 }
-void Monster::OnDamaged(int damage, int curHp, bool dead)
+void Monster::OnDamaged(int /*damage*/, int /*curHp*/, bool /*dead*/)
 {
 
 }
-void Monster::OnMove(float x, float y, int dir)
+void Monster::OnMove(float /*x*/, float /*y*/, int /*dir*/)
 {
 	
 }

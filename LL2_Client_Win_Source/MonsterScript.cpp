@@ -12,6 +12,6 @@ void MonsterScript::LateUpdate()
 {
 }
 
-void MonsterScript::Render(HDC hdc)
+void MonsterScript::Render(HDC /*hdc*/)
 {
 }

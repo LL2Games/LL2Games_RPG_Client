@@ -72,7 +72,7 @@ namespace stb
 
 	}	
 		 
-	void PlayerScript::Render(HDC hdc)
+	void PlayerScript::Render(HDC /*hdc*/)
 	{
 
 	}
@@ -281,8 +281,8 @@ namespace stb
 
 		if (M_INPUT->GetActionDown(eActionCode::Attack))
 		{
-			DebugMsg = "HandleComabatInput is Pressed\n";
-			OutputDebugStringA(DebugMsg.c_str());	
+			m_debugMsg = "HandleComabatInput is Pressed\n";
+			OutputDebugStringA(m_debugMsg.c_str());
 			Attack();
 		}
 	}
