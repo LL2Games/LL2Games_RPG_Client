@@ -1,0 +1,61 @@
+{
+  "mapId": 100000002,
+  "name": "Forest Ground 3",
+  "background": "Map/Forest/ground_3.png",
+  "miniMap": "Map/Forest/ground_3_minimap.png",
+
+  "portals": [
+    {
+      "id": "to_map_100000001",
+      "texture": "ForestPortal",
+
+      "position": {
+        "x": 100.0,
+        "y": 790.0
+      },
+
+      "renderSize": {
+        "x": 100.0,
+        "y": 160.0
+      },
+
+      "halfSize": {
+        "x": 60.0,
+        "y": 100.0
+      },
+
+      "destinationMapId": 100000001,
+
+      "spawnPosition": {
+        "x": 1400.0,
+        "y": 520.0
+      }
+    },
+    {
+      "id": "to_map_100000003",
+      "texture": "ForestPortal",
+
+      "position": {
+        "x": 1400.0,
+        "y": 770.0
+      },
+
+      "renderSize": {
+        "x": 100.0,
+        "y": 160.0
+      },
+
+      "halfSize": {
+        "x": 60.0,
+        "y": 100.0
+      },
+
+      "destinationMapId": 100000003,
+
+      "spawnPosition": {
+        "x": 1000.0,
+        "y": 520.0
+      }
+    }
+  ]
+}
