@@ -5,6 +5,7 @@
 #include "MonsterDataManager.h"
 #include "stbTexture.h"
 #include "Util.h"
+#include "Collider_Info.h"
 
 #define M_RESOURCEMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
 #define M_MONSTERDATAMANAGER stb::SingletonBase<MonsterDataManager>::getInstance()
@@ -39,6 +40,7 @@ void Projectile::InitFromServer(const MonsterProjectileData& info)
 	}
 
 	SetAnimation();
+	SetCollider();
 	
 	if (m_animator != nullptr)
 	{
@@ -217,4 +219,37 @@ void Projectile::SetAnimation()
 bool Projectile::IsExpired()
 {
 	return m_travelled >= m_range;
+}
+
+void Projectile::SetCollider()
+{
+	// ownerId가 몬스터 타입 ID라는 현재 전제
+	const MonsterData* monsterData =
+		M_MONSTERDATAMANAGER->FindMonsterData(m_ownerId);
+
+	if (monsterData == nullptr)
+		return;
+
+	const ColliderInfo& info = monsterData->projectileData.colliderInfo;
+
+	switch (info.colliderType)
+	{
+	case stb::eColliderType::Rect2D:
+		m_collider = AddComponent<stb::BoxCollider2D>();
+		m_collider->SetSize(info.halfSize);
+		break;
+
+	case stb::eColliderType::Circle2D:
+		m_collider = AddComponent<stb::CircleCollider2D>();
+
+		// 기존 Collider가 Vector2 size만 지원하므로 임시 호환
+		m_collider->SetSize({ info.radius, info.radius });
+		break;
+
+	default:
+		return;
+	}
+
+	m_collider->SetColliderType(info.colliderType);
+	m_collider->SetOffset(info.offset);
 }

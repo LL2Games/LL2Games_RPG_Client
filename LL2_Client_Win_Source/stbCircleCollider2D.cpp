@@ -2,6 +2,7 @@
 #include "stbTransform.h"
 #include "stbrender.h"
 #include "stbGameObject.h"
+#include "stbD2DRenderer.h"
 namespace stb
 {
 	CircleCollider2D::CircleCollider2D()
@@ -63,6 +64,38 @@ namespace stb
 		SelectObject(hdc,oldBrush);
 		SelectObject(hdc, oldPen);
 		DeleteObject(transparentPen);
+	}
+
+	void CircleCollider2D::Render(stbD2DRenderer& renderer)
+	{
+#ifdef __DEV_COLLIDER
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+		if (tr == nullptr)
+			return;
+
+		Vector2 worldPos = tr->GetPosition();
+
+		// 콜라이더 중심 월드 좌표
+		Vector2 colliderCenter = worldPos + GetOffset();
+
+		// 카메라 보정
+		Vector2 screenCenter = colliderCenter;
+		if (render::mainCamera)
+		{
+			screenCenter = render::mainCamera->CalculatePosition(colliderCenter);
+		}
+
+		Vector2 halfSize = GetSize();
+
+		float left = screenCenter.x - halfSize.x;
+		float top = screenCenter.y - halfSize.y;
+		float width = halfSize.x * 2.0f;
+		float height = halfSize.y * 2.0f;
+
+		renderer.DrawRect(left, top, width, height, D2D1::ColorF::Black);
+#else
+		(void)renderer;
+#endif
 	}
 
 }

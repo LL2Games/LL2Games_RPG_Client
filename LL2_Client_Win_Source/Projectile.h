@@ -17,11 +17,14 @@ public:
 
     void Update(float deltaTime);
     void Render(stbD2DRenderer& renderer);
-    void SetAnimation();
 
     int GetInstanceId() const { return m_instanceId; }
     bool IsExpired();
+
 private:
+    void SetAnimation();
+    void SetCollider();
+
     int m_ownerId = 0; //투사체 소유주 Id (현재는 MonsterId)
     int m_instanceId = 0;
     int m_projectileTypeId = 0;

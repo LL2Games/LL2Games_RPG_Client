@@ -125,20 +125,38 @@ bool MonsterDataManager::LoadJsonFile(const std::string& path, MonsterData& mons
     if (isRanged)
     {
         const auto& projectile = j.at("projectile");
-        monsterData.projectileData.instanceId = projectile.value("id", 0);
+        monsterData.projectileData.projectileId = projectile.value("id", 0);
 
         const auto& projectileCollider = projectile.at("collider");
+        auto& colliderInfo = monsterData.projectileData.colliderInfo;
 
-        monsterData.projectileData.colliderInfo.colliderType = 
+        colliderInfo.colliderType = 
             stb::enums::SetColliderType(projectileCollider.value("type", "None"));
 
-        const auto& projectileOffset = projectileCollider.at("offset");
-        monsterData.projectileData.colliderInfo.offset.x = projectileOffset.value("x", 0.0f);
-        monsterData.projectileData.colliderInfo.offset.y = projectileOffset.value("y", 0.0f);
+        if (projectileCollider.contains("offset"))
+        {
+            const auto& projectileOffset = projectileCollider.at("offset");
+            colliderInfo.offset.x = projectileOffset.value("x", 0.0f);
+            colliderInfo.offset.y = projectileOffset.value("y", 0.0f);
+        }
 
-        const auto& projectileHalf = projectileCollider.at("half");
-        monsterData.projectileData.colliderInfo.halfSize.x = projectileHalf.value("w", 0.0f);
-        monsterData.projectileData.colliderInfo.halfSize.y = projectileHalf.value("h", 0.0f);
+        switch (colliderInfo.colliderType)
+        {
+        case stb::enums::eColliderType::Rect2D:
+        {
+            const auto& projectileHalf = projectileCollider.at("half");
+            colliderInfo.halfSize.x = projectileHalf.value("w", 0.0f);
+            colliderInfo.halfSize.y = projectileHalf.value("h", 0.0f);
+            break;
+        }
+        case stb::enums::eColliderType::Circle2D:
+        {
+            colliderInfo.radius = projectileCollider.value("radius", 0.0f);
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return true;

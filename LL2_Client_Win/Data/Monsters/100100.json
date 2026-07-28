@@ -76,9 +76,9 @@
         "speed" : 30,
         "range" : 100,
         "collider" : {
-            "type" : "Rect2D",
+            "type" : "Circle2D",
             "offset" : {"x" : 0, "y" : 0},
-            "half"      :   {"w" :2, "h": 2}
+            "radius": 2
         }
     }
 }
