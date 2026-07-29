@@ -158,12 +158,12 @@ void stb::ResourceManager::LoadInventoryTextures()
 	Load<Texture>(L"Inventory_normal", L"Resources\\UI\\Inventory\\Inventory_backgrnd.png");
 	Load<Texture>(L"Inventory_full", L"Resources\\UI\\Inventory\\Inventory.FullBackgrnd.png");
 
-	Load<Texture>(L"Inventory_equip_normal", L"Resources\\UI\\Inventory\\category_normal_0.png");
-	Load<Texture>(L"Inventory_consume_normal", L"Resources\\UI\\Inventory\\category_normal_1.png");
-	Load<Texture>(L"Inventory_etc_normal", L"Resources\\UI\\Inventory\\category_normal_2.png");
-	Load<Texture>(L"Inventory_setup_normal", L"Resources\\UI\\Inventory\\category_normal_3.png");
-	Load<Texture>(L"Inventory_cash_normal", L"Resources\\UI\\Inventory\\category_normal_4.png");
-	Load<Texture>(L"Inventory_cosmetic_normal", L"Resources\\UI\\Inventory\\category_normal_5.png");
+	Load<Texture>(L"Inventory_equip_normal",	L"Resources\\UI\\Inventory\\category_normal_0_.png");
+	Load<Texture>(L"Inventory_consume_normal",	L"Resources\\UI\\Inventory\\category_normal_1_.png");
+	Load<Texture>(L"Inventory_etc_normal",		L"Resources\\UI\\Inventory\\category_normal_2_.png");
+	Load<Texture>(L"Inventory_setup_normal",	L"Resources\\UI\\Inventory\\category_normal_3_.png");
+	Load<Texture>(L"Inventory_cash_normal",		L"Resources\\UI\\Inventory\\category_normal_4_.png");
+	Load<Texture>(L"Inventory_cosmetic_normal", L"Resources\\UI\\Inventory\\category_normal_5_.png");
 
 	Load<Texture>(L"Inventory_equip_selected", L"Resources\\UI\\Inventory\\category_selected_0.png");
 	Load<Texture>(L"Inventory_consume_selected", L"Resources\\UI\\Inventory\\category_selected_1.png");
@@ -172,12 +172,12 @@ void stb::ResourceManager::LoadInventoryTextures()
 	Load<Texture>(L"Inventory_cash_selected", L"Resources\\UI\\Inventory\\category_selected_4.png");
 	Load<Texture>(L"Inventory_cosmetic_selected", L"Resources\\UI\\Inventory\\category_selected_5.png");
 
-	Load<Texture>(L"Inventory_full_equip_normal", L"Resources\\UI\\Inventory\\full_category_normal_0.png");
-	Load<Texture>(L"Inventory_full_consume_normal", L"Resources\\UI\\Inventory\\full_category_normal_1.png");
-	Load<Texture>(L"Inventory_full_etc_normal", L"Resources\\UI\\Inventory\\full_category_normal_2.png");
-	Load<Texture>(L"Inventory_full_setup_normal", L"Resources\\UI\\Inventory\\full_category_normal_3.png");
-	Load<Texture>(L"Inventory_full_cash_normal", L"Resources\\UI\\Inventory\\full_category_normal_4.png");
-	Load<Texture>(L"Inventory_full_cosmetic_normal", L"Resources\\UI\\Inventory\\full_category_normal_5.png");
+	Load<Texture>(L"Inventory_full_equip_normal",		L"Resources\\UI\\Inventory\\full_category_normal_0_.png");
+	Load<Texture>(L"Inventory_full_consume_normal",		L"Resources\\UI\\Inventory\\full_category_normal_1_.png");
+	Load<Texture>(L"Inventory_full_etc_normal",			L"Resources\\UI\\Inventory\\full_category_normal_2_.png");
+	Load<Texture>(L"Inventory_full_setup_normal",		L"Resources\\UI\\Inventory\\full_category_normal_3_.png");
+	Load<Texture>(L"Inventory_full_cash_normal",		L"Resources\\UI\\Inventory\\full_category_normal_4_.png");
+	Load<Texture>(L"Inventory_full_cosmetic_normal",	L"Resources\\UI\\Inventory\\full_category_normal_5_.png");
 
 	Load<Texture>(L"Inventory_full_equip_selected", L"Resources\\UI\\Inventory\\full_category_selected_0.png");
 	Load<Texture>(L"Inventory_full_consume_selected", L"Resources\\UI\\Inventory\\full_category_selected_1.png");
@@ -223,12 +223,20 @@ void stb::ResourceManager::LoadBGMAudioClips()
 void stb::ResourceManager::LoadMapTextures()
 {
 	Load<Texture>(L"Forest_ground_1", L"Resources\\Background\\forest\\forest_ground_1.png");
+	Load<Texture>(L"Forest_ground_2", L"Resources\\Background\\forest\\forest_ground_2.png");
+	Load<Texture>(L"Forest_ground_3", L"Resources\\Background\\forest\\forest_ground_3.png");
 }
 
 void stb::ResourceManager::LoadQuickSlotTextures()
 {
 	Load<Texture>(L"quickslot_background", L"Resources\\UI\\quickslot\\backgrnd.png");
 }
+
+void stb::ResourceManager::LoadPortalTextures()
+{
+	Load<Texture>(L"ForestPortal", L"Resources\\Portal\\forest_portal.png");
+}
+
 
 
 void stb::ResourceManager::LoadProjectileTextures()

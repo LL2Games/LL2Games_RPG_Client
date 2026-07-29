@@ -141,37 +141,37 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO
 BEGIN
-IDD_ABOUTBOX, DIALOG
-BEGIN
-LEFTMARGIN, 7
-RIGHTMARGIN, 163
-TOPMARGIN, 7
-BOTTOMMARGIN, 55
-END
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
 
-IDD_LOGIN, DIALOG
-BEGIN
-LEFTMARGIN, 7
-RIGHTMARGIN, 212
-TOPMARGIN, 7
-BOTTOMMARGIN, 109
-END
+    IDD_LOGIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 212
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 109
+    END
 
-IDD_REGISTER, DIALOG
-BEGIN
-LEFTMARGIN, 7
-RIGHTMARGIN, 177
-TOPMARGIN, 10
-BOTTOMMARGIN, 107
-END
+    IDD_REGISTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 177
+        TOPMARGIN, 10
+        BOTTOMMARGIN, 107
+    END
 
-IDD_WORLD, DIALOG
-BEGIN
-LEFTMARGIN, 6
-RIGHTMARGIN, 302
-TOPMARGIN, 7
-BOTTOMMARGIN, 116
-END
+    IDD_WORLD, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 116
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -187,21 +187,21 @@ BEGIN
 "resource.h\0"
 END
 
-2 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
-"#ifndef APSTUDIO_INVOKED\r\n"
-"#include ""targetver.h""\r\n"
-"#endif\r\n"
-"#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-"#include ""windows.h""\r\n"
-"#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
-"\0"
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
 END
 
-3 TEXTINCLUDE
+3 TEXTINCLUDE 
 BEGIN
-"\r\n"
-"\0"
+    "\r\n"
+    "\0"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -214,8 +214,8 @@ END
 
 STRINGTABLE
 BEGIN
-IDS_APP_TITLE           "LL2_Client_Win"
-IDC_WINAPITESTCLIENT    "WINAPITESTCLIENT"
+    IDS_APP_TITLE           "LL2_Client_Win"
+    IDC_WINAPITESTCLIENT    "WINAPITESTCLIENT"
 END
 
 #endif    // 한국어(대한민국) resources
@@ -232,3 +232,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

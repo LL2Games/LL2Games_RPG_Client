@@ -5,6 +5,7 @@
 #include "UILayout.h"
 #include <array>
 
+
 class LevelUI : public UI
 {
 public:
@@ -13,7 +14,6 @@ public:
 	void Render(HDC hdc) override;
 	void Render(stbD2DRenderer& renderer) override;
 	void RenderBackground(stbD2DRenderer& renderer);
-	void RenderLevelImg(stbD2DRenderer& renderer);
 	void RenderLevel(stbD2DRenderer& renderer);
 	void RenderNickName(stbD2DRenderer& renderer);
 private:

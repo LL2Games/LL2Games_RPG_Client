@@ -47,13 +47,42 @@ namespace stb::object
 		if (gameObject == nullptr)
 			return;
 
+		Scene* activeScene =
+			M_SCENEMANAGER->GetActiveScene();
+
 		Scene* dontDestroyOnLoad =
 			M_SCENEMANAGER->GetDontDestroyOnLoad();
 
+		if (activeScene == nullptr ||
+			dontDestroyOnLoad == nullptr ||
+			activeScene == dontDestroyOnLoad)
+		{
+			return;
+		}
+
+		enums::eLayerType layerType =
+			gameObject->GetLayerType();
+
+		Layer* activeLayer =
+			activeScene->GetLayer(layerType);
+
+		// 기존 맵에서 제거
+		if (!activeLayer->RemoveGameObject(gameObject))
+			return;
+		
+
+		/*Scene* activeScene = M_SCENEMANAGER->GetActiveScene();
+
+		Scene* dontDestroyOnLoad = M_SCENEMANAGER->GetDontDestroyOnLoad();
+		dontDestroyOnLoad->AddGameObject(gameObject, gameObject->GetLayerType());*/
+		// DontDestroyOnLoad로 이동
 		dontDestroyOnLoad->AddGameObject(
 			gameObject,
-			gameObject->GetLayerType()
+			layerType
 		);
+
 	}
 
+
 }
+

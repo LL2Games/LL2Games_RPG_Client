@@ -20,6 +20,8 @@ namespace stb
 
 		void AddGameObject(GameObject* gameObject);
 		const std::vector<GameObject*> GetGameObjects() { return mGameObjects; }
+
+		bool RemoveGameObject(GameObject* gameObject);
 	private:
 		std::vector<GameObject*> mGameObjects;
 

@@ -12,6 +12,7 @@
 #include "TradePacketHandler.h"
 #include "DropItemPacketHandler.h"
 #include "OtherPlayerPacketHandler.h"
+#include "PortalPacketHandler.h"
 
 bool PacketManager::RegisterAllHandlers()
 {
@@ -217,6 +218,13 @@ bool PacketManager::RegisterAllHandlers()
 		[](const ParsedPacket& pkt)
 		{
 			TradePacketHandler::HandleTradeAddItem(pkt);
+		});
+
+	//맵 이동 핸들러 등록
+	networkManager->RegisterHandler(PKT_PORTAL_ENTER,
+		[](const ParsedPacket& pkt)
+		{
+			PortalPacketHandler::HandleMoveMap(pkt);
 		});
 	
 	return true;

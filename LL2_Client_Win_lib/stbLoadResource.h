@@ -21,6 +21,7 @@ namespace stb
 		// 맵 배경
 		RESOURCEMANAGER->LoadMapTextures();
 
+		RESOURCEMANAGER->LoadPortalTextures();
 
 		// ============================
 		// 2. 게임 오브젝트 리소스

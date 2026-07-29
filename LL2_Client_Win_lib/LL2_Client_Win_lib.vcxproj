@@ -19,6 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSession.h" />
+    <ClInclude Include="MapDataManager.h" />
+    <ClInclude Include="MapInfo.h" />
+    <ClInclude Include="MapScene.h" />
+    <ClInclude Include="Map_100000000.h" />
+    <ClInclude Include="Map_100000001.h" />
+    <ClInclude Include="Map_100000002.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="stbAudioClip.h" />
     <ClInclude Include="stbChatScene.h" />
     <ClInclude Include="stbLoadResource.h" />
@@ -28,6 +36,13 @@
     <ClInclude Include="stbPlayScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameSession.cpp" />
+    <ClCompile Include="MapDataManager.cpp" />
+    <ClCompile Include="MapScene.cpp" />
+    <ClCompile Include="Map_100000000.cpp" />
+    <ClCompile Include="Map_100000001.cpp" />
+    <ClCompile Include="Map_100000002.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="stbAudioClip.cpp" />
     <ClCompile Include="stbChatScene.cpp" />
     <ClCompile Include="stbPlayer.cpp" />

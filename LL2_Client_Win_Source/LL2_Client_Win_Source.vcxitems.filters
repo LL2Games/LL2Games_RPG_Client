@@ -228,6 +228,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileDataManager.cpp">
       <Filter>Game\Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PortalPacketHandler.cpp">
+      <Filter>PacketHandler\Portal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -517,6 +520,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileDataManager.h">
       <Filter>Game\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PortalPacketHandler.h">
+      <Filter>PacketHandler\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">
@@ -671,6 +677,9 @@
     </Filter>
     <Filter Include="Game\Projectile">
       <UniqueIdentifier>{c21a13b4-24d4-469a-8853-0c3fa21edc59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Portal">
+      <UniqueIdentifier>{2402cea8-eabf-4eaa-8269-ddc90496b5b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include "ItemDataManager.h"
 #include "SkillDataManager.h"
 #include "MonsterDataManager.h"
+#include "..\\LL2_Client_Win_lib\\MapDataManager.h"
 
 
 
@@ -16,7 +17,7 @@
 #define M_ITEMDATAMANAGER stb::SingletonBase<ItemDataManager>::getInstance()
 #define M_SKILLDATAMANAGER stb::SingletonBase<SkillDataManager>::getInstance()
 #define M_MONSTERDATAMANAGER stb::SingletonBase<MonsterDataManager>::getInstance()
-
+#define M_MAPDATAMANAGER stb::SingletonBase<MapDataManager>::getInstance()
 
 namespace stb
 {
@@ -71,6 +72,12 @@ namespace stb
 		if (!M_MONSTERDATAMANAGER->Init())
 		{
 			MessageBox(hWnd, L"fail: M_MONSTERDATAMANAGER init", L"Error", MB_ICONERROR);
+			return false;
+		}
+
+		if (!M_MAPDATAMANAGER->Init())
+		{
+			MessageBox(hWnd, L"fail: M_MAPDATAMANAGER init", L"Error", MB_ICONERROR);
 			return false;
 		}
 
