@@ -158,6 +158,7 @@ void CombatPacketHandler::SendBasicAttack(int dir)
     OutputDebugStringA("[PKT_PLAYER_BASIC_ATTACK 전송 완료]\n\n");
 }
 
+//gunoo22 260729 스킬 사용부분 확인
 void CombatPacketHandler::SendUseSkill(int skillId, int dir)
 {
     std::vector<std::string> data;

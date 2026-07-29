@@ -96,6 +96,7 @@ void QuickSlotManager::UseSlot(int slotIndex)
 
         // auto dir = player->GetFacing();
 
+        //gunoo22 260729 스킬 사용부분 확인
          //CombatPacketHandler::SendUseSkill(slot.ref_id, static_cast<int>(dir));
         break;
     }

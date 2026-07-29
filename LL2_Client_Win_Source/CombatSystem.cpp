@@ -25,7 +25,7 @@ bool CombatSystem::TryAttack(int skillId)
     else
         dir = 1;
 
-    // 서버에 공격 패킷 보내기
+    // 서버에 공격 패킷 보내기 //gunoo22 260729 스킬 사용부분 확인
     CombatPacketHandler::SendUseSkill(skillId, dir);
     return true;
 }
