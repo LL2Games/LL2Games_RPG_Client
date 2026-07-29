@@ -268,9 +268,10 @@ namespace stb
 		float originX = sprite.origin.x;
 		float offsetX = sprite.offset.x;
 
+		//gunoo22 260729 플레이어 좌우반전시 오른쪽 바라볼때 조정할수있는 부분
 		if (flipX)
 		{
-			originX = sprite.size.x - sprite.origin.x;
+			originX = sprite.size.x - sprite.origin.x + 12.f;
 			offsetX = -sprite.offset.x;
 		}
 

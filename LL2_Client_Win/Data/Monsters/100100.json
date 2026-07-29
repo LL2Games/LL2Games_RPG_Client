@@ -77,8 +77,8 @@
         "range" : 100,
         "collider" : {
             "type" : "Circle2D",
-            "offset" : {"x" : 0, "y" : 0},
-            "radius": 2
+            "offset" : {"x" : -8, "y" : 7},
+            "radius": 6
         }
     }
 }
