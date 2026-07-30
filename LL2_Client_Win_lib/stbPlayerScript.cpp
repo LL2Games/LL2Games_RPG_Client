@@ -199,7 +199,7 @@ namespace stb
 
 	}
 
-	void PlayerScript::Attack()
+	void PlayerScript::Attack(const eSkillCode skillCode)
 	{
 		stb::Player* player = m_player;
 
@@ -212,12 +212,26 @@ namespace stb
 		if (player->GetState() == PlayerState::Attack)
 			return;
 
-		if (player->GetCombatSystem()->TryBasicAttack())
+		//기본공격
+		if (skillCode == eSkillCode::None)
 		{
-			player->SetState(PlayerState::Attack);
-			mAttackTimer = 0.0f;
+			if (player->GetCombatSystem()->TryBasicAttack())
+			{
+				player->SetState(PlayerState::Attack);
+				mAttackTimer = 0.0f;
 
-			OutputDebugStringA("Player Attack Start\n");
+				OutputDebugStringA("Player Attack Start\n");
+			}
+		}
+		else //skill
+		{
+			if (player->GetCombatSystem()->TryAttack((int)skillCode))
+			{
+				player->SetState(PlayerState::Attack);
+				mAttackTimer = 0.0f;
+
+				OutputDebugStringA("Player Skill Attack Start\n");
+			}
 		}
 
 	}
@@ -285,6 +299,13 @@ namespace stb
 			OutputDebugStringA(m_debugMsg.c_str());
 			Attack();
 		}
+		else if (M_INPUT->GetSkillDown(eSkillCode::Knight_Slash))
+		{
+			m_debugMsg = "HandleComabatInput is Pressed(Skill)\n";
+			OutputDebugStringA(m_debugMsg.c_str());
+			Attack(eSkillCode::Knight_Slash);
+			//	OutputDebugStringA("Skill Execute\n");
+		}
 	}
 
 	void PlayerScript::ExecuteBind(const KeyBindInfo& bindInfo)
@@ -294,11 +315,11 @@ namespace stb
 		case eBindType::Action:
 			ExecuteAction((eActionCode)bindInfo.value);
 			break;
-		case eBindType::Skill:
-			// TODO : ��ų ��� ��û
-			// SkillManager::GetInstance()->UseSkill(bindInfo.value);
-			OutputDebugStringA("Skill Execute\n");
-			break;
+		//case eBindType::Skill:
+		//	// TODO : ��ų ��� ��û
+		//	//SkillManager::GetInstance()->UseSkill(bindInfo.value);
+		//	OutputDebugStringA("Skill Execute\n");
+		//	break;
 		case eBindType::Item:
 			// TODO : ������ ��� ��û
 			// ItemManager::GetInstance()->UseItem(bindInfo.value);
