@@ -224,14 +224,22 @@ void CLogin::OnBnClickedButtonLogin()
 void CLogin::OnBnClickedButtonRegister()
 {
 	m_pSock->m_bRegister = TRUE;
-
 	if (m_bConnect == FALSE)
-		connect();
+	{
+		if (!connect())
+		{
+			m_pSock->m_bRegister = FALSE;
+			OutputDebugStringA("Login Server Connect Fail");
+			return;
+		}
+	}
 	else
 	{
-		m_pRegDlg->DoModal();
+		//m_pRegDlg->DoModal();
+		CRegister dlg(m_pSock);
+		dlg.DoModal();
+		m_pSock->m_bRegister = FALSE;
 	}
-	m_pSock->m_bRegister = FALSE;
 }
 
 

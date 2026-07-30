@@ -29,7 +29,6 @@ void CRegister::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_ID, m_editID);
 	DDX_Control(pDX, IDC_EDIT_PASSWD, m_editPasswd);
 	DDX_Control(pDX, IDC_EDIT_PASSWD_CHECK, m_editPasswdChecked);
-	DDX_Control(pDX, IDC_EDIT_NICK, m_editNick);
 }
 
 
@@ -40,7 +39,7 @@ END_MESSAGE_MAP()
 
 // CRegister 메시지 처리기
 
-int CRegister::Register(const CString &strID, const CString strNick, const CString &strPW)
+int CRegister::Register(const CString &strID, const CString &strPW)
 {
 	int rc = EXIT_FAILURE;
 	char* buff = NULL;
@@ -48,10 +47,9 @@ int CRegister::Register(const CString &strID, const CString strNick, const CStri
 	int nSendLen = 0;
 
 	const CStringA idA(strID);
-	const CStringA nickA(strNick);
 	const CStringA pwA(strPW);
 
-	nBuffLen = idA.GetLength() + nickA.GetLength() + pwA.GetLength() + 20;
+	nBuffLen = idA.GetLength() + pwA.GetLength() + 20;
 	buff = (char*)calloc(nBuffLen, sizeof(char));
 	if (buff == NULL)
 	{
@@ -59,7 +57,7 @@ int CRegister::Register(const CString &strID, const CString strNick, const CStri
 		goto err;
 	}
 
-	nSendLen = sprintf_s(buff, nBuffLen, "REGISTER$%s$%s$%s$", idA.GetString(), nickA.GetString(), pwA.GetString());
+	nSendLen = sprintf_s(buff, nBuffLen, "REGISTER$%s$%s$", idA.GetString(), pwA.GetString());
 
 	//m_pSock->Send(buff, nSendLen);
 
@@ -111,12 +109,10 @@ err:
 void CRegister::OnBnClickedButtonRegister()
 {
 	CString strID;
-	CString strNick;
 	CString strPw;
 	CString strPwChecked;
 
 	m_editID.GetWindowText(strID);
-	m_editNick.GetWindowText(strNick);
 	m_editPasswd.GetWindowText(strPw);
 	m_editPasswdChecked.GetWindowText(strPwChecked);
 
@@ -125,12 +121,6 @@ void CRegister::OnBnClickedButtonRegister()
 	if (strID.GetLength() == 0)
 	{
 		AfxMessageBox(_T("ID를 입력하세요"));
-		return;
-	}
-
-	if (strNick.GetLength() == 0)
-	{
-		AfxMessageBox(_T("닉네임을 입력하세요"));
 		return;
 	}
 
@@ -148,7 +138,7 @@ void CRegister::OnBnClickedButtonRegister()
 	}
 #endif
 
-	Register(strID, strNick, strPw);
+	Register(strID, strPw);
 
 	EndDialog(IDOK);
 }

@@ -25,7 +25,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	int Register(const CString& strID, const CString strNick, const CString& strPW);
+	int Register(const CString& strID, const CString& strPW);
 	int OnRegister(const char *pID, const size_t nIDLen);
 
 public:
@@ -34,5 +34,5 @@ public:
 	CEdit m_editPasswd;
 	CEdit m_editPasswdChecked;
 	afx_msg void OnBnClickedButtonRegister();
-	CEdit m_editNick;
+	//CEdit m_editNick;
 };
