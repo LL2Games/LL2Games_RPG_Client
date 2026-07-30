@@ -10,9 +10,9 @@ CombatSystem::CombatSystem() : m_player(nullptr)
 
 }
 
-bool CombatSystem::TryAttack(int skillId)
+bool CombatSystem::TrySkillAttack(int skillId)
 {
-    if (!CanAttack(skillId))
+    if (!CanUseSkill(skillId))
         return false;
 
     // 플레이어 공격 방향 나중에 추가
@@ -57,7 +57,7 @@ bool CombatSystem::TryBasicAttack()
     return true;
 }
 
-bool CombatSystem::CanAttack(int /*skillId*/)
+bool CombatSystem::CanUseSkill(int skillId)
 {
   
     if (m_player == nullptr)

@@ -225,7 +225,7 @@ namespace stb
 		}
 		else //skill
 		{
-			if (player->GetCombatSystem()->TryAttack((int)skillCode))
+			if (player->GetCombatSystem()->TrySkillAttack((int)skillCode))
 			{
 				player->SetState(PlayerState::Skill_Slash);
 				mAttackTimer = 0.0f;

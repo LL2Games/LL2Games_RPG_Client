@@ -20,9 +20,9 @@ public:
 
 	void SetOwner(stb::Player* player) { m_player = player; }
 
-	bool TryAttack(int skillId);
+	bool TrySkillAttack(int skillId);
 	bool TryBasicAttack();
-	bool CanAttack(int skillId);
+	bool CanUseSkill(int skillId);
 	bool CanBasicAttack();
 
 private:
