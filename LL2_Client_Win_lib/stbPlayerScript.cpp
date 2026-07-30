@@ -121,6 +121,7 @@ namespace stb
 		Vector2 pos = tr->GetPosition();
 		bool moved = false;
 
+		//스킬 사용중에 이동을 막으려면 이곳에 Skill 조건 추가하면됌
 		if (m_player->GetState() != PlayerState::Attack)
 		{
 			if (M_INPUT->GetAction(eActionCode::MoveRight))
