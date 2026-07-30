@@ -59,6 +59,8 @@ namespace stb
 		// 교환창
 		RESOURCEMANAGER->LoadTradeTextures();
 
+		// 스탯 UI 이미지 로드
+		RESOURCEMANAGER->LoadStatTextures();
 
 		// ============================
 		// 4. 사운드 리소스

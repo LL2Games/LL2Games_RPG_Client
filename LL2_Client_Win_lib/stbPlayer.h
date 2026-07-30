@@ -78,6 +78,7 @@ namespace stb
 
 		float GetPlayerMoveSpeed() { return m_moveSpeed; }
 
+		StatViewData GetStatViewData() const;
 	public:
 		void OnDamaged(int damage, int curHp);
 		void ShowDamageText(int damage);

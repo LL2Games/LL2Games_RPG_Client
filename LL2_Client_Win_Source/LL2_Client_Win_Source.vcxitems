@@ -65,6 +65,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillDataManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Skill_Info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stat.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StatPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StatUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbAnimation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbAnimator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbApplication.h" />
@@ -152,6 +154,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Skill.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillDataManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Stat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StatPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StatUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)stbAnimation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)stbAnimator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)stbApplication.cpp" />

@@ -8,6 +8,7 @@
 #include "TradeRequestUI.h"
 #include "ExpBarUI.h"
 #include "LevelUI.h"
+#include "StatUI.h"
 
 UIManager::UIManager()
 {
@@ -16,9 +17,11 @@ UIManager::UIManager()
 	m_healthBarUI = new HealthBarUI();
 	m_expBarUI = new ExpBarUI();
 	m_levelUI = new LevelUI();
+	m_statUI = new StatUI();
 	m_tradeUI = new TradeUI();
 	m_chatUI = new ChatUI();
 	m_tradeReqUI = new TradeRequestUI();
+
 }
 
 void UIManager::Init()
@@ -28,6 +31,7 @@ void UIManager::Init()
 	m_healthBarUI->Init();
 	m_expBarUI->Init();
 	m_levelUI->Init();
+	m_statUI->Init();
 	m_tradeUI->Init();
 	m_chatUI->Init();
 	m_tradeReqUI->Init();
@@ -37,6 +41,7 @@ void UIManager::Init()
 	mUIs.push_back(m_healthBarUI);
 	mUIs.push_back(m_expBarUI);
 	mUIs.push_back(m_levelUI);
+	mUIs.push_back(m_statUI);
 	mUIs.push_back(m_tradeUI);
 	mUIs.push_back(m_chatUI);
 	mUIs.push_back(m_tradeReqUI);
@@ -85,6 +90,17 @@ void UIManager::ToggleInventory()
 	m_inventoryUI->Toggle();
 
 	m_inventoryUI->UpdateInventoryByType();
+}
+
+void UIManager::ToggleStat()
+{
+	if (m_statUI == nullptr)
+		return;
+
+	m_statUI->Toggle();
+
+	if (m_statUI->IsActive())
+		m_statUI->UpdatePlayerStat();
 }
 
 #if 1
@@ -228,6 +244,24 @@ bool UIManager::ConsumeTradeQuantityEnter()
 
 void UIManager::RefreshInventoryUI()
 {
-	if (m_inventoryUI)
-		m_inventoryUI->UpdateInventoryByType();
+	if (m_inventoryUI == nullptr)
+		return;
+
+	m_inventoryUI->UpdateInventoryByType();
+}
+
+void UIManager::RefreshStatUI()
+{
+	if (m_statUI == nullptr)
+		return;
+
+	m_statUI->UpdatePlayerStat();
+	m_statUI->FinishStatUpRequest();
+}
+void UIManager::FinishStatUpRequest()
+{
+	if (m_statUI == nullptr)
+		return;
+
+	m_statUI->FinishStatUpRequest();
 }

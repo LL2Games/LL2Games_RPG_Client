@@ -53,7 +53,7 @@ namespace stb
 	enum class eBindType
 	{
 		None,
-		Action,   // Interact 媛숈?? 寃?
+		Action,   // Interact
 		Skill,
 		Item,
 		UI,

@@ -237,3 +237,10 @@ void stb::ResourceManager::LoadPortalTextures()
 	Load<Texture>(L"ForestPortal", L"Resources\\Portal\\forest_portal.png");
 }
 
+
+void stb::ResourceManager::LoadStatTextures()
+{
+	Load<Texture>(L"Stat_background", L"Resources\\UI\\Stat\\Stat_background.png");
+	Load<Texture>(L"plus_button", L"Resources\\UI\\Stat\\plus_button.png");
+	Load<Texture>(L"minus_button", L"Resources\\UI\\Stat\\minus_button.png");
+}

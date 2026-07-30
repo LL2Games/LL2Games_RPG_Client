@@ -1,9 +1,8 @@
 ﻿#pragma once
-#include "IPacketHandler.h"
 #include "Packet.h"
 #include "CommonInclude.h"
 
-class OtherPlayerPacketHandler : public IPacketHandler
+class OtherPlayerPacketHandler
 {
 public:
 	static void HandleOtherPlayerEnter(const ParsedPacket& pkt);

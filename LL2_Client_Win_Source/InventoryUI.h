@@ -70,19 +70,19 @@ private:
 	std::vector<Slot> mSlots;
 	std::vector<InventorySlotUI> m_slots;
 
-	InventoryType m_currentType;
+	InventoryType m_currentType =InventoryType::Etc;
 
 	bool m_isInventoryDragging = false;	// 인벤토리 창 드래그용
 	bool m_isItemDragging = false; // 인벤토리 내 아이템 드래그 용
 	bool m_isExpand = false;
-	int m_dragOffsetX;
-	int m_dragOffsetY;
+	int m_dragOffsetX = 0;
+	int m_dragOffsetY = 0;
 
-	int m_dragStartSlotIndex;
-	int m_dragCurrentMouseX;
-	int m_dragCurrentMouseY;
-	int m_dragItemId;
-	int m_dragItemCount;
+	int m_dragStartSlotIndex = 0;
+	int m_dragCurrentMouseX = 0;
+	int m_dragCurrentMouseY = 0;
+	int m_dragItemId = 0;
+	int m_dragItemCount = 0;
 
 private:
 	int m_inventoryImgPosX = 300;
@@ -133,9 +133,9 @@ private:
 
 private:
 
-	InventoryButton m_fullButton;
-	InventoryButton m_minButton;
-	InventoryButton m_closeButton;
+	InventoryButton m_fullButton{};
+	InventoryButton m_minButton{};
+	InventoryButton m_closeButton{};
 
 	std::unordered_map<int, InventoryTabButton> m_tabs;
 

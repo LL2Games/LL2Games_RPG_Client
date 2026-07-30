@@ -22,6 +22,7 @@ enum class TextStyle
 	Small,
 	QuickSlot,
 	NickName,
+	Stat,
 	Trade,
 	TradeButton,
 	Chat,
@@ -88,6 +89,7 @@ private:
 	ComPtr<IDWriteTextFormat> m_SmallTextFormat;
 	ComPtr<IDWriteTextFormat> m_QuickSlotTextFormat;
 	ComPtr<IDWriteTextFormat> m_NicknameTextFormat;
+	ComPtr<IDWriteTextFormat> m_StatTextFormat;
 	ComPtr<IDWriteTextFormat> m_ExpTextFormat;
 	ComPtr<IDWriteTextFormat> m_TradeTextFormat;
 	ComPtr<IDWriteTextFormat> m_TradeButtonTextFormat;

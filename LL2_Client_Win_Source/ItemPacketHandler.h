@@ -1,11 +1,10 @@
 ﻿#pragma once
-#include "IPacketHandler.h"
 #include "Packet.h"
 #include "CommonInclude.h"
 #include "Inventory_Info.h"
 
 
-class ItemPacketHandler : public IPacketHandler
+class ItemPacketHandler
 {
 public:
 	static void Execute(const ParsedPacket& pkt);

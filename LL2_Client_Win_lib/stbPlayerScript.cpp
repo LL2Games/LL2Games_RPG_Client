@@ -295,12 +295,12 @@ namespace stb
 			ExecuteAction((eActionCode)bindInfo.value);
 			break;
 		case eBindType::Skill:
-			// TODO : ��ų ��� ��û
+			// TODO :
 			// SkillManager::GetInstance()->UseSkill(bindInfo.value);
 			OutputDebugStringA("Skill Execute\n");
 			break;
 		case eBindType::Item:
-			// TODO : ������ ��� ��û
+			// TODO :
 			// ItemManager::GetInstance()->UseItem(bindInfo.value);
 			OutputDebugStringA("Item Execute\n");
 			break;
@@ -322,27 +322,29 @@ namespace stb
 		{
 		case eActionCode::Interact:
 			OutputDebugStringA("Action : Interact\n");
-			// TODO : ��ȣ�ۿ� ��û
+			// TODO : 
 			break;
 		case eActionCode::Jump:
 			Jump();
 			OutputDebugStringA("Action : Jump\n");
-			// TODO : ���� ó��
+			// TODO : 
 			break;
 		case eActionCode::Inventory:
 			OutputDebugStringA("Action : Inventory\n");
 			UIManager::getInstance()->ToggleInventory();
-			// TODO : �κ��丮 UI ����
+			// TODO : 
 			break;
 		case eActionCode::SkillWindow:
 			OutputDebugStringA("Action : SkillWindow\n");
-			// TODO : ��ųâ UI ����
-
+			// TODO :
 #if 1 /* test */
 			UIManager::getInstance()->ToggleTradeUI();
 #endif /* test */
 			break;
-
+		case eActionCode::CharacterInfo:
+			OutputDebugStringA("Action : Trade\n");
+			UIManager::getInstance()->ToggleStat();
+			break;
 		case eActionCode::Trade:
 			OutputDebugStringA("Action : Trade\n");
 			//UIManager::getInstance()->OpenTradeUI();

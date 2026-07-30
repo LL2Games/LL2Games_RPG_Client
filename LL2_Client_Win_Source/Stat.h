@@ -30,6 +30,17 @@ public:
 	int GetCurMp() { return m_cur_mp; }
 	int GetMaxMp() { return m_derived.maxMp; }
 
+	int GetCurHp() const { return m_cur_hp; }
+	int GetMaxHp() const { return m_derived.maxHp; }
+	int GetCurMp() const { return m_cur_mp; }
+	int GetMaxMp() const { return m_derived.maxMp; }
+
+	int GetStr() const { return m_base.str; }
+	int GetDex() const { return m_base.dex; }
+	int GetInt() const { return m_base.intel; }
+	int GetLuck() const { return m_base.luck; }
+
+	int GetRemainAP() const { return m_remain_ap; }
 
 	int GetLevel() { return m_expStat.level; }
 	int64_t GetExp() { return m_expStat.exp; }

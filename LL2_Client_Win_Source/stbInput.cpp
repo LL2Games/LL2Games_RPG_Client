@@ -89,7 +89,7 @@ namespace stb
 		m_keyBindings[eKeyCode::Down] = { eBindType::Action, (int)eActionCode::MoveDown };
 
 
-		// 기본 ?????? 바인???
+		// 기본 
 		m_keyBindings[eKeyCode::LALT] = { eBindType::Action, (int)eActionCode::Jump };
 		m_keyBindings[eKeyCode::A] = { eBindType::Action, (int)eActionCode::Attack };
 		m_keyBindings[eKeyCode::SPACE] = { eBindType::Action, (int)eActionCode::Interact };
@@ -97,12 +97,12 @@ namespace stb
 		m_keyBindings[eKeyCode::K] = { eBindType::Action, (int)eActionCode::SkillWindow };
 		m_keyBindings[eKeyCode::T] = { eBindType::Action, (int)eActionCode::Trade };
 		m_keyBindings[eKeyCode::Z] = { eBindType::Action, (int)eActionCode::PickUp };
-
+		m_keyBindings[eKeyCode::C] = {eBindType::Action, static_cast<int>(eActionCode::CharacterInfo)};
 		//교환 취소 임시(X)
 		m_keyBindings[eKeyCode::X] = { eBindType::Action, (int)eActionCode::TradeCancel };
 
 
-		// ??????
+		// 
 		// m_keyBindings[eKeyCode::Q] = { eBindType::Skill, 1001001 };
 		// m_keyBindings[eKeyCode::R] = { eBindType::Item, 2000000 };
 

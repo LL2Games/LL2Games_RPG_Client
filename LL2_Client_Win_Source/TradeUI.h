@@ -56,7 +56,7 @@ private:
 	static constexpr RECT m_full_fullButton = { 740, 8, 758, 27 };
 	static constexpr RECT m_full_closeButton = { 760, 4, 778, 27 };
 
-	InventoryType m_currentType;
+	InventoryType m_currentType{};
 
 
 	struct Slot
@@ -109,18 +109,18 @@ private:
 	static constexpr int m_fullTradeCanClickWidth = 1150;
 	static constexpr int m_fullTradeCanClickHeight = 30;
 
-	int m_dragOffsetX;
-	int m_dragOffsetY;
+	int m_dragOffsetX = 0;
+	int m_dragOffsetY = 0;
 
 	bool m_isItemDragging = false; // 인벤토리 내 아이템 드래그 용
-	int m_dragCurrentMouseX;
-	int m_dragCurrentMouseY;
+	int m_dragCurrentMouseX = 0;
+	int m_dragCurrentMouseY = 0;
 
-	int m_dragStartSlotIndex;
+	int m_dragStartSlotIndex = 0;
 	/*int m_dragCurrentMouseX;
 	int m_dragCurrentMouseY;*/
-	int m_dragItemId;
-	int m_dragItemCount;
+	int m_dragItemId = 0;
+	int m_dragItemCount = 0;
 
 
 	std::vector<TradeSlotInfo> m_mySlotInfo;
@@ -197,7 +197,7 @@ private:
 	bool m_quantityPopupActive = false;
 	bool m_quantityInputError = false;
 
-	std::wstring m_quantityInput;
+	std::wstring m_quantityInput =L"";
 
 	int m_quantityMax = 1;
 	int m_pendingItemId = 0;
@@ -251,9 +251,9 @@ private:
 	static constexpr int LAYER_CONFIRM_TARGET_X = 20;
 	static constexpr int LAYER_CONFIRM_TARGET_Y = 43;
 	
-	std::wstring m_myName;
-	std::string m_myId;
+	std::wstring m_myName= L"";
+	std::string m_myId = "";
 
-	std::wstring m_targetName;
-	std::string m_targetId;
+	std::wstring m_targetName =L"";
+	std::string m_targetId = "";
 };

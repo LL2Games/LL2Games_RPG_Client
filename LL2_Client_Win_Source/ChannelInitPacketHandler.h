@@ -1,10 +1,9 @@
 ﻿#pragma once
-#include "IPacketHandler.h"
 #include "Packet.h"
 #include "CommonInclude.h"
 
 
-class ChannelInitPacketHandler : public IPacketHandler
+class ChannelInitPacketHandler
 {
 public:
 	static void Execute(const ParsedPacket& pkt);
