@@ -78,7 +78,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-#if 0 /*gunoo22 260518 테스트*/
+#if 1 /*gunoo22 260518 테스트*/
     //로그인
     CLogin logDlg;
     if (logDlg.DoModal() != IDOK)
@@ -86,7 +86,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 #endif
-#if 0
+
+#if 1
     //캐릭터, 채널 선택
     CWorld worldDlg;
     if (worldDlg.DoModal() != IDOK)
@@ -101,7 +102,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
         CString strTmp;
-        strTmp.Format(_T("캐릭터[%s] 채널port[%s]"), strCharId, strChannelPort);
+        strTmp.Format(_T("캐릭터[%s] 채널port[%s]"), strCharId.GetString(), strChannelPort.GetString());
         AfxMessageBox(strTmp);
     }
 
