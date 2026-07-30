@@ -88,6 +88,13 @@ bool PacketManager::RegisterAllHandlers()
 			ItemPacketHandler::HandlePickUpItem(pkt);
 		});
 
+	// 플레이어 스킬 사용 결과 핸들러 등록
+	networkManager->RegisterHandler(PKT_PLAYER_SKILL_ATTACK,
+		[](const ParsedPacket& pkt)
+		{
+			CombatPacketHandler::HandleSkillAttackResult(pkt);
+		});
+
 	// 다른 플레이어 입장 핸들러 등록
 	networkManager->RegisterHandler(PKT_OTHERPLAYER_ENTER,
 		[](const ParsedPacket& pkt)

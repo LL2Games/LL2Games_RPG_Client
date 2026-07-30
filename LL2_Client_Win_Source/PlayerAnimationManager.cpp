@@ -281,7 +281,7 @@ void PlayerAnimationManager::BindPlayerAnimationEvents(stb::Player* player, stb:
             if (player == nullptr)
                 return;
 
-            if (player->GetState() != PlayerState::Attack)
+            if (!(player->GetState() >= PlayerState::Attack && player->GetState() < PlayerState::Skill_End))
                 return;
 
             player->SetState(PlayerState::Idle);

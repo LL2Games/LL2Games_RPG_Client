@@ -57,7 +57,7 @@ namespace stb
 		HandleCombatInput();
 		HandleInput();
 
-		if (m_player->GetState() == PlayerState::Attack)
+		if (m_player->GetState() >= PlayerState::Attack && m_player->GetState() < PlayerState::Skill_End)
 		{
 			Idle(false);
 			return;
@@ -121,6 +121,7 @@ namespace stb
 		Vector2 pos = tr->GetPosition();
 		bool moved = false;
 
+		//스킬 사용중에 이동을 막으려면 이곳에 Skill 조건 추가하면됌
 		if (m_player->GetState() != PlayerState::Attack)
 		{
 			if (M_INPUT->GetAction(eActionCode::MoveRight))
@@ -199,7 +200,7 @@ namespace stb
 
 	}
 
-	void PlayerScript::Attack()
+	void PlayerScript::Attack(const eSkillCode skillCode)
 	{
 		stb::Player* player = m_player;
 
@@ -209,15 +210,29 @@ namespace stb
 		if (player->GetCombatSystem() == nullptr)
 			return;
 
-		if (player->GetState() == PlayerState::Attack)
+		if (player->GetState() >= PlayerState::Attack && player->GetState() < PlayerState::Skill_End)
 			return;
 
-		if (player->GetCombatSystem()->TryBasicAttack())
+		//기본공격
+		if (skillCode == eSkillCode::None)
 		{
-			player->SetState(PlayerState::Attack);
-			mAttackTimer = 0.0f;
+			if (player->GetCombatSystem()->TryBasicAttack())
+			{
+				player->SetState(PlayerState::Attack);
+				mAttackTimer = 0.0f;
 
-			OutputDebugStringA("Player Attack Start\n");
+				OutputDebugStringA("Player Attack Start\n");
+			}
+		}
+		else //skill
+		{
+			if (player->GetCombatSystem()->TrySkillAttack((int)skillCode))
+			{
+				player->SetState(PlayerState::Skill_Slash);
+				mAttackTimer = 0.0f;
+
+				OutputDebugStringA("Player Skill Attack Start\n");
+			}
 		}
 
 	}
@@ -285,6 +300,13 @@ namespace stb
 			OutputDebugStringA(m_debugMsg.c_str());
 			Attack();
 		}
+		else if (M_INPUT->GetSkillDown(eSkillCode::Knight_Slash))
+		{
+			m_debugMsg = "HandleComabatInput is Pressed(Skill)\n";
+			OutputDebugStringA(m_debugMsg.c_str());
+			Attack(eSkillCode::Knight_Slash);
+			//	OutputDebugStringA("Skill Execute\n");
+		}
 	}
 
 	void PlayerScript::ExecuteBind(const KeyBindInfo& bindInfo)
@@ -294,11 +316,11 @@ namespace stb
 		case eBindType::Action:
 			ExecuteAction((eActionCode)bindInfo.value);
 			break;
-		case eBindType::Skill:
-			// TODO : ��ų ��� ��û
-			// SkillManager::GetInstance()->UseSkill(bindInfo.value);
-			OutputDebugStringA("Skill Execute\n");
-			break;
+		//case eBindType::Skill:
+		//	// TODO : ��ų ��� ��û
+		//	//SkillManager::GetInstance()->UseSkill(bindInfo.value);
+		//	OutputDebugStringA("Skill Execute\n");
+		//	break;
 		case eBindType::Item:
 			// TODO : ������ ��� ��û
 			// ItemManager::GetInstance()->UseItem(bindInfo.value);

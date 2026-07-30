@@ -6,7 +6,9 @@
 #include "PlayerManager.h"
 #include "stbOtherPlayerManager.h"
 #include "playerInfo.h"
+#include "SkillDataManager.h"
 
+#define M_SKILLDATA_MANAGER stb::SingletonBase<SkillDataManager>::getInstance()
 #define M_MONSTERMANAGER stb::SingletonBase<MonsterManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 #define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
@@ -94,6 +96,68 @@ void CombatPacketHandler::HandleAttackResult(const ParsedPacket& pkt)
 
 }
 
+//스킬 사용 결과
+void CombatPacketHandler::HandleSkillAttackResult(const ParsedPacket& pkt)
+{
+    try
+    {
+        size_t offset = 0;
+        const char* data = pkt.payload.c_str();
+        size_t payloadSize = pkt.payload.size();
+        std::string errMsg;
+
+        std::string status;
+        int skill_id;
+
+
+        if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, status, errMsg))
+        {
+            throw std::runtime_error(errMsg);
+        }
+
+        if (status == "nok")
+        {
+            if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, errMsg, errMsg))
+               throw std::runtime_error(errMsg);
+        }
+
+        if (!PacketParser::ParseNextIntField(data, payloadSize, offset, skill_id, errMsg))
+        {
+            throw std::runtime_error(errMsg);
+        }
+
+
+
+        auto *player = M_PLAYERMANAGER->GetLocalPlayer();
+        if (player == nullptr)
+        {
+            OutputDebugStringA("player 객체를 찾지못했습니다.\n\n");
+            return;
+        }
+        const auto *skill = M_SKILLDATA_MANAGER->FindItemData(skill_id);
+        if (skill == nullptr)
+        {
+            OutputDebugStringA("Skill id에 맞는 json data를 찾지못했습니다.\n\n");
+            return;
+        }
+
+        //스킬사용 성공시 현재 Mp를 스킬 mp cost에 맞게 줄임
+        const int curMp = player->GetStat()->GetCurMp();
+        player->GetStat()->SetCurMp(std::max(curMp - skill->mp_cost, 0));
+
+        
+    }
+    catch (std::exception& e)
+    {
+        OutputDebugStringA(e.what());
+        OutputDebugStringA("\n");
+    }
+    catch (...)
+    {
+        OutputDebugStringA("예상치 못한 에러입니다.\n\n");
+    }
+}
+
 void CombatPacketHandler::HandleOtherPlayerAttack(const ParsedPacket& pkt)
 {
     /*
@@ -170,8 +234,8 @@ void CombatPacketHandler::SendUseSkill(int skillId, int dir)
 
     //OutputDebugStringA(DebugMsg.c_str());
 
-    stb::NetworkManager::getInstance()->SendPacket(PKT_PLAYER_ATTACK, data);
-    OutputDebugStringA("[PKT_PLAYER_ATTACK 전송 완료]\n\n");
+    stb::NetworkManager::getInstance()->SendPacket(PKT_PLAYER_SKILL_ATTACK, data);
+    OutputDebugStringA("[PKT_PLAYER_SKILL_ATTACK 전송 완료]\n\n");
 
 }
 
