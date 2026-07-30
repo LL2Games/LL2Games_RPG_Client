@@ -34,6 +34,10 @@ namespace stb
 		m_script->SetOwner(this);
 		m_script->SetPlayer(this);
 		m_script->SetAnimator();
+
+		//gunoo22 260729 Player Collider 지정
+		m_collider->SetOffset({ -6.f, -20.f });
+		m_collider->SetSize({18.f, 30.f});
 		
 	}
 

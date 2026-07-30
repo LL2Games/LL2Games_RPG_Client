@@ -156,8 +156,12 @@ namespace stb
 		Vector2 leftPos = leftTr->GetPosition();
 		Vector2 rightPos = rightTr->GetPosition();
 
-		Vector2 leftSize = left->GetSize() * 100.0f;
-		Vector2 rightSize = right->GetSize() * 100.0f;
+		//이미 픽셀단위이므로 *100 제거
+		/*Vector2 leftSize = left->GetSize() * 100.0f;
+		Vector2 rightSize = right->GetSize() * 100.0f;*/
+
+		Vector2 leftSize = left->GetSize();
+		Vector2 rightSize = right->GetSize();
 
 		Vector2 leftCirclePos = leftPos + (leftSize / 2.0f);
 		Vector2 rightCirclePos = rightPos + (rightSize / 2.0f);

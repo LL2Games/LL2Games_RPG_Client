@@ -237,3 +237,32 @@ void stb::ResourceManager::LoadPortalTextures()
 	Load<Texture>(L"ForestPortal", L"Resources\\Portal\\forest_portal.png");
 }
 
+
+
+void stb::ResourceManager::LoadProjectileTextures()
+{
+	std::filesystem::path root = L"Resources\\Projectile";
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(root))
+	{
+		if (!entry.is_regular_file())
+		{
+			continue;
+		}
+
+
+		if (entry.path().extension() != ".png")
+		{
+			continue;
+		}
+
+
+		std::filesystem::path relative = std::filesystem::relative(entry.path(), L"Resources");
+
+		std::wstring key = relative.replace_extension(L"").generic_wstring();
+
+		OutputDebugStringW(key.c_str());
+		OutputDebugStringA("\n");
+		Load<Texture>(key, entry.path().wstring());
+	}
+}

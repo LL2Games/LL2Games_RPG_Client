@@ -121,6 +121,44 @@ bool MonsterDataManager::LoadJsonFile(const std::string& path, MonsterData& mons
     monsterData.UIPos.x = ui.value("x", 0.0f);
     monsterData.UIPos.y = ui.value("y", 0.0f);
 
+    const auto& isRanged = j.at("isRanged");
+    if (isRanged)
+    {
+        const auto& projectile = j.at("projectile");
+        monsterData.projectileData.projectileId = projectile.value("id", 0);
+
+        const auto& projectileCollider = projectile.at("collider");
+        auto& colliderInfo = monsterData.projectileData.colliderInfo;
+
+        colliderInfo.colliderType = 
+            stb::enums::SetColliderType(projectileCollider.value("type", "None"));
+
+        if (projectileCollider.contains("offset"))
+        {
+            const auto& projectileOffset = projectileCollider.at("offset");
+            colliderInfo.offset.x = projectileOffset.value("x", 0.0f);
+            colliderInfo.offset.y = projectileOffset.value("y", 0.0f);
+        }
+
+        switch (colliderInfo.colliderType)
+        {
+        case stb::enums::eColliderType::Rect2D:
+        {
+            const auto& projectileHalf = projectileCollider.at("half");
+            colliderInfo.halfSize.x = projectileHalf.value("w", 0.0f);
+            colliderInfo.halfSize.y = projectileHalf.value("h", 0.0f);
+            break;
+        }
+        case stb::enums::eColliderType::Circle2D:
+        {
+            colliderInfo.radius = projectileCollider.value("radius", 0.0f);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
     return true;
 }
 

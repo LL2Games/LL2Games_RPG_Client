@@ -2,9 +2,11 @@
 #include "PacketParser.h"
 #include "MonsterInfo.h"
 #include "MonsterManager.h"
+#include "ProjectileManager.h"
 #include "stbLogger.h"
 
 #define M_MONSTERMANAGER stb::SingletonBase<MonsterManager>::getInstance()
+#define M_PROJECTILEMANAGER stb::SingletonBase<ProjectileManager>::getInstance()
 
 
 void MonsterPacketHandler::HandleS2C_SpawnMonster(const ParsedPacket& pkt)
@@ -270,3 +272,86 @@ void MonsterPacketHandler::HandleS2C_RespawnMonster(const ParsedPacket& pkt)
 	}
 }
 
+void MonsterPacketHandler::HandleS2C_ProjectileMove(const ParsedPacket& pkt)
+{
+	try
+	{
+		size_t offset = 0;
+		const char* data = pkt.payload.c_str();
+		size_t payloadSize = pkt.payload.size();
+		std::string errMsg;
+
+		int projectileSize = 0;
+
+		// Packet 사이즈를 받아온다
+		if (!PacketParser::ParseNextIntField(data, payloadSize, offset, projectileSize, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+
+		for (size_t i = 0; i < projectileSize; i++)
+		{
+			MonsterProjectileData projectileInfo{};
+			if (!PacketParser::ParseNextIntField(data, payloadSize, offset, projectileInfo.instanceId, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextIntField(data, payloadSize, offset, projectileInfo.projectileId, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextIntField(data, payloadSize, offset, projectileInfo.ownerId, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, projectileInfo.dirX, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, projectileInfo.dirY, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, projectileInfo.range, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, projectileInfo.speed, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, projectileInfo.pos.x, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, projectileInfo.pos.y, errMsg))
+			{
+				throw std::runtime_error(errMsg);
+			}
+
+			M_PROJECTILEMANAGER->ApplyServerUpdate(projectileInfo);
+		}
+
+
+	}
+	catch (const std::exception& e)
+	{
+		OutputDebugStringA("[HandleS2C_ProjectileMove] ");
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\n");
+	}
+	catch (...)
+	{
+		OutputDebugStringA("예상치 못한 에러가 발생했습니다.");
+		OutputDebugStringA("\n");
+	}
+
+}

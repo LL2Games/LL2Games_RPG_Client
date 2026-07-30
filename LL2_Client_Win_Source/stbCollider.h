@@ -31,6 +31,7 @@ namespace stb
 		Vector2 GetSize() { return mSize; }
 
 		eColliderType GetColliderType() { return mType; }
+		void SetColliderType(eColliderType type) { mType = type; }
 
 
 
@@ -40,7 +41,7 @@ namespace stb
 		UINT32 mID;
 		Vector2 mOffset;
 		Vector2 mSize;
-		eColliderType mType;
+		eColliderType mType = eColliderType::EnumsEnd;
 
 	};
 

@@ -6,12 +6,14 @@
 #include "GameSession.h"
 #include "StringConvert.h"
 #include "stbResourceManager.h"
+#include "ProjectileManager.h"
 
 #define M_TIME SingletonBase<Time>::getInstance()
 #define M_MONSTERMANAGER SingletonBase<MonsterManager>::getInstance()
 #define M_GAMESESSION SingletonBase<GameSession>::getInstance()
 #define M_MAPDATAMANAGER stb::SingletonBase<MapDataManager>::getInstance()
 #define M_RESOURCEMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
+#define M_PROJECTILEMANAGER stb::SingletonBase<ProjectileManager>::getInstance()
 
 void MapScene::Initialize()
 {
@@ -26,6 +28,7 @@ void MapScene::Update()
 {
 	Scene::Update();
 	M_MONSTERMANAGER->Update(M_TIME->GetDeltaTime());
+    M_PROJECTILEMANAGER->Update(M_TIME->GetDeltaTime());
 }
 
 void MapScene::Render(stbD2DRenderer& renderer)
@@ -34,6 +37,7 @@ void MapScene::Render(stbD2DRenderer& renderer)
 	Scene::Render(renderer);
 
 	M_MONSTERMANAGER->Render(renderer);
+    M_PROJECTILEMANAGER->Render(renderer);
 }
 
 void MapScene::OnEnter()

@@ -18,12 +18,14 @@
 #include "stbTime.h"
 #include "stbApplication.h"
 #include "stbAudioClip.h"
+#include "ProjectileManager.h"
 
 #define M_REMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
 #define M_PKMANAGER stb::SingletonBase<PacketManager>::getInstance()
 #define M_PLMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
 #define M_MONSTERAMANGER stb::SingletonBase<MonsterManager>::getInstance()
+#define M_PROJECTILEMANAGER stb::SingletonBase<ProjectileManager>::getInstance()
 #define M_TIME	stb::SingletonBase<stb::Time>::getInstance()
 
 namespace stb
@@ -79,9 +81,9 @@ namespace stb
 	void PlayScene::Update()
 	{
 		Scene::Update();
-		
-		M_UIMANAGER->Update();
 		M_MONSTERAMANGER->Update(M_TIME->GetDeltaTime());
+		M_PROJECTILEMANAGER->Update(M_TIME->GetDeltaTime());
+		M_UIMANAGER->Update();
 	}
 
 	void PlayScene::LateUpdate()
@@ -109,8 +111,9 @@ namespace stb
 		}
 
 		Scene::Render(renderer);
-		M_UIMANAGER->Render(renderer);
 		M_MONSTERAMANGER->Render(renderer);
+		M_PROJECTILEMANAGER->Render(renderer);
+		M_UIMANAGER->Render(renderer);
 	}
 
 	void PlayScene::OnExit()
