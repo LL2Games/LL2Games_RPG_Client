@@ -57,7 +57,7 @@ namespace stb
 		HandleCombatInput();
 		HandleInput();
 
-		if (m_player->GetState() == PlayerState::Attack)
+		if (m_player->GetState() >= PlayerState::Attack && m_player->GetState() < PlayerState::Skill_End)
 		{
 			Idle(false);
 			return;
@@ -209,7 +209,7 @@ namespace stb
 		if (player->GetCombatSystem() == nullptr)
 			return;
 
-		if (player->GetState() == PlayerState::Attack)
+		if (player->GetState() >= PlayerState::Attack && player->GetState() < PlayerState::Skill_End)
 			return;
 
 		//기본공격
@@ -227,7 +227,7 @@ namespace stb
 		{
 			if (player->GetCombatSystem()->TryAttack((int)skillCode))
 			{
-				player->SetState(PlayerState::Attack);
+				player->SetState(PlayerState::Skill_Slash);
 				mAttackTimer = 0.0f;
 
 				OutputDebugStringA("Player Skill Attack Start\n");
