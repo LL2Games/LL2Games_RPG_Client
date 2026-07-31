@@ -3,6 +3,14 @@
 #include "..\\LL2_Client_Win_Source\\MySocket.h"
 #include "CRegister.h"
 
+struct CharacterInfo
+{
+	long long char_id;
+	CString name;
+	int level;
+	int job;
+};
+
 class CMySocket;
 
 // CWorld 대화 상자
@@ -13,12 +21,13 @@ class CWorld : public CDialogEx
 
 public:
 	CWorld(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CWorld(CString strHost, CWnd* pParent = nullptr);
 	CWorld(CMySocket* sock, CWnd* pParent = nullptr);
 	virtual ~CWorld();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_LOGIN };
+	enum { IDD = IDD_WORLD };
 #endif
 
 protected:
@@ -54,4 +63,13 @@ public:
 
 private:
 	std::string m_account_id;
+	CString m_strHost;
+
+	//캐릭터 정보 관련
+	std::vector<CharacterInfo> m_characters;
+	int m_selectedCharacterIndex = -1;
+
+public:
+	CComboBox m_comboChannel;
+	CListCtrl m_listCharacter;
 };

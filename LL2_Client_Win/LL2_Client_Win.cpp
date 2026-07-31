@@ -89,7 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #if 1
     //캐릭터, 채널 선택
-    CWorld worldDlg;
+    CWorld worldDlg(logDlg.m_strHost);
     if (worldDlg.DoModal() != IDOK)
     {
         return FALSE;
