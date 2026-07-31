@@ -53,6 +53,8 @@ enum class PlayerState
 	Rope,
 	Ladder,
 	Attack,
+	Skill_Slash,
+	Skill_End,
 	Dead,
 	None
 };
