@@ -38,7 +38,7 @@ namespace stb
 		void UpdateAttackState();
 		void Idle(bool changeState = true);
 		void Move();
-		void Attack();
+		void Attack(const eSkillCode skillCode = eSkillCode::None);
 		void Jump();
 		void PickUp();
 		void HandleInput();

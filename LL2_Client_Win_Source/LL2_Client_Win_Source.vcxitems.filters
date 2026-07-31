@@ -219,6 +219,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.cpp">
       <Filter>PacketHandler\OtherPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Projectile.cpp">
+      <Filter>Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileManager.cpp">
+      <Filter>Game\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileDataManager.cpp">
+      <Filter>Game\Projectile</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PortalPacketHandler.cpp">
       <Filter>PacketHandler\Portal</Filter>
     </ClCompile>
@@ -508,6 +517,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.h">
       <Filter>PacketHandler\OtherPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Projectile.h">
+      <Filter>Game\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileManager.h">
+      <Filter>Game\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileDataManager.h">
+      <Filter>Game\Projectile</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)PortalPacketHandler.h">
       <Filter>PacketHandler\Portal</Filter>
     </ClInclude>
@@ -668,6 +686,9 @@
     </Filter>
     <Filter Include="PacketHandler\OtherPlayer">
       <UniqueIdentifier>{76710acb-d664-4283-a532-ecb7d7b5e4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Projectile">
+      <UniqueIdentifier>{c21a13b4-24d4-469a-8853-0c3fa21edc59}</UniqueIdentifier>
     </Filter>
     <Filter Include="PacketHandler\Portal">
       <UniqueIdentifier>{2402cea8-eabf-4eaa-8269-ddc90496b5b8}</UniqueIdentifier>

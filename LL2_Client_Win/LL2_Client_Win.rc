@@ -1,47 +1,47 @@
 ﻿﻿// Microsoft Visual C++ generated resource script.
-਍⼀⼀ഀഀ
+//
 #include "resource.h"
-਍ഀഀ
+
 #define APSTUDIO_READONLY_SYMBOLS
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
-//
-਍⼀⼀ 䜀攀渀攀爀愀琀攀搀 昀爀漀洀 琀栀攀 吀䔀堀吀䤀一䌀䰀唀䐀䔀 ㈀ 爀攀猀漀甀爀挀攀⸀ഀഀ
-//
-਍⌀椀昀渀搀攀昀 䄀倀匀吀唀䐀䤀伀开䤀一嘀伀䬀䔀䐀ഀഀ
-#include "targetver.h"
-਍⌀攀渀搀椀昀ഀഀ
-#define APSTUDIO_HIDDEN_SYMBOLS
-਍⌀椀渀挀氀甀搀攀 ∀眀椀渀搀漀眀猀⸀栀∀ഀഀ
-#undef APSTUDIO_HIDDEN_SYMBOLS
-਍ഀഀ
 /////////////////////////////////////////////////////////////////////////////
-਍⌀甀渀搀攀昀 䄀倀匀吀唀䐀䤀伀开刀䔀䄀䐀伀一䰀夀开匀夀䴀䈀伀䰀匀ഀഀ
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
 
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
 // 한국어(대한민국) resources
-਍ഀഀ
+
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
-਍䰀䄀一䜀唀䄀䜀䔀 䰀䄀一䜀开䬀伀刀䔀䄀一Ⰰ 匀唀䈀䰀䄀一䜀开䐀䔀䘀䄀唀䰀吀ഀഀ
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
+/////////////////////////////////////////////////////////////////////////////
 //
-਍⼀⼀ 䤀挀漀渀ഀഀ
+// Icon
 //
-਍ഀഀ
+
 // Icon with lowest ID value placed first to ensure application icon
-਍⼀⼀ 爀攀洀愀椀渀猀 挀漀渀猀椀猀琀攀渀琀 漀渀 愀氀氀 猀礀猀琀攀洀猀⸀ഀഀ
+// remains consistent on all systems.
 IDI_WINAPITESTCLIENT    ICON                    "LL2_Client_Win.ico"
-਍ഀഀ
-IDI_SMALL               ICON                    "small.ico"
-਍ഀഀ
 
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
+IDI_SMALL               ICON                    "small.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
 //
-਍⼀⼀ 䴀攀渀甀ഀഀ
+// Menu
 //
-਍ഀഀ
+
 IDC_WINAPITESTCLIENT MENU
-਍䈀䔀䜀䤀一ഀഀ
+BEGIN
 POPUP "파일(&F)"
 BEGIN
 MENUITEM "끝내기(&X)", IDM_EXIT
@@ -52,39 +52,40 @@ MENUITEM "정보(&A)...", IDM_ABOUT
 END
 END
 
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
+
+/////////////////////////////////////////////////////////////////////////////
 //
-਍⼀⼀ 䄀挀挀攀氀攀爀愀琀漀爀ഀഀ
+// Accelerator
 //
-਍ഀഀ
+
 IDC_WINAPITESTCLIENT ACCELERATORS
-਍䈀䔀䜀䤀一ഀഀ
+BEGIN
 "?", IDM_ABOUT, ASCII, ALT
 "/", IDM_ABOUT, ASCII, ALT
 END
-਍ഀഀ
 
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
+
+/////////////////////////////////////////////////////////////////////////////
 //
-਍⼀⼀ 䐀椀愀氀漀最ഀഀ
+// Dialog
 //
-਍ഀഀ
+
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
-਍匀吀夀䰀䔀 䐀匀开匀䔀吀䘀伀一吀 簀 䐀匀开䴀伀䐀䄀䰀䘀刀䄀䴀䔀 簀 䐀匀开䘀䤀堀䔀䐀匀夀匀 簀 圀匀开倀伀倀唀倀 簀 圀匀开䌀䄀倀吀䤀伀一 簀 圀匀开匀夀匀䴀䔀一唀ഀഀ
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "정보 LL2_Client_Win"
-਍䘀伀一吀 㤀Ⰰ ∀䴀匀 匀栀攀氀氀 䐀氀最∀Ⰰ 　Ⰰ 　Ⰰ 　砀㄀ഀഀ
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
 ICON            IDI_WINAPITESTCLIENT, IDC_STATIC, 14, 14, 21, 20
 LTEXT           "LL2_Client_Win, 버전 1.0", IDC_STATIC, 42, 14, 114, 8, SS_NOPREFIX
 LTEXT           "Copyright (C) 2024", IDC_STATIC, 42, 26, 114, 8
 DEFPUSHBUTTON   "확인", IDOK, 113, 41, 50, 14, WS_GROUP
-਍䔀一䐀ഀഀ
+END
 
-਍䤀䐀䐀开䰀伀䜀䤀一 䐀䤀䄀䰀伀䜀䔀堀 　Ⰰ 　Ⰰ ㈀㄀㤀Ⰰ ㄀㄀㘀ഀഀ
+IDD_LOGIN DIALOGEX 0, 0, 219, 116
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-਍䌀䄀倀吀䤀伀一 ∀尀碭⋇ഀഀ
+CAPTION "로그인"
 FONT 9, "MS Shell Dlg", 0, 0, 0x0
-਍䈀䔀䜀䤀一ഀഀ
+BEGIN
 DEFPUSHBUTTON   "로그인", ID_BUTTON_LOGIN, 30, 68, 155, 16
 LTEXT           "서버이름/주소:", IDC_STATIC, 9, 9, 40, 8
 LTEXT           "포트", IDC_STATIC, 164, 9, 12, 8
@@ -98,11 +99,11 @@ CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME, 7, 89, 205, 1
 DEFPUSHBUTTON   "취소", ID_CANCEL, 112, 96, 34, 13
 DEFPUSHBUTTON   "회원가입", ID_BUTTON_REGISTER, 72, 96, 34, 13
 END
-਍ഀഀ
+
 IDD_REGISTER DIALOGEX 0, 0, 184, 114
-਍匀吀夀䰀䔀 䐀匀开匀䔀吀䘀伀一吀 簀 䐀匀开䴀伀䐀䄀䰀䘀刀䄀䴀䔀 簀 䐀匀开䘀䤀堀䔀䐀匀夀匀 簀 圀匀开倀伀倀唀倀 簀 圀匀开䌀䄀倀吀䤀伀一 簀 圀匀开匀夀匀䴀䔀一唀ഀഀ
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "회원가입"
-਍䘀伀一吀 㤀Ⰰ ∀䴀匀 匀栀攀氀氀 䐀氀最∀Ⰰ 　Ⰰ 　Ⰰ 　砀　ഀഀ
+FONT 9, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
 DEFPUSHBUTTON   "회원가입", ID_BUTTON_REGISTER, 12, 87, 155, 16
 LTEXT           "아이디:", IDC_STATIC, 36, 12, 20, 8
@@ -114,13 +115,13 @@ LTEXT           "패스워드 확인:", IDC_STATIC, 16, 57, 40, 8
 EDITTEXT        IDC_EDIT_PASSWD_CHECK, 57, 55, 108, 14, ES_PASSWORD | ES_AUTOHSCROLL
 LTEXT           "닉네임:", IDC_STATIC, 36, 27, 20, 8
 EDITTEXT        IDC_EDIT_NICK, 57, 25, 108, 14, ES_AUTOHSCROLL
-਍䔀一䐀ഀഀ
+END
 
-਍䤀䐀䐀开圀伀刀䰀䐀 䐀䤀䄀䰀伀䜀䔀堀 　Ⰰ 　Ⰰ ㌀　㤀Ⰰ ㄀㈀㌀ഀഀ
+IDD_WORLD DIALOGEX 0, 0, 309, 123
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-਍䌀䄀倀吀䤀伀一 ∀䐀椀愀氀漀最∀ഀഀ
+CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
-਍䈀䔀䜀䤀一ഀഀ
+BEGIN
 DEFPUSHBUTTON   "접속", ID_BUTTON_WORLD_ENTER, 87, 102, 50, 14
 PUSHBUTTON      "취소", IDCANCEL, 141, 102, 50, 14
 EDITTEXT        IDC_EDIT_CHARLIST, 6, 16, 296, 12, ES_AUTOHSCROLL
@@ -130,77 +131,77 @@ LTEXT           "char_id", IDC_STATIC, 23, 46, 24, 8
 LTEXT           "channel", IDC_STATIC, 23, 70, 26, 8
 LTEXT           "char_list", IDC_STATIC, 6, 7, 28, 8
 END
-਍ഀഀ
 
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
+
+/////////////////////////////////////////////////////////////////////////////
 //
-਍⼀⼀ 䐀䔀匀䤀䜀一䤀一䘀伀ഀഀ
+// DESIGNINFO
 //
-਍ഀഀ
+
 #ifdef APSTUDIO_INVOKED
-਍䜀唀䤀䐀䔀䰀䤀一䔀匀 䐀䔀匀䤀䜀一䤀一䘀伀ഀഀ
+GUIDELINES DESIGNINFO
 BEGIN
-IDD_ABOUTBOX, DIALOG
-BEGIN
-LEFTMARGIN, 7
-RIGHTMARGIN, 163
-TOPMARGIN, 7
-BOTTOMMARGIN, 55
-END
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
 
-IDD_LOGIN, DIALOG
-BEGIN
-LEFTMARGIN, 7
-RIGHTMARGIN, 212
-TOPMARGIN, 7
-BOTTOMMARGIN, 109
-END
+    IDD_LOGIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 212
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 109
+    END
 
-IDD_REGISTER, DIALOG
-BEGIN
-LEFTMARGIN, 7
-RIGHTMARGIN, 177
-TOPMARGIN, 10
-BOTTOMMARGIN, 107
-END
+    IDD_REGISTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 177
+        TOPMARGIN, 10
+        BOTTOMMARGIN, 107
+    END
 
-IDD_WORLD, DIALOG
-BEGIN
-LEFTMARGIN, 6
-RIGHTMARGIN, 302
-TOPMARGIN, 7
-BOTTOMMARGIN, 116
-END
+    IDD_WORLD, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 116
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
-਍ഀഀ
-#ifdef APSTUDIO_INVOKED
-਍⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀⼀ഀഀ
-//
-਍⼀⼀ 吀䔀堀吀䤀一䌀䰀唀䐀䔀ഀഀ
-//
-਍ഀഀ
-1 TEXTINCLUDE
-਍䈀䔀䜀䤀一ഀഀ
-"resource.h\0"
-਍䔀一䐀ഀഀ
 
-2 TEXTINCLUDE
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE
 BEGIN
-"#ifndef APSTUDIO_INVOKED\r\n"
-"#include ""targetver.h""\r\n"
-"#endif\r\n"
-"#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-"#include ""windows.h""\r\n"
-"#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
-"\0"
+"resource.h\0"
 END
 
-3 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
-"\r\n"
-"\0"
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -213,8 +214,8 @@ END
 
 STRINGTABLE
 BEGIN
-IDS_APP_TITLE           "LL2_Client_Win"
-IDC_WINAPITESTCLIENT    "WINAPITESTCLIENT"
+    IDS_APP_TITLE           "LL2_Client_Win"
+    IDC_WINAPITESTCLIENT    "WINAPITESTCLIENT"
 END
 
 #endif    // 한국어(대한민국) resources
@@ -231,3 +232,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

@@ -50,5 +50,18 @@
       }
     },
 
-  "moveSpeed": 10
+  "moveSpeed": 10,
+
+  "isRanged" : true,
+  "projectile" :{
+        "id" : 1,
+        "damage" : 3,
+        "speed" : 30,
+        "range" : 100,
+        "collider" : {
+            "type" : "Rect2D",
+            "offset" : {"x" : 0, "y" : 0},
+            "half"      :   {"w" :2, "h": 2}
+        }
+    }
 }

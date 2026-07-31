@@ -88,6 +88,13 @@ bool PacketManager::RegisterAllHandlers()
 			ItemPacketHandler::HandlePickUpItem(pkt);
 		});
 
+	// 플레이어 스킬 사용 결과 핸들러 등록
+	networkManager->RegisterHandler(PKT_PLAYER_SKILL_ATTACK,
+		[](const ParsedPacket& pkt)
+		{
+			CombatPacketHandler::HandleSkillAttackResult(pkt);
+		});
+
 	// 다른 플레이어 입장 핸들러 등록
 	networkManager->RegisterHandler(PKT_OTHERPLAYER_ENTER,
 		[](const ParsedPacket& pkt)
@@ -135,6 +142,13 @@ bool PacketManager::RegisterAllHandlers()
 		[](const ParsedPacket& pkt)
 		{
 			MonsterPacketHandler::HandleS2C_RespawnMonster(pkt);
+		});
+
+	// 몬스터 투사체 핸들러 등록
+	networkManager->RegisterHandler(PKT_PROJECTILE_MOVE,
+		[](const ParsedPacket& pkt)
+		{
+			MonsterPacketHandler::HandleS2C_ProjectileMove(pkt);
 		});
 
 	// 퀵슬롯 리스트 핸들러 등록

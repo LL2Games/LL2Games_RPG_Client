@@ -56,6 +56,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PlayerDataPacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)playerInfo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PlayerManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Projectile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileDataManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProjectileManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PortalPacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.h" />
@@ -147,6 +155,14 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAnimationManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerDataPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Projectile.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileDataManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProjectileManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PortalPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.cpp" />

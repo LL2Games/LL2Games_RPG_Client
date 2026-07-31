@@ -83,6 +83,22 @@
         { "x": 2, "y": 0 }
       ]
     },
+    "slash": {
+      "path": "Character/Warrior/onehand_sword/slash",
+      "frame_prefix": "slash_",
+      "frame_count": 3,
+      "delay_ms": 0.2,
+      "event": {
+        "start": "",
+        "complete": "PlayerAttackEnd",
+        "end": ""
+      },
+      "frame_offsets": [
+        { "x": 0, "y": 0 },
+        { "x": -38, "y": 0 },
+        { "x": 2, "y": 0 }
+      ]
+    },
     "stabO1": {
       "path": "Character/Warrior/onehand_sword/stabO1",
       "frame_prefix": "stabO1_",

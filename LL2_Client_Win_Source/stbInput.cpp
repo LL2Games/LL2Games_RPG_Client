@@ -102,8 +102,9 @@ namespace stb
 		m_keyBindings[eKeyCode::X] = { eBindType::Action, (int)eActionCode::TradeCancel };
 
 
-		// 
-		// m_keyBindings[eKeyCode::Q] = { eBindType::Skill, 1001001 };
+		// 스킬
+		m_keyBindings[eKeyCode::Q] = { eBindType::Skill, (int)eSkillCode::Knight_Slash };
+
 		// m_keyBindings[eKeyCode::R] = { eBindType::Item, 2000000 };
 
 		CreateDefaultBindingQuickSlot();
@@ -135,7 +136,7 @@ namespace stb
 		m_keyBindings[eKeyCode::End] = { eBindType::QuickSlot, 18 };
 		m_keyBindings[eKeyCode::PageDown] = { eBindType::QuickSlot, 19 };
 
-		m_keyBindings[eKeyCode::Q] = { eBindType::QuickSlot, 20 };
+		//m_keyBindings[eKeyCode::Q] = { eBindType::QuickSlot, 20 };
 		m_keyBindings[eKeyCode::W] = { eBindType::QuickSlot, 21 };
 		m_keyBindings[eKeyCode::E] = { eBindType::QuickSlot, 22 };
 		m_keyBindings[eKeyCode::R] = { eBindType::QuickSlot, 23 };
@@ -254,6 +255,23 @@ namespace stb
 				continue;
 
 			if (pair.second.value != (int)action)
+				continue;
+
+			if (GetKeyDown(pair.first))
+				return true;
+		}
+
+		return false;
+	}
+
+	bool Input::GetSkillDown(eSkillCode skill)
+	{
+		for (const auto& pair : m_keyBindings)
+		{
+			if (pair.second.type != eBindType::Skill)
+				continue;
+
+			if (pair.second.value != (int)skill)
 				continue;
 
 			if (GetKeyDown(pair.first))

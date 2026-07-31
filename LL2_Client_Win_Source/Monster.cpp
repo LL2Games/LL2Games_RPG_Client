@@ -262,7 +262,7 @@ void Monster::RespawnFromServer(const MonsterUpdateInfo& info)
 	m_curHp = info.curHp;
 	m_maxHp = info.maxHp;
 
-	m_pos= info.pos;;
+	m_pos= info.pos;
 	m_targetPos = m_pos;
 
 	SetState(MonsterState::E_Idle);

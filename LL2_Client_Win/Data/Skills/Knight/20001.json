@@ -1,0 +1,26 @@
+{
+  "skill_id": 20001,
+  "key": "knight.slash_01",
+  "cooldown_ms": 500,
+  "mp_cost": 15,
+  "type": "MELEE_ARC",
+  "range": 100.0,
+  "angle_deg": 60.0,
+
+  "client": [{ 
+    "anim": "ANIM_SKL_KNIGHT_SLASH_01", 
+    "vfx": "VFX_SKL_KNIGHT_SLASH_01", 
+    "sfx": "SFX_SKL_KNIGHT_SLASH_01",
+    "icon": "icon_skill_20001",
+    "name": "베기",
+    "desc": "적을 베어 피해를 줍니다."}],
+
+  "__comments": [
+    "20000~20999: 전사 계열",
+    "21000~21999: 궁수 계열",
+    "22000~22999: 마법사 계열",
+    "23000~23999: 도적 계열",
+    "29000~29999: common(공용)"
+  ]
+}
+

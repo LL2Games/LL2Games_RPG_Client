@@ -50,6 +50,13 @@ namespace stb
 		TradeCancel,
 	};
 
+	enum class eSkillCode
+	{
+		None = 0,
+		Knight_Slash = 20001,
+		Archer_Shot = 21001,
+	};
+
 	enum class eBindType
 	{
 		None,
@@ -107,6 +114,8 @@ namespace stb
 		bool GetAction(eActionCode action);
 		bool GetActionDown(eActionCode action);
 		bool GetActionUp(eActionCode action);
+
+		bool GetSkillDown(eSkillCode skill);
 
 		eKeyCode FindKeyByQuickSlotIndex(int slotIndex) const;
 		std::wstring KeyCodeToWString(eKeyCode keyCode) const;

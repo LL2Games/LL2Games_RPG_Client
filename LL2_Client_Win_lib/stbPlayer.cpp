@@ -34,6 +34,10 @@ namespace stb
 		m_script->SetOwner(this);
 		m_script->SetPlayer(this);
 		m_script->SetAnimator();
+
+		//gunoo22 260729 Player Collider 지정
+		m_collider->SetOffset({ -6.f, -20.f });
+		m_collider->SetSize({18.f, 30.f});
 		
 	}
 
@@ -133,6 +137,7 @@ namespace stb
 				m_animator->CreateAnimation(L"stand", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 1, 1.0f);
 				m_animator->CreateAnimation(L"walk", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 3, 0.3f);
 				m_animator->CreateAnimation(L"swingO3", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 3, 0.2f);
+				m_animator->CreateAnimation(L"slash", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 3, 0.2f);
 			}
 		}
 		m_playerState = PlayerState::None;
@@ -165,6 +170,10 @@ namespace stb
 		case PlayerState::Attack:
 			m_currentAnimation = L"swingO3";
 			break;
+
+		case PlayerState::Skill_Slash:
+			m_currentAnimation = L"slash";
+			break;
 		}
 
 		stb::Animator* animator = GetComponent<stb::Animator>();
@@ -172,7 +181,7 @@ namespace stb
 		{
 			bool isLoop = true;
 
-			if (state == PlayerState::Attack)
+			if (state >= PlayerState::Attack && state < PlayerState::Skill_End)
 				isLoop = false;
 
 			animator->PlayAnimation(m_currentAnimation, isLoop);

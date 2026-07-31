@@ -66,7 +66,7 @@ namespace stb
 		void LoadPlayerTextures();
 		void LoadMonsterTextures();
 		void LoadItemTextures();
-		
+		void LoadProjectileTextures();
 
 		// 3. UI 리소스
 		void LoadInventoryTextures();
