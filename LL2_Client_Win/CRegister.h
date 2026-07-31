@@ -25,8 +25,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	int Register(const CString& strID, const CString& strPW);
-	int OnRegister(const char *pID, const size_t nIDLen);
+	int Register(const CString& strID, const CString& strPW, const CString& strPWCheck);
+	int OnRegister(const char* recvBuff, const size_t recvLen);
 
 public:
 	CMySocket* m_pSock;

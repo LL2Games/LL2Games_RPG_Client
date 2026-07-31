@@ -117,6 +117,7 @@ int CLogin::Login()
 		body = PacketParser::MakeBody(datas);
 		pkt = PacketParser::MakePacket(PKT_LOGIN, body);
 
+		m_pSock->m_status = E_LOGIN; //OnLogin을 받기 위함
 		m_pSock->SendPacket(pkt);
 	}
 	catch (const std::length_error& e)
@@ -141,41 +142,46 @@ err:
 
 int CLogin::OnLogin(const char * recvBuff, const size_t recvLen)
 {
-	int i;
-	char* context = NULL;
-	char* pLine = NULL;
-	int rc = EXIT_FAILURE;
+	size_t offset = 0;
+	std::string errMsg;
+	CString strCharList;
 
-	
-	//m_pSock->Receive(recvBuff, 2048);
-	{ char szTmp[2058]; sprintf_s(szTmp, sizeof(szTmp), "gunoo22_TEST recvBuff[%s]", recvBuff); OutputDebugStringA(szTmp); }
+	std::string sBuff;
+	std::vector<char> vBuff;
+	CString wideValue;
 
-	if (recvLen == 0)
-		goto err;
-
-	for (pLine = strtok_s((char *)recvBuff, "$", &context), i = 0; pLine; pLine = strtok_s(NULL, "$", &context), i++)
+	sBuff.append(recvBuff, recvLen);
+	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
+	auto pkt = PacketParser::Parse(vBuff);
+	if (!pkt.has_value())
 	{
-		switch (i)
-		{
-		case 0:
-			if (!strcmp(pLine, "NOK"))
-			{
-				CString strTmp;
-				pLine = strtok_s(NULL, "$", &context);
-				strTmp.Format(_T("로그인 실패: %s"), CString(pLine));
-				AfxMessageBox(strTmp);
-				goto err;
-			}
-			break;
-		}
+		return -1;
 	}
 
-	rc = EXIT_SUCCESS;
-err:
+	std::string status;
 
-	if (rc != EXIT_SUCCESS)
+	if (!PacketParser::ParseLengthPrefixedString(
+		pkt->payload.c_str(),
+		pkt->payload.size(),
+		offset,
+		status,
+		errMsg))
 	{
-		AfxMessageBox(_T("로그인 실패: 회원가입을 하세요"));
+		return -1;
+	}
+
+	if (status == "nok")
+	{
+		PacketParser::ParseLengthPrefixedString(
+			pkt->payload.c_str(),
+			pkt->payload.size(),
+			offset,
+			errMsg,
+			errMsg);
+
+		CString strTmp;
+		strTmp.Format(_T("로그인 실패: %s"), CString(errMsg.c_str()));
+		AfxMessageBox(strTmp);
 	}
 	else
 	{
@@ -183,9 +189,10 @@ err:
 		m_pSock->m_bLoginPhase = FALSE; //로그인 끝
 		m_pSock->Disconnect(); //연결 끊기
 		EndDialog(IDOK);
+
 	}
 
-	return rc;
+	return 0;
 }
 
 void CLogin::OnSocketConnect(BOOL bConnect)
@@ -235,9 +242,7 @@ void CLogin::OnBnClickedButtonRegister()
 	}
 	else
 	{
-		//m_pRegDlg->DoModal();
-		CRegister dlg(m_pSock);
-		dlg.DoModal();
+		m_pRegDlg->DoModal(); //OnRegister 때문에 이렇게 진행
 		m_pSock->m_bRegister = FALSE;
 	}
 }

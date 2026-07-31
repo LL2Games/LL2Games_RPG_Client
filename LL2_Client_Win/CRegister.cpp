@@ -8,6 +8,9 @@
 #include "resource.h"
 #include "MySocket.h"
 
+#include "..\\LL2_Client_Win_Source\\Packet.h"
+#include "..\\LL2_Client_Win_Source\\PacketParser.h"
+
 
 // CRegister 대화 상자
 
@@ -39,72 +42,76 @@ END_MESSAGE_MAP()
 
 // CRegister 메시지 처리기
 
-int CRegister::Register(const CString &strID, const CString &strPW)
+int CRegister::Register(const CString &strID, const CString &strPW, const CString& strPWCheck)
 {
 	int rc = EXIT_FAILURE;
-	char* buff = NULL;
-	int nBuffLen = 0;
-	int nSendLen = 0;
 
 	const CStringA idA(strID);
 	const CStringA pwA(strPW);
+	const CStringA pwCheckA(strPWCheck);
 
-	nBuffLen = idA.GetLength() + pwA.GetLength() + 20;
-	buff = (char*)calloc(nBuffLen, sizeof(char));
-	if (buff == NULL)
-	{
-		AfxMessageBox(_T("메모리 할당 실패"));
-		goto err;
-	}
+	std::vector<std::string> datas;
+	std::string body, pkt;
 
-	nSendLen = sprintf_s(buff, nBuffLen, "REGISTER$%s$%s$", idA.GetString(), pwA.GetString());
+	datas.push_back(std::string(idA));
+	datas.push_back(std::string(pwA));
+	datas.push_back(std::string(pwCheckA));
 
-	//m_pSock->Send(buff, nSendLen);
+	body = PacketParser::MakeBody(datas);
+	pkt = PacketParser::MakePacket(PKT_REGISTER, body);
+
+	m_pSock->m_status = E_REGISTER; //OnRegister를 받기 위함
+	m_pSock->SendPacket(pkt);
 
 	rc = EXIT_SUCCESS;
-err:
-	free(buff);
-	buff = NULL;
 
 	return rc;
 }
 
-int CRegister::OnRegister(const char* /*pID*/, const size_t /*nIDLen*/)
+int CRegister::OnRegister(const char* recvBuff, const size_t recvLen)
 {
-	int i;
-	char* context = NULL;
-	char* pLine = NULL;
-	char recvBuff[2048] = { 0 };
-	int rc = EXIT_FAILURE;
+	size_t offset = 0;
+	std::string errMsg;
+	CString strCharList;
 
+	std::string sBuff;
+	std::vector<char> vBuff;
+	CString wideValue;
 
-	m_pSock->Receive(recvBuff, 2048);
-	{ char szTmp[2058]; sprintf_s(szTmp, sizeof(szTmp), "gunoo22_TEST recvBuff[%s]", recvBuff); OutputDebugStringA(szTmp); }
-
-	if (strlen(recvBuff) == 0)
-		goto err;
-
-	for (pLine = strtok_s(recvBuff, "$", &context), i = 0; pLine; pLine = strtok_s(NULL, "$", &context), i++)
+	sBuff.append(recvBuff, recvLen);
+	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
+	auto pkt = PacketParser::Parse(vBuff);
+	if (!pkt.has_value())
 	{
-		switch (i)
-		{
-		case 0:
-			if (!strcmp(pLine, "NOK"))
-			{
-				CString strTmp;
-				pLine = strtok_s(NULL, "$", &context);
-				strTmp.Format(_T("회원가입 실패: %s"), CString(pLine));
-				AfxMessageBox(strTmp);
-				goto err;
-			}
-			break;
-		}
+		return -1;
 	}
 
-	rc = EXIT_SUCCESS;
-err:
+	std::string status;
 
-	return rc;
+	if (!PacketParser::ParseLengthPrefixedString(
+		pkt->payload.c_str(),
+		pkt->payload.size(),
+		offset,
+		status,
+		errMsg))
+	{
+		//더이상 없으면 중단
+		//K_slog_trace(K_SLOG_DEBUG, "[%s][%d]gunoo22_TEST", __FUNCTION__, __LINE__);
+		return -1;
+	}
+
+	if (status == "nok")
+	{
+		AfxMessageBox(_T("회원가입 실패"));
+	}
+	else
+	{
+		AfxMessageBox(_T("회원가입 성공"));
+		
+	}
+
+
+	return 0;
 }
 void CRegister::OnBnClickedButtonRegister()
 {
@@ -138,7 +145,7 @@ void CRegister::OnBnClickedButtonRegister()
 	}
 #endif
 
-	Register(strID, strPw);
+	Register(strID, strPw, strPwChecked);
 
 	EndDialog(IDOK);
 }
