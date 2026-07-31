@@ -75,6 +75,7 @@ namespace stb
 		void LoadExpTextures();
 		void LoadLevelTextures();
 		void LoadTradeTextures();
+		void LoadStatTextures();
 
 		// 4. 사운드 리소스
 		void LoadBGMAudioClips();

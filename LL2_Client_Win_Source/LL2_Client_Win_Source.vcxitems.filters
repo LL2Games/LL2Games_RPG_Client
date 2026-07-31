@@ -231,6 +231,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PortalPacketHandler.cpp">
       <Filter>PacketHandler\Portal</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StatPacketHandler.cpp">
+      <Filter>PacketHandler\Stat</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StatUI.cpp">
+      <Filter>Game\UI\StatUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -523,6 +529,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PortalPacketHandler.h">
       <Filter>PacketHandler\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StatPacketHandler.h">
+      <Filter>PacketHandler\Stat</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StatUI.h">
+      <Filter>Game\UI\StatUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">
@@ -680,6 +692,12 @@
     </Filter>
     <Filter Include="PacketHandler\Portal">
       <UniqueIdentifier>{2402cea8-eabf-4eaa-8269-ddc90496b5b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\StatUI">
+      <UniqueIdentifier>{6216f8eb-78cc-488d-bd2a-77fd26b02471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Stat">
+      <UniqueIdentifier>{425ca5cd-c3de-4dd9-839b-fe02ea6b07e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

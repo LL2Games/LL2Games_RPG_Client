@@ -15,6 +15,7 @@ class ChatUI;
 class TradeRequestUI;
 class ExpBarUI;
 class LevelUI;
+class StatUI;
 
 class UIManager : public stb::SingletonBase<UIManager>
 {
@@ -26,7 +27,7 @@ public:
 	void Render(stbD2DRenderer& renderer);
 
 	void ToggleInventory();
-
+	void ToggleStat();
 public:
 	//교환
 	void ToggleTradeUI(); //test
@@ -60,6 +61,8 @@ public:
 	void KeyDownTradeQuantity(WPARAM key);
 
 	void RefreshInventoryUI();
+	void RefreshStatUI();
+	void FinishStatUpRequest();
 
 public:
 	InventoryUI* GetInventoryUI() { return m_inventoryUI; }
@@ -72,6 +75,7 @@ private:
 	HealthBarUI* m_healthBarUI = nullptr;
 	ExpBarUI* m_expBarUI = nullptr;
 	LevelUI* m_levelUI = nullptr;
+	StatUI* m_statUI = nullptr;
 
 	TradeUI* m_tradeUI = nullptr; //교환
 	TradeRequestUI* m_tradeReqUI = nullptr; //교환

@@ -19,7 +19,7 @@ public:
 
 	stb::Player* FindPlayer(int playerId);
 private:
-	stb::Player* m_localPlayer;
+	stb::Player* m_localPlayer =nullptr;
 	std::unordered_map<int, stb::Player*> m_otherPlayers;
 
 

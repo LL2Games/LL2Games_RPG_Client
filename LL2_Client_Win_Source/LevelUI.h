@@ -17,10 +17,10 @@ public:
 	void RenderLevel(stbD2DRenderer& renderer);
 	void RenderNickName(stbD2DRenderer& renderer);
 private:
-	stb::Texture* m_background;
-	stb::Texture* m_levelImg;
+	stb::Texture* m_background = nullptr;
+	stb::Texture* m_levelImg = nullptr;
 
-	UIRect m_UIRect;
+	UIRect m_UIRect{};
 
 	std::array<stb::Texture*, 10> m_numbers{};
 };

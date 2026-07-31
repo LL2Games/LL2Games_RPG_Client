@@ -1,10 +1,9 @@
 ﻿#pragma once
 
-#include "IPacketHandler.h"
 #include "Packet.h"
 #include "CommonInclude.h"
 
-class ChatPacketHandler : public IPacketHandler
+class ChatPacketHandler
 {
 public:
 	// --- S->C 수신 핸들러 ------------------------------------------------------

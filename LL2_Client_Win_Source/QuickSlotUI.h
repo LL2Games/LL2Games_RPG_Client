@@ -48,7 +48,7 @@ private:
 	static constexpr float BASE_GAP_X = 5.0f;
 	static constexpr float BASE_GAP_Y = 3.0f;
 
-	float m_scale;
+	float m_scale =0.0f;
 
 	
 };

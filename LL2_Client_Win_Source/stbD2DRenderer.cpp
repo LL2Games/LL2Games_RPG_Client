@@ -222,6 +222,16 @@ bool stbD2DRenderer::CreateTextFormats()
         DWRITE_FONT_WEIGHT_BOLD,
         DWRITE_FONT_STYLE_NORMAL,
         DWRITE_FONT_STRETCH_NORMAL,
+        15.0f,
+        L"ko-kr",
+        m_StatTextFormat.GetAddressOf());
+
+    hr = m_DWriteFactory->CreateTextFormat(
+        L"메이플스토리",
+        nullptr,
+        DWRITE_FONT_WEIGHT_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
         10.0f,
         L"ko-kr",
         m_ExpTextFormat.GetAddressOf());
@@ -256,6 +266,9 @@ bool stbD2DRenderer::CreateTextFormats()
         L"ko-kr",
         m_ChatTextFormat.GetAddressOf());
 
+  
+   
+
     /*
         SetTextAlignment：가로 정렬
         DWRITE_TEXT_ALIGNMENT_LEADING : 왼쪽 정렬
@@ -276,6 +289,9 @@ bool stbD2DRenderer::CreateTextFormats()
 
     m_NicknameTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     m_NicknameTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+    
+    m_StatTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+    m_StatTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
     m_ExpTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     m_ExpTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
@@ -564,6 +580,10 @@ void stbD2DRenderer::DrawTextString(const std::wstring& text, const D2D1_RECT_F&
 
     case TextStyle::NickName:
         textFormat = m_NicknameTextFormat.Get();
+        break;
+
+    case TextStyle::Stat:
+        textFormat = m_StatTextFormat.Get();
         break;
 
     case TextStyle::EXP:

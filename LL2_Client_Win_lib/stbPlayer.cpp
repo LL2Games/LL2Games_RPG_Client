@@ -188,6 +188,26 @@ namespace stb
 		}
 	}
 
+	StatViewData Player::GetStatViewData() const
+	{
+		StatViewData data;
+
+		data.name = m_playerProfile.name;
+		data.job = m_playerProfile.job;
+		data.level = m_playerProfile.level;
+		data.hp = m_stat.GetCurHp();
+		data.maxHp = m_stat.GetMaxHp();
+		data.mp = m_stat.GetCurMp();
+		data.maxMp = m_stat.GetMaxMp();
+		data.str = m_stat.GetStr();
+		data.dex = m_stat.GetDex();
+		data.intel = m_stat.GetInt();
+		data.luk = m_stat.GetLuck();
+		data.remainAp = m_stat.GetRemainAP();
+
+		return data;
+	}
+
 	void Player::OnDamaged(int damage, int curHp)
 	{
 		m_stat.SetCurHp(curHp);

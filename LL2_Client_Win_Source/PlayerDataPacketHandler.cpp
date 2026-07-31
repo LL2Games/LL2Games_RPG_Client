@@ -175,7 +175,7 @@ void PlayerDataPacketHandler::HandleLocalPlayerStat(const ParsedPacket& pkt)
 		}
 
 		localPlayer->SetStat(baseStat, derived, expStat, cur_hp, cur_mp, remain_ap);
-
+		M_UIMANAGER->RefreshStatUI();
 		OutputDebugStringA("SetPlayerStat Success\n");
 	}
 	catch (const std::exception& e)
@@ -250,6 +250,8 @@ void PlayerDataPacketHandler::HandleLocalPlayerGetExp(const ParsedPacket& pkt)
 		expResult.levelUp = (levelUpValue != 0);
 
 		stat->HandleExpGain(expResult);
+
+		if(expResult.levelUp) M_UIMANAGER->RefreshStatUI();
 		std::string DebugMsg;
 		DebugMsg = "Exp : " + std::to_string(expResult.curExp) + "\n"
 			+ "needExp :" + std::to_string(expResult.needExp) + "\n";

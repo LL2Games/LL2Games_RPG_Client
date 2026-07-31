@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "IPacketHandler.h"
+
 #include "Packet.h"
 #include "CommonInclude.h"
 #include "Trade_Info.h"
 
-class TradePacketHandler : public IPacketHandler
+class TradePacketHandler
 {
 public:
 	// --- S->C 수신 핸들러 ------------------------------------------------------

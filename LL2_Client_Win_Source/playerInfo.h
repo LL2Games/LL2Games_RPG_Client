@@ -23,6 +23,24 @@ struct ExpStat
 	int64_t need_exp;
 };
 
+struct StatViewData
+{
+	std::string name;
+	int job = 0;
+	int level = 0;
+
+	int hp = 0;
+	int maxHp = 0;
+	int mp = 0;
+	int maxMp = 0;
+
+	int str = 0;
+	int dex = 0;
+	int intel = 0;
+	int luk = 0;
+	int remainAp = 0;
+};
+
 struct PlayerIdentity
 {
 	int charId = 0;
@@ -88,6 +106,29 @@ namespace PlayerTypeUtil
 		return JobType::None;
 	}
 
+	inline std::wstring IntToJobWstring(const int job)
+	{
+		
+		switch (job)
+		{
+		case 1:
+			return L"전사";
+			break;
+		case 2:
+			return L"궁수";
+			break;
+		case 3:
+			return L"도적";
+			break;
+		case 4:
+			return L"마법사";
+			break;
+		default:
+			break;
+		}
+		return L"";
+	}
+
 	inline PlayerState IntToState(const int state)
 	{
 		switch (state)
@@ -103,6 +144,18 @@ namespace PlayerTypeUtil
 		case 8: return PlayerState::Dead;
 		default: return PlayerState::Idle;
 		
+		}
+	}
+
+	inline std::string IntToStringStatType(const int statType)
+	{
+		switch (statType) 
+		{
+		case 1: return "str";
+		case 2: return "dex";
+		case 3: return "intel";
+		case 4: return "luck";
+		default: return "";
 		}
 	}
 }
