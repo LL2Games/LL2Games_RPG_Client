@@ -7,11 +7,13 @@
 #include "stbTransform.h"
 #include "MapScene.h"
 #include "Portal.h"
+#include "stbOtherPlayerManager.h"
 
 std::string PortalPacketHandler::s_pendingPortalId{};
 
 #define M_SCENEMANAGER stb::SingletonBase<stb::SceneManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
+#define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
 
 void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 {
@@ -75,6 +77,15 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 		{
 			throw std::runtime_error(errMsg);
 		}
+
+		stb::Scene* currentScene = M_SCENEMANAGER->GetActiveScene();
+
+		if (currentScene != nullptr)
+		{
+			M_OTHERPLAYERMANAGER->RemoveAllPlayersFromScene(currentScene);
+			OutputDebugStringA("[Portal] 현재 씬의 OtherPlayer들 제거 완료\n");
+		}
+
 
 		const std::wstring sceneName = L"Map_" + std::to_wstring(destinationMapId);
 
