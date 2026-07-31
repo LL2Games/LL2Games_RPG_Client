@@ -24,6 +24,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
+
 	DECLARE_MESSAGE_MAP()
 public:
 	CMySocket* m_pSock;
@@ -31,7 +32,8 @@ public:
 	BOOL connect();
 
 	BOOL m_bConnect;
-	CEdit m_editHost;
+	//CEdit m_editHost;
+	CComboBox m_comboHost;
 	CEdit m_editPort;
 	CString m_strHost;
 	CString m_strPort;
@@ -46,4 +48,9 @@ public:
 	int Login();
 	int OnLogin(const char *recvBuf, const size_t recvLen);
 
+private:
+	std::vector<CString> m_serverHostList;
+
+public:
+	afx_msg void OnCbnSelchangeComboHost();
 };
