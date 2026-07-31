@@ -241,18 +241,21 @@ namespace stb
 	{
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		if (tr == nullptr)
+		{
+			OutputDebugStringA("Transform is nullptr\n");
 			return;
+		}
+
 
 		stb::Scene* scene = M_SCENEMANAGER->GetActiveScene();
 
 		if (scene == nullptr)
+		{
+			OutputDebugStringA("scene is nullptr\n");
 			return;
+		}
 
-		PlayScene* playScene = dynamic_cast<PlayScene*>(scene);
-		if (playScene == nullptr)
-			return;
-
-		DropItemManager* dropManager = playScene->GetDropItemManager();
+		DropItemManager* dropManager = scene->GetDropItemManager();
 		if (dropManager == nullptr)
 			return;
 
