@@ -7,6 +7,8 @@
 #include "stbTexture.h"
 #include "stbEnums.h"
 #include "PlayerAnimationManager.h"
+#include "stbScene.h"
+#include "stbLayer.h"
 
 
 #define M_REMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
@@ -25,8 +27,8 @@ namespace stb
 
     bool OtherPlayerManager::HandleMovePacket(OtherPlayerMove& otherPlayerMove)
     {
-        auto it = mPlayers.find(otherPlayerMove.playerId);
-        if (it != mPlayers.end() && it->second != nullptr)
+        auto it = m_players.find(otherPlayerMove.playerId);
+        if (it != m_players.end() && it->second != nullptr)
         {
             PlayerState effectiveState = otherPlayerMove.state;
             Transform* tr = it->second->GetComponent<Transform>();
@@ -52,8 +54,8 @@ namespace stb
     {
        
         std::string player_id = std::to_string(otherPlayerAttack.playerId);
-        auto it = mPlayers.find(player_id);
-        if (it == mPlayers.end() || it->second == nullptr)
+        auto it = m_players.find(player_id);
+        if (it == m_players.end() || it->second == nullptr)
         {
             OutputDebugStringA("[OtherPlayerAttack] player not found\n");
             return false;
@@ -72,8 +74,8 @@ namespace stb
         // 키는 string으로 관리되고 있으므로 변환
         std::string charId = std::to_string(playerInfo.char_id);
 
-        auto it = mPlayers.find(charId);
-        if (it != mPlayers.end())
+        auto it = m_players.find(charId);
+        if (it != m_players.end())
         {
             // 이미 존재하면 위치/상태만 업데이트
             OtherPlayer* existing = it->second;
@@ -161,7 +163,7 @@ namespace stb
         player->SetState(playerInfo.state);
         player->SetTargetPosition(playerInfo.xPos, playerInfo.yPos, playerInfo.speed);
 
-        mPlayers[charId] = player;
+        m_players[charId] = player;
 
         std::string msg = "다른 플레이어 생성: ID=" + charId + " at (" + std::to_string((int)playerInfo.xPos) + ", " + std::to_string((int)playerInfo.yPos) + ")\n";
         OutputDebugStringA(msg.c_str());
@@ -172,9 +174,9 @@ namespace stb
     bool OtherPlayerManager::UpdatePlayer(const std::string& charId, float x, float y)
     {
         // 이미 존재하는 플레이어인지 확인
-        auto it = mPlayers.find(charId);
+        auto it = m_players.find(charId);
         
-        if (it != mPlayers.end())
+        if (it != m_players.end())
         {
             // 기존 플레이어 위치 업데이트
             if (it->second != nullptr)
@@ -187,14 +189,14 @@ namespace stb
 
     void OtherPlayerManager::RemovePlayer(const std::string& charId)
     {
-        auto it = mPlayers.find(charId);
-        if (it != mPlayers.end())
+        auto it = m_players.find(charId);
+        if (it != m_players.end())
         {
             if (it->second != nullptr)
             {
                 delete it->second;
             }
-            mPlayers.erase(it);
+            m_players.erase(it);
             
             std::string msg = "다른 플레이어 제거: " + charId + "\n";
             OutputDebugStringA(msg.c_str());
@@ -204,15 +206,39 @@ namespace stb
 
     void OtherPlayerManager::Clear()
     {
-        for (auto& pair : mPlayers)
+        for (auto& pair : m_players)
         {
             if (pair.second != nullptr)
             {
                 delete pair.second;
             }
         }
-        mPlayers.clear();
+        m_players.clear();
     }
 
+    void OtherPlayerManager::ClearFromScene(Scene* scene)
+    {
+        Layer* playerLayer = nullptr;
+
+        if (scene != nullptr)
+        {
+            playerLayer = scene->GetLayer(enums::eLayerType::Player);
+        }
+
+        for (auto& entry : m_players)
+        {
+            OtherPlayer* player = entry.second;
+
+            if (player == nullptr)
+                continue;
+
+            if (playerLayer != nullptr)
+            {
+                playerLayer->RemoveGameObject(player);
+            }
+            delete player;
+        }
+        m_players.clear();
+    }
     
 }

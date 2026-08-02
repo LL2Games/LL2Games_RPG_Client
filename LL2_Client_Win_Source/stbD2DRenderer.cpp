@@ -340,7 +340,14 @@ bool stbD2DRenderer::CreateDeviceResources()
         랜더 타켓은 한 번 만들어서 가능한 오래 유지하는게 성능상 좋다. 그리고
         D2DERR_RECRETE_TARGET이 나오면 다시 만들어야 한다.
     */
-    HRESULT hr = m_D2DFactory->CreateHwndRenderTarget(
+
+    /* HRESULT hr = m_D2DFactory->CreateHwndRenderTarget(
+        D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_SOFTWARE),
+        D2D1::HwndRenderTargetProperties(mHwnd, D2D1::SizeU(width, height)),
+        m_RenderTarget.GetAddressOf());
+    if (FAILED(hr))
+        return false;*/
+   HRESULT hr = m_D2DFactory->CreateHwndRenderTarget(
         D2D1::RenderTargetProperties(),
         D2D1::HwndRenderTargetProperties(mHwnd, D2D1::SizeU(width, height)),
         m_RenderTarget.GetAddressOf());

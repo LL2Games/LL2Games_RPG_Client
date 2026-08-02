@@ -7,11 +7,13 @@
 #include "stbTransform.h"
 #include "MapScene.h"
 #include "Portal.h"
+#include "stbOtherPlayerManager.h"
 
 std::string PortalPacketHandler::s_pendingPortalId{};
 
 #define M_SCENEMANAGER stb::SingletonBase<stb::SceneManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
+#define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
 
 void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 {
@@ -77,6 +79,10 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 		}
 
 		const std::wstring sceneName = L"Map_" + std::to_wstring(destinationMapId);
+
+		stb::Scene* currentScene = M_SCENEMANAGER->GetActiveScene();
+
+		M_OTHERPLAYERMANAGER->ClearFromScene(currentScene);
 
 		stb::Scene* scene = M_SCENEMANAGER->LoadScene(sceneName);
 

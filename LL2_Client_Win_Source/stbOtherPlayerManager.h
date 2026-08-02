@@ -7,6 +7,7 @@
 
 namespace stb
 {
+    class Scene;
     // 다른 플레이어들을 관리하는 매니저
     class OtherPlayerManager : public SingletonBase<OtherPlayerManager>
     {
@@ -28,10 +29,12 @@ namespace stb
         // 모든 플레이어 제거
         void Clear();
 
+        void ClearFromScene(Scene* scene);
+
         // 플레이어 맵 접근
-        std::map<std::string, OtherPlayer*>& GetPlayers() { return mPlayers; }
+        std::map<std::string, OtherPlayer*>& GetPlayers() { return m_players; }
 
     private:
-        std::map<std::string, OtherPlayer*> mPlayers;
+        std::map<std::string, OtherPlayer*> m_players;
     };
 }
