@@ -5,6 +5,8 @@
 #include <optional>
 #include <stdexcept>
 #include "Packet.h"
+#include <cstring>
+#include <utility>
 
 class PacketParser
 {
@@ -18,7 +20,7 @@ public:
 	static std::string MakeBody(const std::vector<std::string>& datas);
 	static std::string MakePacket(uint16_t type, const std::string& body);
 	
-
+	static ParseResult TryParse(std::vector<char>& buf);
 
 };
 

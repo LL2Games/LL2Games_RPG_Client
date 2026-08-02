@@ -214,18 +214,27 @@ namespace stb
         m_players.clear();
     }
 
-    void OtherPlayerManager::RemoveAllPlayersFromScene(Scene* scene)
+    void OtherPlayerManager::ClearFromScene(Scene* scene)
     {
-        if (scene == nullptr)
-            return;
-        for (auto& pair : m_players)
+        Layer* playerLayer = nullptr;
+
+        if (scene != nullptr)
         {
-            OtherPlayer* player = pair.second;
-            if (player != nullptr)
+            playerLayer = scene->GetLayer(enums::eLayerType::Player);
+        }
+
+        for (auto& entry : m_players)
+        {
+            OtherPlayer* player = entry.second;
+
+            if (player == nullptr)
+                continue;
+
+            if (playerLayer != nullptr)
             {
-                scene->GetLayer(enums::eLayerType::Player)->RemoveGameObject(player);
-                delete player;
+                playerLayer->RemoveGameObject(player);
             }
+            delete player;
         }
         m_players.clear();
     }

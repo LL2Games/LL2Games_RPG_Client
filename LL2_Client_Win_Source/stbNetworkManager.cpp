@@ -152,34 +152,34 @@ namespace stb
     void NetworkManager::ProcessReceivedData()
     {
         // 데이터 수신
-        char tempBuf[BUFFER_SIZE];
-        int recvLen = m_socket.Receive(tempBuf, BUFFER_SIZE);
+        char tempBuf[PacketLimits::kReceiveChunkSize];
+        int recvLen = m_socket.Receive(tempBuf, static_cast<int>(sizeof(tempBuf)));
 
         if (recvLen > 0)
         {
-            // 로그 주석 처리 (성능 향상)
-            // std::stringstream ss;
-            // ss << "[ProcessReceivedData] 수신: " << recvLen << " bytes\n";
-            // OutputDebugStringA(ss.str().c_str());
-            
             auto& recvBuffer = m_socket.GetRecvBuffer();
             recvBuffer.insert(recvBuffer.end(), tempBuf, tempBuf + recvLen);
 
             // 패킷 파싱
             while (true)
             {
-                auto parsedPacket = PacketParser::Parse(recvBuffer);
-                if (!parsedPacket.has_value())
+                ParseResult parseResult = PacketParser::TryParse(recvBuffer);
+
+                if (parseResult.status == ParseStatus::NeedMoreData)
                 {
                     break;
                 }
 
-                // 로그 주석 처리
-                // std::stringstream ss2;
-                // ss2 << "[ProcessReceivedData] 패킷 파싱 완료: type=0x" << std::hex << parsedPacket.value().type << "\n";
-                // OutputDebugStringA(ss2.str().c_str());
-                
-                HandlePacket(parsedPacket.value());
+                if (parseResult.status == ParseStatus::InvalidPacket)
+                {
+                    M_LOGGER("Invalid packet received. Connection will be closed.");
+
+                    recvBuffer.clear();
+                    Disconnect();
+                    return;
+                }
+
+                HandlePacket(parseResult.packet);
             }
         }
         else if (recvLen == 0)

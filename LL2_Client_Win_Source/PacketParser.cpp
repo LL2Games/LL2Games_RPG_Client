@@ -1,18 +1,27 @@
 ﻿#include "PacketParser.h"
 #include "Packet.h"
 #include "StringConvert.h"
-
+#include <limits>
+#include <stdexcept>
 
 std::string PacketParser::MakeBody(const std::vector<std::string>& datas)
 {
     std::string body;
 
-    for (auto& data : datas)
+    for (const auto& data : datas)
     {
-        uint16_t dataLen = (uint16_t)data.size();
-        body.append((char*)&dataLen, sizeof(dataLen));
+        if (data.size() > (std::numeric_limits<uint16_t>::max)())
+        {
+            throw std::length_error("Packet field is too large");
+        }
+
+        const uint16_t dataLength = static_cast<uint16_t>(data.size());
+
+        body.append(reinterpret_cast<const char*>(&dataLength),sizeof(dataLength));
+
         body.append(data);
     }
+
 
     return body;
 }
@@ -22,24 +31,29 @@ std::string PacketParser::MakePacket(
     const std::string& body)
 {
     constexpr std::size_t headerSize = sizeof(PacketHeader);
-    constexpr std::size_t maxPacketSize = 
-        (std::numeric_limits<uint16_t>::max)();
 
-    if (body.size() > maxPacketSize - headerSize)
+    static_assert(
+        PacketLimits::kMaxPacketSize >= headerSize,
+        "Maximum packet size is smaller than packet header"
+        );
+
+    if (body.size() > PacketLimits::kMaxPacketSize - headerSize)
     {
         throw std::length_error("Packet body is too large");
     }
 
-    PacketHeader hdr{};
-    hdr.type = type;
-    hdr.length = static_cast<uint16_t>(headerSize + body.size());
+    const std::size_t packetLength = headerSize + body.size();
+
+    PacketHeader header{};
+    header.type = type;
+    header.length = static_cast<uint16_t>(packetLength);
 
     std::string packet;
-    packet.reserve(hdr.length);
+    packet.reserve(packetLength);
 
     packet.append(
-        reinterpret_cast<const char*>(&hdr),
-        sizeof(hdr)
+        reinterpret_cast<const char*>(&header),
+        sizeof(header)
     );
 
     packet.append(body);
@@ -75,6 +89,49 @@ std::optional<ParsedPacket> PacketParser::Parse(std::vector<char>& buf)
     return parsedPacket;
 }
 
+ParseResult PacketParser::TryParse(std::vector<char>& buf)
+{
+    if (buf.size() < sizeof(PacketHeader))
+    {
+        return { ParseStatus::NeedMoreData, {} };
+    }
+
+    PacketHeader header{};
+    std::memcpy(&header, buf.data(), sizeof(header));
+
+    const uint16_t packetLength = header.length;
+
+    if (packetLength < sizeof(PacketHeader))
+    {
+        return { ParseStatus::InvalidPacket, {} };
+    }
+
+    if (packetLength > PacketLimits::kMaxPacketSize)
+    {
+        return { ParseStatus::InvalidPacket, {} };
+    }
+
+    if (buf.size() < packetLength)
+    {
+        return { ParseStatus::NeedMoreData, {} };
+    }
+
+    ParsedPacket parsedPacket{};
+    parsedPacket.type = header.type;
+
+    const char* payload = buf.data() + sizeof(PacketHeader);
+    const std::size_t payloadLength =packetLength - sizeof(PacketHeader);
+
+    parsedPacket.payload.assign(payload, payloadLength);
+
+    buf.erase(buf.begin(),buf.begin() + packetLength);
+
+    return {
+        ParseStatus::Complete,
+        std::move(parsedPacket)
+    };
+}
+
 bool PacketParser::ParseLengthPrefixedString(
     const char* payload,
     const size_t payload_len,
@@ -82,38 +139,33 @@ bool PacketParser::ParseLengthPrefixedString(
     std::string& outValue,
     std::string& errMsg)
 {
-    if (payload == nullptr || payload_len == 0)
+    if (payload == nullptr)
     {
-        errMsg = "payload empty";
+        errMsg = "payload is null";
         return false;
     }
 
-    if (offset >= payload_len)
+    if (offset > payload_len || payload_len - offset < sizeof(uint16_t))
     {
-        errMsg = "offset overflow";
+        errMsg = "field length header overflow";
         return false;
     }
 
-    // 1. length (1 byte)
-    uint8_t value_len = static_cast<uint8_t>(payload[offset]);
-    offset += 1;
+    uint16_t valueLength = 0;
 
-    // 2. reserved byte skip
-    if (offset < payload_len && payload[offset] == 0x00)
-    {
-        offset += 1;
-    }
+    std::memcpy(&valueLength, payload + offset, sizeof(valueLength));
 
-    // 3. bounds check
-    if (offset + value_len > payload_len)
+    offset += sizeof(valueLength);
+
+    if (payload_len - offset < valueLength)
     {
         errMsg = "payload length overflow";
         return false;
     }
 
-    // 4. extract value
-    outValue.assign(payload + offset, value_len);
-    offset += value_len;
+    outValue.assign(payload + offset,valueLength);
+
+    offset += valueLength;
 
     return true;
 }

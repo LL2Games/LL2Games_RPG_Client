@@ -82,7 +82,7 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 
 		if (currentScene != nullptr)
 		{
-			M_OTHERPLAYERMANAGER->RemoveAllPlayersFromScene(currentScene);
+			M_OTHERPLAYERMANAGER->ClearFromScene(currentScene);
 			OutputDebugStringA("[Portal] 현재 씬의 OtherPlayer들 제거 완료\n");
 		}
 

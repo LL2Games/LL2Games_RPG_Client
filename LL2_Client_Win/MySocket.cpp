@@ -3,7 +3,12 @@
 #include "MySocket.h"
 #include "../../LL2_Client_Win_Source/stbLogger.h"
 
-CMySocket::CMySocket(CDialogEx* pDlg, e_Status eStatus) : m_dlg(pDlg), m_status(eStatus)
+CMySocket::CMySocket(CDialogEx* pDlg, e_Status eStatus) : 
+    m_dlg(pDlg), 
+    m_status(eStatus),
+    m_bWorldPhase(false),
+    m_bLoginPhase(0),
+    m_bChatSocket(0)
 //CMySocket::CMySocket()
 {
     m_bConnect = FALSE;
@@ -148,22 +153,45 @@ BOOL CMySocket::connect(const CString &strHost, const int nPort)
 
 std::string CMySocket::RecevieBuff()
 {
-    char temp[BUFFER_SIZE];
-    int  tempLen = 0;
-    std::string buf;
+    char temp[PacketLimits::kReceiveChunkSize];
+    std::string buffer;
 
-    do {
-        memset(temp, 0x00, sizeof(temp));
-        tempLen = Receive(temp, sizeof(temp) - 1);
-        if (tempLen <= 0)
+    while (true)
+    {
+        const int receivedLength = Receive(
+            temp,
+            static_cast<int>(sizeof(temp))
+        );
+
+        if (receivedLength > 0)
         {
-            AfxMessageBox(_T("Server Down.."));
-            return "";
+            buffer.append(temp, receivedLength);
+            continue;
         }
-        buf.append(temp, tempLen);
-    } while (tempLen == BUFFER_SIZE);
-    
-    return buf;
+
+        if (receivedLength == 0)
+        {
+            Disconnect();
+            return buffer;
+        }
+
+        const int socketError = GetLastError();
+
+        if (socketError == WSAEWOULDBLOCK)
+        {
+            break;
+        }
+
+        M_LOGGER(
+            "Receive failed. error=%d",
+            socketError
+        );
+
+        Disconnect();
+        return {};
+    }
+
+    return buffer;
 }
 
 //void CMySocket::Parse(CchatClientDlg* pDlg)
