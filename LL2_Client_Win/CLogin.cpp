@@ -6,6 +6,7 @@
 #include "CLogin.h"
 #include "resource.h"
 #include <vector>
+#include <algorithm>
 #include "..\\LL2_Client_Win_Source\\Packet.h"
 #include "..\\LL2_Client_Win_Source\\PacketParser.h"
 #include "..\\LL2_Client_Win_Source\\stbLogger.h"
@@ -15,6 +16,8 @@
 
 //로그인 아이디
 extern std::string g_account_id;
+// 로그인 일회용 토큰
+extern std::string g_world_ticket;
 
 // CLogin 대화 상자
 
@@ -141,51 +144,117 @@ err:
 
 int CLogin::OnLogin(const char * recvBuff, const size_t recvLen)
 {
-	int i;
-	char* context = NULL;
-	char* pLine = NULL;
-	int rc = EXIT_FAILURE;
+    if (recvBuff == nullptr || recvLen == 0)
+    {
+        AfxMessageBox(_T("로그인 응답이 비어 있습니다."));
+        return EXIT_FAILURE;
+    }
 
-	
-	//m_pSock->Receive(recvBuff, 2048);
-	{ char szTmp[2058]; sprintf_s(szTmp, sizeof(szTmp), "gunoo22_TEST recvBuff[%s]", recvBuff); OutputDebugStringA(szTmp); }
+    std::vector<char> packetBuffer(recvBuff,recvBuff + recvLen);
 
-	if (recvLen == 0)
-		goto err;
+    ParseResult parseResult =PacketParser::TryParse(packetBuffer);
 
-	for (pLine = strtok_s((char *)recvBuff, "$", &context), i = 0; pLine; pLine = strtok_s(NULL, "$", &context), i++)
-	{
-		switch (i)
-		{
-		case 0:
-			if (!strcmp(pLine, "NOK"))
-			{
-				CString strTmp;
-				pLine = strtok_s(NULL, "$", &context);
-				strTmp.Format(_T("로그인 실패: %s"), CString(pLine));
-				AfxMessageBox(strTmp);
-				goto err;
-			}
-			break;
-		}
-	}
+    if (parseResult.status != ParseStatus::Complete)
+    {
+        M_LOGGER("Login response packet parse failed");
+        AfxMessageBox(_T("로그인 응답 패킷이 올바르지 않습니다."));
+        return EXIT_FAILURE;
+    }
 
-	rc = EXIT_SUCCESS;
-err:
+    const ParsedPacket& packet = parseResult.packet;
 
-	if (rc != EXIT_SUCCESS)
-	{
-		AfxMessageBox(_T("로그인 실패: 회원가입을 하세요"));
-	}
-	else
-	{
-		AfxMessageBox(_T("로그인 성공"));
-		m_pSock->m_bLoginPhase = FALSE; //로그인 끝
-		m_pSock->Disconnect(); //연결 끊기
-		EndDialog(IDOK);
-	}
+    if (packet.type != PKT_LOGIN)
+    {
+        M_LOGGER("Unexpected login response packet type: %u",static_cast<unsigned int>(packet.type));
+        AfxMessageBox(_T("잘못된 로그인 응답입니다."));
+        return EXIT_FAILURE;
+    }
 
-	return rc;
+    std::size_t offset = 0;
+    std::string status;
+    std::string worldTicket;
+    std::string errorMessage;
+
+    if (!PacketParser::ParseLengthPrefixedString(
+        packet.payload.data(),
+        packet.payload.size(),
+        offset,
+        status,
+        errorMessage))
+    {
+        M_LOGGER("Login status parse failed: %s",errorMessage.c_str());
+        AfxMessageBox(_T("로그인 상태를 읽지 못했습니다."));
+        return EXIT_FAILURE;
+    }
+
+    if (status != "ok")
+    {
+        std::string serverError;
+
+        if (offset < packet.payload.size())
+        {
+            PacketParser::ParseLengthPrefixedString(
+                packet.payload.data(),
+                packet.payload.size(),
+                offset,
+                serverError,
+                errorMessage
+            );
+        }
+
+        // 인증 티켓은 출력하지 않고 오류 메시지만 기록
+        M_LOGGER("Login rejected: %s",serverError.c_str());
+        AfxMessageBox(_T("아이디 또는 비밀번호가 올바르지 않습니다."));
+        return EXIT_FAILURE;
+    }
+
+    if (!PacketParser::ParseLengthPrefixedString(
+        packet.payload.data(),
+        packet.payload.size(),
+        offset,
+        worldTicket,
+        errorMessage))
+    {
+        M_LOGGER("World ticket parse failed: %s",errorMessage.c_str());
+        AfxMessageBox(_T("World 인증 티켓을 받지 못했습니다."));
+        return EXIT_FAILURE;
+    }
+
+    const bool validWorldTicket =
+		worldTicket.size() == 64 &&
+        std::all_of(worldTicket.begin(),worldTicket.end(),
+            [](const char value)
+            {
+                return
+                    (value >= '0' && value <= '9') ||
+                    (value >= 'a' && value <= 'f');
+            }
+        );
+
+    if (!validWorldTicket)
+    {
+        M_LOGGER("Invalid World ticket format");
+        AfxMessageBox(_T("World 인증 티켓 형식이 올바르지 않습니다."));
+        return EXIT_FAILURE;
+    }
+
+    if (offset != packet.payload.size())
+    {
+        M_LOGGER("Unexpected field in login response");
+        AfxMessageBox(_T("로그인 응답에 알 수 없는 데이터가 있습니다."));
+        return EXIT_FAILURE;
+    }
+
+    g_world_ticket = worldTicket;
+
+    AfxMessageBox(_T("로그인 성공"));
+
+    m_pSock->m_bLoginPhase = FALSE;
+    m_pSock->Disconnect();
+
+    EndDialog(IDOK);
+
+    return EXIT_SUCCESS;
 }
 
 void CLogin::OnSocketConnect(BOOL bConnect)

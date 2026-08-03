@@ -39,6 +39,7 @@ Gdiplus::GdiplusStartupInput gdiplus;
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+std::string g_world_ticket;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -78,7 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-#if 0 /*gunoo22 260518 테스트*/
+#if 1 /*gunoo22 260518 테스트*/
     //로그인
     CLogin logDlg;
     if (logDlg.DoModal() != IDOK)
@@ -86,7 +87,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 #endif
-#if 0
+#if 1
     //캐릭터, 채널 선택
     CWorld worldDlg;
     if (worldDlg.DoModal() != IDOK)
@@ -101,7 +102,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
         CString strTmp;
-        strTmp.Format(_T("캐릭터[%s] 채널port[%s]"), strCharId, strChannelPort);
+        strTmp.Format(_T("캐릭터[%s] 채널port[%s]"), strCharId.GetString(), strChannelPort.GetString());
         AfxMessageBox(strTmp);
     }
 

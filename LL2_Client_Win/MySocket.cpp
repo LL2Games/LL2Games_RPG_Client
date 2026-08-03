@@ -2,6 +2,7 @@
 
 #include "MySocket.h"
 #include "../../LL2_Client_Win_Source/stbLogger.h"
+#include "..//LL2_Client_Win_Source//PacketParser.h"
 
 CMySocket::CMySocket(CDialogEx* pDlg, e_Status eStatus) : 
     m_dlg(pDlg), 
@@ -18,60 +19,106 @@ CMySocket::~CMySocket() {}
  
 void CMySocket::OnReceive(int nErrorCode)
 {
-        std::string buf = RecevieBuff();
-        size_t len = buf.size();
+    CAsyncSocket::OnReceive(nErrorCode);
 
-        M_LOGGER("m_bLoginPhase[%d]", m_bLoginPhase);
+    if (nErrorCode != 0)
+    {
+        M_LOGGER("Socket receive event failed. error=%d",nErrorCode);
+        m_recvBuff.clear();
+        Disconnect();
+        return;
+    }
+
+    const std::string receivedData = RecevieBuff();
+
+    if (!receivedData.empty())
+    {
+        m_recvBuff.insert(m_recvBuff.end(),receivedData.begin(),receivedData.end());
+    }
+
+    while (true)
+    {
+        ParseResult parseResult = PacketParser::TryParse(m_recvBuff);
+
+        if (parseResult.status == ParseStatus::NeedMoreData)
+        {
+            // 다음 OnReceive에서 나머지 데이터를 이어 붙인다.
+            break;
+        }
+
+        if (parseResult.status == ParseStatus::InvalidPacket)
+        {
+            M_LOGGER("Invalid packet received");
+            m_recvBuff.clear();
+            Disconnect();
+            return;
+        }
+
+        std::string completePacket;
+
+        try
+        {
+            // 기존 핸들러가 헤더를 포함한 패킷을 받으므로 다시 직렬화한다.
+            completePacket = PacketParser::MakePacket(parseResult.packet.type, parseResult.packet.payload);
+        }
+        catch (const std::exception& exception)
+        {
+            M_LOGGER("Received packet reconstruction failed: %s", exception.what());
+            m_recvBuff.clear();
+            Disconnect();
+            return;
+        }
+
+        const char* packetData = completePacket.data();
+        const std::size_t packetSize = completePacket.size();
 
         switch (m_status)
         {
 
-        //회원가입
+            //회원가입
         case E_REGISTER:
         {
-            CLogin* pLoginDlg = (CLogin*)m_dlg;
-            pLoginDlg->m_pRegDlg->OnRegister(buf.c_str(), len);
+            CLogin* pLoginDlg = static_cast<CLogin*>(m_dlg);
+            pLoginDlg->m_pRegDlg->OnRegister(packetData, packetSize);
             break;
         }
 
         //로그인
         case E_LOGIN:
         {
-            CLogin* pLoginDlg = (CLogin*)m_dlg;
-            m_bLoginPhase = FALSE;
-            pLoginDlg->OnLogin(buf.c_str(), len);
+            CLogin* pLoginDlg = static_cast<CLogin*>(m_dlg);
+            pLoginDlg->OnLogin(packetData, packetSize);
             break;
         }
 
         //World초기화
         case E_WORLD_INIT:
         {
-            CWorld* pWorldDlg = (CWorld*)m_dlg;
-            pWorldDlg->OnInitWorld(buf.c_str(), len);
+            CWorld* pWorldDlg = static_cast<CWorld*>(m_dlg);
+            pWorldDlg->OnInitWorld(packetData, packetSize);
             break;
         }
 
         //캐릭터 리스트
         case E_WORLD_CHAR_LIST:
         {
-            CWorld* pWorldDlg = (CWorld*)m_dlg;
-            pWorldDlg->OnCharacterList(buf.c_str(), len);
+            CWorld* pWorldDlg = static_cast<CWorld*>(m_dlg);
+            pWorldDlg->OnCharacterList(packetData, packetSize);
             break;
         }
 
         //채널선택
         case E_WORLD_CHANNEL_SELECT:
         {
-            CWorld* pWorldDlg = (CWorld*)m_dlg;
-            pWorldDlg->OnChannelSelect(buf.c_str(), len);
+            CWorld* pWorldDlg = static_cast<CWorld*>(m_dlg);
+            pWorldDlg->OnChannelSelect(packetData, packetSize);
             break;
         }
-
+        default:
+            M_LOGGER("Unhandled socket state: %d", static_cast<int>(m_status));
+            break;
         }
-       
-        M_LOGGER("recvBuff[%s]", buf.c_str());
-
-        CAsyncSocket::OnReceive(nErrorCode);
+    }
 }
 
 void CMySocket::OnConnect(int nErrorCode)
