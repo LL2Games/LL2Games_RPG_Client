@@ -475,30 +475,65 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 //채널 접속버튼 클릭
 void CWorld::OnBnClickedButtonEnter()
 {
-	CString strCharId;
-	CString strChannelId;
-	//m_editCharId.GetWindowTextW(strCharId);
-	//m_editChannelId.GetWindowTextW(strChannelId);
+	if (m_pSock == nullptr)
+	{
+		AfxMessageBox(_T("소켓 정보가 없습니다."));
+		return;
+	}
 
-	/*std::vector<std::string> payload;
-	payload = UTIL::ParsePayload(strChannelId);*/
+	//1. 선택된 캐릭터 행 가져오기
+	POSITION pos = m_listCharacter.GetFirstSelectedItemPosition();
 
-	//캐릭터 아이디 전역변수 등록
-	g_char_id = CStringA(strCharId);
-	
+	if (pos == nullptr)
+	{
+		AfxMessageBox(_T("접속할 캐릭터를 선택해주세요."));
+		return;
+	}
+	const int selectedRow = m_listCharacter.GetNextSelectedItem(pos);
+
+	//리스트 행과 m_characters 벡터의 인덱스가 동일하다는 전제
+	if (selectedRow < 0 || selectedRow >= static_cast<int>(m_characters.size()))
+	{
+		AfxMessageBox(_T("선택한 캐릭터 정보를 찾을 수 없습니다."));
+		return;
+	}
+
+	m_selectedCharacterIndex = selectedRow;
+	const CharacterInfo& selectedCharacter = m_characters[m_selectedCharacterIndex];
+	const long long charId = selectedCharacter.char_id;
+
+	//2. 선택된 채널 가져오기
+	const int channelIndex = m_comboChannel.GetCurSel();
+	if (channelIndex == CB_ERR)
+	{
+		AfxMessageBox(_T("접속할 채널을 선택해주세요."));
+		return;
+	}
+	// 콤보박스 0번 인덱스 = 1채널
+	// 콤보박스 1번 인덱스 = 2채널
+	const int channelId = channelIndex + 1;
+
+	// 3. 전역 캐릭터 ID 등록
+	g_char_id = std::to_string(charId);
+
+	// 4. 채널 선택 요청 상태로 변경
 	m_pSock->m_status = E_WORLD_CHANNEL_SELECT;
 
-	std::string body, pkt;
+	//test
+	if (0)
+		return;
 
+	// 5. 패킷 생성 및 전송
 	try
 	{
 		std::vector<std::string> datas;
-		datas.push_back(std::string(CStringA(strChannelId)));
-		//body = PacketParser::MakeBody(payload);
-		body = PacketParser::MakeBody(datas);
-		pkt = PacketParser::MakePacket(PKT_SELECT_CHANNEL, body);
-		//std::string utf8Packet = UTIL::AnsiToUTF8(pkt);
-		//m_pSock->SendPacket(utf8Packet);
+
+		// 서버 프로토콜에 맞춰 채널 ID 전달
+		datas.push_back(std::to_string(channelId));
+		
+		std::string body = PacketParser::MakeBody(datas);
+		std::string pkt = PacketParser::MakePacket(PKT_SELECT_CHANNEL, body);
+		
 		m_pSock->SendPacket(pkt);
 	}
 	catch (const std::length_error& e)

@@ -36,6 +36,9 @@
 #define ID_BUTTON_LOGIN                 1008
 #define IDC_EDIT_NICK                   1008
 #define IDC_LIST_CTRL                   1008
+#ifdef IDC_STATIC
+#undef IDC_STATIC
+#endif
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
