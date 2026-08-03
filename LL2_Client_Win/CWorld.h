@@ -41,9 +41,9 @@ public:
 
 	BOOL m_bConnect;
 	
-	CEdit m_editCharList;
-	CEdit m_editCharId;
-	CEdit m_editChannelId;
+//	CEdit m_editCharList;
+//	CEdit m_editCharId;
+//	CEdit m_editChannelId;
 
 	virtual BOOL OnInitDialog();
 

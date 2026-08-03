@@ -149,9 +149,9 @@ CWorld::~CWorld()
 void CWorld::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_CHARLIST, m_editCharList);
-	DDX_Control(pDX, IDC_EDIT_WORLD_CHARID, m_editCharId);
-	DDX_Control(pDX, IDC_EDIT_WORLD_CHANNELID, m_editChannelId);
+	//DDX_Control(pDX, IDC_EDIT_CHARLIST, m_editCharList);
+	//DDX_Control(pDX, IDC_EDIT_WORLD_CHARID, m_editCharId);
+	//DDX_Control(pDX, IDC_EDIT_WORLD_CHANNELID, m_editChannelId);
 	DDX_Control(pDX, IDC_COMBO_SELECT_CHANNEL, m_comboChannel);
 	DDX_Control(pDX, IDC_LIST_CTRL, m_listCharacter);
 }
@@ -195,8 +195,8 @@ BOOL CWorld::OnInitDialog()
 
 	
 
-	m_editCharId.SetWindowText(_T("1")); //캐릭터id
-	m_editChannelId.SetWindowText(_T("1")); //채널id
+	//m_editCharId.SetWindowText(_T("1")); //캐릭터id
+	//m_editChannelId.SetWindowText(_T("1")); //채널id
 
 	if (m_bConnect == FALSE)
 		connect();
@@ -477,8 +477,8 @@ void CWorld::OnBnClickedButtonEnter()
 {
 	CString strCharId;
 	CString strChannelId;
-	m_editCharId.GetWindowTextW(strCharId);
-	m_editChannelId.GetWindowTextW(strChannelId);
+	//m_editCharId.GetWindowTextW(strCharId);
+	//m_editChannelId.GetWindowTextW(strChannelId);
 
 	/*std::vector<std::string> payload;
 	payload = UTIL::ParsePayload(strChannelId);*/

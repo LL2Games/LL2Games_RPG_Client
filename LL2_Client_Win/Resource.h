@@ -18,6 +18,8 @@
 #define IDR_MAINFRAME                   128
 #define IDD_DIALOG1                     129
 #define IDD_WORLD                       129
+#define IDD_DIALOG2                     130
+#define IDD_WORLD_NEW_CHAR              130
 #define IDC_EDIT1                       1000
 #define IDC_EDIT_CHARLIST               1000
 #define IDC_EDIT_WORLD_CHARID           1001
@@ -34,10 +36,6 @@
 #define ID_BUTTON_LOGIN                 1008
 #define IDC_EDIT_NICK                   1008
 #define IDC_LIST_CTRL                   1008
-
-#ifdef IDC_STATIC
-#undef IDC_STATIC
-#endif
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -45,7 +43,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        130
+#define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1009
 #define _APS_NEXT_SYMED_VALUE           110
