@@ -1,14 +1,17 @@
 ﻿#pragma once
 #include "afxdialogex.h"
 
+class CMySocket;
+
 // CWorldNewChar 대화 상자
 
 class CWorldNewChar : public CDialogEx
 {
 	DECLARE_DYNAMIC(CWorldNewChar)
-
-public:
+private:
 	CWorldNewChar(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+public:
+	CWorldNewChar(CMySocket* sock, CWnd* pParent = nullptr);
 	virtual ~CWorldNewChar();
 
 	// 대화 상자 데이터입니다.
@@ -22,6 +25,17 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	virtual void OnCancel();
+
+public:
+	CMySocket* m_pSock;
+	CEdit m_editNick;
+	CComboBox m_comboJobs;
+	afx_msg void OnBnClickedButtonCheckDup();
+	afx_msg void OnBnClickedButtonNewChar();
+
+	void CheckDupNick(const CString& strNick);
+	int OnCheckDupNick(const char* recvBuff, const size_t recvLen);
+
+private:
+	BOOL m_bCheckDup;
 };

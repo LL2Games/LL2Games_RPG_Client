@@ -680,7 +680,7 @@ err:
 void CWorld::OnBnClickedButtonNewChar()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CWorldNewChar dlg;
+	CWorldNewChar dlg(m_pSock);
 	if (dlg.DoModal() != IDOK)
 	{
 		AfxMessageBox(_T("캐릭터 생성 다이얼로그 모달 오류"));
