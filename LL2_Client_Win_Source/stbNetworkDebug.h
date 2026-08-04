@@ -44,8 +44,8 @@ namespace stb
         bool connected = NetworkManager::getInstance()->Connect(
             NetworkConfig::SERVER_IP,
             //NetworkConfig::SERVER_PORT,
-            //g_ChannelPort,
-            9001,
+            g_ChannelPort,
+            //9001,
             hWnd
         );
 
