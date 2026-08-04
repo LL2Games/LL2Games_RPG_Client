@@ -8,6 +8,7 @@ namespace stb
     extern std::string g_CharacterName;
     extern int g_ChannelPort;
     extern int g_ChatPort;
+    extern std::string g_ChannelTicket;
 
     // 네트워크 설정
     // 서버 IP와 포트를 여기서 변경하세요!
@@ -40,6 +41,10 @@ namespace stb
         
         // 재연결 시도 횟수
         static constexpr int RECONNECT_ATTEMPTS = 3;
+
+        static void SetChannelTicket(const std::string& ticket);
+        static const std::string& GetChannelTicket();
+        static void ClearChannelTicket();
     };
 }
 

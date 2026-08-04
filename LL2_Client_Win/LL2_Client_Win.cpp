@@ -39,7 +39,9 @@ Gdiplus::GdiplusStartupInput gdiplus;
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+// 월드, 채널 접속 토큰 저장 전역 변수
 std::string g_world_ticket;
+std::string g_channel_ticket;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -106,10 +108,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         AfxMessageBox(strTmp);
     }
 
-    strcpy(stb::g_CharacterId, g_char_id.c_str());
+    strcpy_s(stb::g_CharacterId, g_char_id.c_str());
     stb::g_ChannelPort = atoi(g_channel_port.c_str());
-
-
+    stb::NetworkConfig::SetChannelTicket(g_channel_ticket);
+    g_channel_ticket.clear();
     //채팅서버 포트 = 채널서버 + 100 ex) channelport=9001 -> chatport = 9101
     stb::g_ChatPort = stb::g_ChannelPort + 100;
 #else
