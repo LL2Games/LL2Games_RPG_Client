@@ -33,9 +33,13 @@
 #define IDC_COMBO1                      1007
 #define IDC_COMBO_HOST                  1007
 #define IDC_COMBO_SELECT_CHANNEL        1007
+#define IDC_COMBO_JOBS                  1007
 #define ID_BUTTON_LOGIN                 1008
 #define IDC_EDIT_NICK                   1008
 #define IDC_LIST_CTRL                   1008
+#define IDC_BUTTON_CHECK_DUP            1009
+#define ID_BUTTON_NEW_CHAR              1010
+#define IDC_BUTTON_NEW_CHAR             1011
 #ifdef IDC_STATIC
 #undef IDC_STATIC
 #endif
@@ -48,7 +52,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1009
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

@@ -13,6 +13,8 @@
 //#include "UTIL.h"
 #include "..\\LL2_Client_Win_Source\\stbLogger.h"
 
+#include "CWorldNewChar.h"
+
 //로그인 아이디
 extern std::string g_account_id;
 //채널 포트
@@ -168,6 +170,7 @@ BOOL CWorld::connect()
 BEGIN_MESSAGE_MAP(CWorld, CDialogEx)
 	ON_BN_CLICKED(ID_BUTTON_WORLD_ENTER, &CWorld::OnBnClickedButtonEnter)
 	//IDC_COMBO_SELECT_CHANNEL
+	ON_BN_CLICKED(IDC_BUTTON_NEW_CHAR, &CWorld::OnBnClickedButtonNewChar)
 END_MESSAGE_MAP()
 
 
@@ -673,3 +676,15 @@ err:
 //		OnSocketConnect(m_bConnect);
 //}
 //
+
+void CWorld::OnBnClickedButtonNewChar()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CWorldNewChar dlg;
+	if (dlg.DoModal() != IDOK)
+	{
+		AfxMessageBox(_T("캐릭터 생성 다이얼로그 모달 오류"));
+		return;
+	}
+	
+}

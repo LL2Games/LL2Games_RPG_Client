@@ -72,4 +72,5 @@ private:
 public:
 	CComboBox m_comboChannel;
 	CListCtrl m_listCharacter;
+	afx_msg void OnBnClickedButtonNewChar();
 };
