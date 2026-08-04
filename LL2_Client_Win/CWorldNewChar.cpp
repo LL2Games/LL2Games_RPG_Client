@@ -69,9 +69,10 @@ void CWorldNewChar::CheckDupNick(const CString& strNick)
 	datas.push_back(std::string(nickA));
 
 	body = PacketParser::MakeBody(datas);
-	//pkt = PacketParser::MakePacket(PKT_CHECK_DUP_CHAR, body);
+	pkt = PacketParser::MakePacket(PKT_CHECK_DUP_CHAR, body);
 
-	m_pSock->m_status = E_WORLD_CHECK_DUP_NICK; //OnRegister를 받기 위함
+	m_pSock->m_status = E_WORLD_CHECK_DUP_NICK; //OnCheckDupNick를 받기 위함
+	m_pSock->m_dlg = this;
 	m_pSock->SendPacket(pkt);
 
 	rc = EXIT_SUCCESS;

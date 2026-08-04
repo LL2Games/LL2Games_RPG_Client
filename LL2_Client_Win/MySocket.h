@@ -4,6 +4,7 @@
 #include <vector>
 #include "CLogin.h"
 #include "CWorld.h"
+#include "CWorldNewChar.h"
 //class CchatClientDlg;
 
 enum e_Status
