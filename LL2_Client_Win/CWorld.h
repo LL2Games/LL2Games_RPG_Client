@@ -21,7 +21,7 @@ class CWorld : public CDialogEx
 
 public:
 	CWorld(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	CWorld(CString strHost, CWnd* pParent = nullptr);
+	CWorld(CString strHost, std::string accountId, CWnd* pParent = nullptr);
 	CWorld(CMySocket* sock, CWnd* pParent = nullptr);
 	virtual ~CWorld();
 
@@ -62,8 +62,8 @@ public:
 	afx_msg void OnBnClickedButtonEnter();
 
 private:
-	std::string m_account_id;
 	CString m_strHost;
+	std::string m_account_id;
 
 	//캐릭터 정보 관련
 	std::vector<CharacterInfo> m_characters;

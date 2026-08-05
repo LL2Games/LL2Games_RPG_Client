@@ -133,7 +133,7 @@ CWorld::CWorld(CWnd* pParent /*=nullptr*/)
 	m_pRegDlg = new CRegister(m_pSock);
 }
 
-CWorld::CWorld(CString strHost, CWnd* pParent /*=nullptr*/ ) : m_strHost(strHost), CDialogEx(IDD_WORLD, pParent)
+CWorld::CWorld(CString strHost, std::string account_id, CWnd* pParent /*=nullptr*/ ) : m_strHost(strHost), m_account_id(account_id), CDialogEx(IDD_WORLD, pParent)
 {
 	m_bConnect = FALSE;
 	m_pSock = new CMySocket(this, E_WORLD_INIT);
@@ -398,6 +398,9 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 		strTmp.Format(_T("World CharacterList Error: %s"), CString(errMsg.c_str()));
 	}
 
+
+	//캐릭터 리스트 초기화
+	m_characters.clear();
 
 	//반복하여 캐릭터 닉네임 추출
 	while (1)
@@ -680,11 +683,16 @@ err:
 void CWorld::OnBnClickedButtonNewChar()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CWorldNewChar dlg(m_pSock);
+	CWorldNewChar dlg(m_pSock, m_account_id);
 	if (dlg.DoModal() != IDOK)
 	{
 		AfxMessageBox(_T("캐릭터 생성 다이얼로그 모달 오류"));
 		return;
 	}
-	
+
+	//CWorldNewChar 내부에서는 CWorldNewChar로 되었었으므로 다시 CWorld로 돌리기
+	m_pSock->m_dlg = this;
+
+	//캐릭터 생성 이후에 다시 캐릭터 리스트 호출
+	this->CharacterList(); //캐릭터 선택
 }

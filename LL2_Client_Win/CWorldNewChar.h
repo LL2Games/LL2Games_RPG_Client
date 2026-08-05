@@ -1,8 +1,13 @@
 ﻿#pragma once
 #include "afxdialogex.h"
+#include <iostream>
 
 class CMySocket;
 
+enum e_jobs
+{
+	E_JOBS_WARRIOR = 0, //전사
+};
 // CWorldNewChar 대화 상자
 
 class CWorldNewChar : public CDialogEx
@@ -11,7 +16,7 @@ class CWorldNewChar : public CDialogEx
 private:
 	CWorldNewChar(CWnd* pParent = nullptr);   // 표준 생성자입니다.
 public:
-	CWorldNewChar(CMySocket* sock, CWnd* pParent = nullptr);
+	CWorldNewChar(CMySocket* sock, std::string account_id, CWnd* pParent = nullptr);
 	virtual ~CWorldNewChar();
 
 	// 대화 상자 데이터입니다.
@@ -36,6 +41,10 @@ public:
 	void CheckDupNick(const CString& strNick);
 	int OnCheckDupNick(const char* recvBuff, const size_t recvLen);
 
+	void GenNewChar(const CString& strNick, const int job);
+	int OnGenNewChar(const char* recvBuff, const size_t recvLen);
+
 private:
 	BOOL m_bCheckDup;
+	std::string m_account_id;
 };

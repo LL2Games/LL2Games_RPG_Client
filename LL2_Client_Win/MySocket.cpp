@@ -62,6 +62,14 @@ void CMySocket::OnReceive(int nErrorCode)
             break;
         }
 
+        //캐릭터 생성
+        case E_WORLD_NEW_CHARACTER:
+        {
+            CWorldNewChar* pDlg = (CWorldNewChar*)m_dlg;
+            pDlg->OnGenNewChar(buf.c_str(), len);
+            break;
+        }
+
         //중복확인
         case E_WORLD_CHECK_DUP_NICK:
         {
@@ -69,6 +77,7 @@ void CMySocket::OnReceive(int nErrorCode)
             pDlg->OnCheckDupNick(buf.c_str(), len);
             break;
         }
+
         }
        
         M_LOGGER("recvBuff[%s]", buf.c_str());

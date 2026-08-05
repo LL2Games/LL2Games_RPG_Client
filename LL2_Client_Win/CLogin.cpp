@@ -207,6 +207,7 @@ int CLogin::OnLogin(const char * recvBuff, const size_t recvLen)
 		AfxMessageBox(_T("로그인 성공"));
 		m_pSock->m_bLoginPhase = FALSE; //로그인 끝
 		m_pSock->Disconnect(); //연결 끊기
+		g_account_id = CStringA(m_strID); //전역변수에 id 담기
 		EndDialog(IDOK);
 
 	}
