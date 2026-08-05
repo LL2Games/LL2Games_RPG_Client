@@ -123,6 +123,27 @@ namespace UTIL
 
 		return values;
 	}
+
+	static CString ConvertChannelStatusCString(int status)
+	{
+		switch (static_cast<ChannelInfo::e_ChannelInfo>(status))
+		{
+		case ChannelInfo::e_ChannelInfo::E_Normal:
+			return _T("원활");
+
+		case ChannelInfo::e_ChannelInfo::E_Busy:
+			return _T("혼잡");
+
+		case ChannelInfo::e_ChannelInfo::E_Full:
+			return _T("포화");
+
+		case ChannelInfo::e_ChannelInfo::E_Die:
+			return _T("점검");
+
+		default:
+			return _T("알 수 없음");
+		}
+	}
 };
 
 CWorld::CWorld(CWnd* pParent /*=nullptr*/)
@@ -191,15 +212,8 @@ BOOL CWorld::OnInitDialog()
 	
 
 	//채널쪽 초기화
-	m_comboChannel.AddString(_T("1채널 - 원활"));
-	m_comboChannel.AddString(_T("2채널 - 보통"));
-	m_comboChannel.AddString(_T("3채널 - 혼잡"));
-	m_comboChannel.SetCurSel(0);
+	m_comboChannel.ResetContent();
 
-	
-
-	//m_editCharId.SetWindowText(_T("1")); //캐릭터id
-	//m_editChannelId.SetWindowText(_T("1")); //채널id
 
 	if (m_bConnect == FALSE)
 		connect();
@@ -366,6 +380,7 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 
 	std::string sBuff;
 	std::vector<char> vBuff;
+	int characterSize = 0;
 
 	sBuff.append(recvBuff, recvLen);
 	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
@@ -402,8 +417,18 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 	//캐릭터 리스트 초기화
 	m_characters.clear();
 
+	if (!PacketParser::ParseNextIntField(
+		pkt->payload.c_str(),
+		pkt->payload.size(),
+		offset,
+		characterSize,
+		errMsg))
+	{
+		return -1;
+	}
+
 	//반복하여 캐릭터 닉네임 추출
-	while (1)
+	for (int i = 0; i < characterSize; i++)
 	{
 		std::string char_data;
 
@@ -443,6 +468,29 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 		
 	}
 
+	//채널 정보 수신
+	m_channels.clear(); //기존 채널 정보 초기화
+	//반복하여 채널 정보 수신
+	for (int channel_id = 1 ; ; channel_id++)
+	{
+		int channelState;
+
+		if (!PacketParser::ParseNextIntField(
+			pkt->payload.c_str(),
+			pkt->payload.size(),
+			offset,
+			channelState,
+			errMsg))
+		{
+			break;
+		}
+
+		ChannelInfo channel;
+		channel.channel_id = channel_id;
+		channel.state = static_cast<ChannelInfo::e_ChannelInfo>(channelState);
+		m_channels.push_back(channel);
+	}
+
 
 	rc = EXIT_SUCCESS;
 //err:
@@ -455,8 +503,8 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 	{
 		AfxMessageBox(_T("CharList 성공"));
 		
+		//캐릭터 리스트 
 		m_listCharacter.DeleteAllItems();
-
 		for (int i = 0; i < static_cast<int>(m_characters.size()); ++i)
 		{
 			const auto& character = m_characters[i];
@@ -471,7 +519,15 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 			m_listCharacter.SetItemText(row, 2, job);
 		}
 
-
+		//채널
+		m_comboChannel.ResetContent();
+		for (int i = 0; i < static_cast<int>(m_channels.size()); ++i)
+		{
+			CString strChannel;
+			strChannel.Format(_T("%d 채널(%s)"), m_channels[i].channel_id, UTIL::ConvertChannelStatusCString((int)m_channels[i].state).GetString());
+			m_comboChannel.InsertString(i, strChannel);
+		}
+		m_comboChannel.SetCurSel(0); //1채널로 초기화
 		
 	}
 

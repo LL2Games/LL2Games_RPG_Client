@@ -11,6 +11,19 @@ struct CharacterInfo
 	int job;
 };
 
+struct ChannelInfo
+{
+	long long channel_id;
+
+	enum class e_ChannelInfo {
+		E_Normal = 0,
+		E_Busy,
+		E_Full,
+		E_Die
+	};
+	e_ChannelInfo state;
+};
+
 class CMySocket;
 
 // CWorld 대화 상자
@@ -67,6 +80,7 @@ private:
 
 	//캐릭터 정보 관련
 	std::vector<CharacterInfo> m_characters;
+	std::vector<ChannelInfo> m_channels;
 	int m_selectedCharacterIndex = -1;
 
 public:
