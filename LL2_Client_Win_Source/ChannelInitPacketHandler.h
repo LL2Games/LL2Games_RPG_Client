@@ -8,8 +8,7 @@ class ChannelInitPacketHandler
 public:
 	static void Execute(const ParsedPacket& pkt);
 	static void SendChannelAuth();
-	static void SendEnterMap(const std::string& charId, const std::string& mapId);
-	
+	static void SendEnterMap();
 private:
 };
 

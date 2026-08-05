@@ -57,7 +57,7 @@ void ChannelInitPacketHandler::Execute(const ParsedPacket& pkt)
         stb::NetworkConfig::SetCharacterName(name); 
         // 채널 인증 성공 후 맵 입장 패킷 전송
         OutputDebugStringA("채널 인증 완료! 맵 입장 패킷 전송...\n");
-        SendEnterMap(stb::NetworkConfig::GetCharacterId(), stb::NetworkConfig::MAP_ID);
+        SendEnterMap();
     }
     catch (...)
     {
@@ -109,35 +109,21 @@ void ChannelInitPacketHandler::SendChannelAuth()
     }
 }
 
-void ChannelInitPacketHandler::SendEnterMap(const std::string& charId, const std::string& mapId)
+void ChannelInitPacketHandler::SendEnterMap()
 {
-    std::vector<std::string> data = { charId, mapId };
-
-    std::stringstream ss;
-    ss << "\n[PKT_ENTER_MAP 전송]\n";
-    ss << "  패킷 타입: 0x" << std::hex << PKT_ENTER_MAP << " (" << std::dec << PKT_ENTER_MAP << ")\n";
-    ss << "  캐릭터 ID: " << charId << "\n";
-    ss << "  맵 ID: " << mapId << "\n";
-    OutputDebugStringA(ss.str().c_str());
+    const std::vector<std::string> data;
 
     try
     {
-        // 패킷 생성 및 전송
-        std::string body = PacketParser::MakeBody(data);
-        std::string packet = PacketParser::MakePacket(PKT_ENTER_MAP, body);
-
-        // 패킷 내용 출력
-
-
-        stb::NetworkManager::getInstance()->SendPacket(PKT_ENTER_MAP, data);
-        OutputDebugStringA("[PKT_ENTER_MAP 전송 완료]\n\n");
+        stb::NetworkManager::getInstance()->SendPacket(PKT_ENTER_MAP,data);
+        OutputDebugStringA("[PKT_ENTER_MAP 전송 완료]\n");
     }
-    catch (const std::length_error& e)
+    catch (const std::length_error& exception)
     {
-        M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+        M_LOGGER("EnterMap 패킷 크기 초과: %s",exception.what());
     }
-    catch (const std::exception& e)
+    catch (const std::exception& exception)
     {
-        M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+        M_LOGGER("EnterMap 패킷 생성 실패: %s",exception.what());
     }
 }

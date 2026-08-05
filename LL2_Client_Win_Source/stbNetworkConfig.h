@@ -32,7 +32,7 @@ namespace stb
 
         
         // 맵 ID
-        static constexpr const char* MAP_ID = "100000000";
+        //static constexpr const char* MAP_ID = "100000000";
         
         // ==============================
         

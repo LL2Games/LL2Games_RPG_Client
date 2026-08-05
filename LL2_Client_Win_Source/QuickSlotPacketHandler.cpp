@@ -64,6 +64,11 @@ void QuickSlotPacketHandler::HandleSlotList(const ParsedPacket& pkt)
             {
                 throw std::runtime_error(errMsg);
             }
+
+            if (!PacketParser::ParseNextIntField(data,payloadSize,offset,quickSlotData.count,errMsg))
+            {
+                throw std::runtime_error(errMsg);
+            }
             quickSlotManager->SetSlot(quickSlotData);
         }
         OutputDebugStringA("QuickSlotManager Success\n");
