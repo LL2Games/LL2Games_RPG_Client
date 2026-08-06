@@ -114,9 +114,25 @@ void CMySocket::OnReceive(int nErrorCode)
             pWorldDlg->OnChannelSelect(packetData, packetSize);
             break;
         }
-        default:
+        //캐릭터 생성
+        case E_WORLD_NEW_CHARACTER:
+        {
+            CWorldNewChar* pDlg = (CWorldNewChar*)m_dlg;
+            pDlg->OnGenNewChar(buf.c_str(), len);
+            break;
+        }
+
+        //중복확인
+        case E_WORLD_CHECK_DUP_NICK:
+        {
+            CWorldNewChar* pDlg = (CWorldNewChar*)m_dlg;
+            pDlg->OnCheckDupNick(buf.c_str(), len);
+            break;
+        }
+            default:
             M_LOGGER("Unhandled socket state: %d", static_cast<int>(m_status));
             break;
+
         }
     }
 }

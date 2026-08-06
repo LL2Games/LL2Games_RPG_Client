@@ -35,6 +35,9 @@
     <ClInclude Include="CWorld.h">
       <Filter>WORLD</Filter>
     </ClInclude>
+    <ClInclude Include="CWorldNewChar.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -56,6 +59,9 @@
       <Filter>SOCKET</Filter>
     </ClCompile>
     <ClCompile Include="CWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="CWorldNewChar.cpp">
       <Filter>WORLD</Filter>
     </ClCompile>
   </ItemGroup>

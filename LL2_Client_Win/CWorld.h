@@ -3,6 +3,27 @@
 #include "..\\LL2_Client_Win_Source\\MySocket.h"
 #include "CRegister.h"
 
+struct CharacterInfo
+{
+	long long char_id;
+	CString name;
+	int level;
+	int job;
+};
+
+struct ChannelInfo
+{
+	long long channel_id;
+
+	enum class e_ChannelInfo {
+		E_Normal = 0,
+		E_Busy,
+		E_Full,
+		E_Die
+	};
+	e_ChannelInfo state;
+};
+
 class CMySocket;
 
 // CWorld 대화 상자
@@ -13,12 +34,13 @@ class CWorld : public CDialogEx
 
 public:
 	CWorld(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CWorld(CString strHost, std::string accountId, CWnd* pParent = nullptr);
 	CWorld(CMySocket* sock, CWnd* pParent = nullptr);
 	virtual ~CWorld();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_LOGIN };
+	enum { IDD = IDD_WORLD };
 #endif
 
 protected:
@@ -32,9 +54,9 @@ public:
 
 	BOOL m_bConnect;
 	
-	CEdit m_editCharList;
-	CEdit m_editCharId;
-	CEdit m_editChannelId;
+//	CEdit m_editCharList;
+//	CEdit m_editCharId;
+//	CEdit m_editChannelId;
 
 	virtual BOOL OnInitDialog();
 
@@ -53,5 +75,16 @@ public:
 	afx_msg void OnBnClickedButtonEnter();
 
 private:
+	CString m_strHost;
 	std::string m_account_id;
+
+	//캐릭터 정보 관련
+	std::vector<CharacterInfo> m_characters;
+	std::vector<ChannelInfo> m_channels;
+	int m_selectedCharacterIndex = -1;
+
+public:
+	CComboBox m_comboChannel;
+	CListCtrl m_listCharacter;
+	afx_msg void OnBnClickedButtonNewChar();
 };

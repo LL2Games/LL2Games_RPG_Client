@@ -14,6 +14,9 @@
 #include "MySocket.h"
 
 
+//서버 호스트(IP)
+extern std::string g_server_ip;
+
 //로그인 아이디
 extern std::string g_account_id;
 // 로그인 일회용 토큰
@@ -47,10 +50,11 @@ CLogin::~CLogin()
 void CLogin::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_HOST, m_editHost);
+	//DDX_Control(pDX, IDC_EDIT_HOST, m_editHost);
 	DDX_Control(pDX, IDC_EDIT_PORT, m_editPort);
 	DDX_Control(pDX, IDC_EDIT_PASSWD, m_editPasswd);
 	DDX_Control(pDX, IDC_EDIT_ID, m_editID);
+	DDX_Control(pDX, IDC_COMBO_HOST, m_comboHost);
 }
 
 BOOL CLogin::connect()
@@ -58,7 +62,8 @@ BOOL CLogin::connect()
 	//BOOL bRet;
 	CString strHost, strPort;
 
-	m_editHost.GetWindowText(strHost);
+	//m_editHost.GetWindowText(strHost);
+	strHost = m_strHost;
 	m_editPort.GetWindowText(strPort);
 	
 	return m_pSock->connect(strHost, atoi(CT2A(strPort)));
@@ -68,6 +73,7 @@ BOOL CLogin::connect()
 BEGIN_MESSAGE_MAP(CLogin, CDialogEx)
 	ON_BN_CLICKED(ID_BUTTON_LOGIN, &CLogin::OnBnClickedButtonLogin)
 	ON_BN_CLICKED(ID_BUTTON_REGISTER, &CLogin::OnBnClickedButtonRegister)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOST, &CLogin::OnCbnSelchangeComboHost)
 END_MESSAGE_MAP()
 
 
@@ -78,7 +84,23 @@ BOOL CLogin::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_editHost.SetWindowTextW(_T("100.108.54.60"));
+	
+	// 실제 접속에 사용할 서버 IP
+	m_serverHostList =
+	{
+		_T("100.108.54.60"),
+		_T("100.114.42.54")
+	};
+
+	// 사용자에게 표시되는 서버 이름
+	m_comboHost.ResetContent();
+	m_comboHost.AddString(_T("서버1 (100.108.54.60)"));
+	m_comboHost.AddString(_T("서버2 (100.114.42.54)"));
+
+	// 서버1을 기본 선택
+	m_comboHost.SetCurSel(0);
+
+	//m_editHost.SetWindowTextW(_T("100.108.54.60"));
 	m_editPort.SetWindowTextW(_T("5000"));
 
 	m_editID.SetWindowTextW(_T("test_account_001"));
@@ -120,6 +142,7 @@ int CLogin::Login()
 		body = PacketParser::MakeBody(datas);
 		pkt = PacketParser::MakePacket(PKT_LOGIN, body);
 
+		m_pSock->m_status = E_LOGIN; //OnLogin을 받기 위함
 		m_pSock->SendPacket(pkt);
 	}
 	catch (const std::length_error& e)
@@ -251,8 +274,9 @@ int CLogin::OnLogin(const char * recvBuff, const size_t recvLen)
 
     m_pSock->m_bLoginPhase = FALSE;
     m_pSock->Disconnect();
-
-    EndDialog(IDOK);
+    g_account_id = CStringA(m_strID); //전역변수에 id 담기
+		g_server_ip = CStringA(m_strHost); //전역변수에 id 담기  
+		EndDialog(IDOK);
 
     return EXIT_SUCCESS;
 }
@@ -272,16 +296,18 @@ void CLogin::OnSocketConnect(BOOL bConnect)
 //로그인 버튼 클릭
 void CLogin::OnBnClickedButtonLogin()
 {
-	m_editHost.GetWindowTextW(m_strHost);
+	//m_editHost.GetWindowTextW(m_strHost);
+
+	const int selectedIndex = m_comboHost.GetCurSel();
+
+	if (selectedIndex == CB_ERR ||
+		selectedIndex >= static_cast<int>(m_serverHostList.size()))
+	{
+		AfxMessageBox(_T("접속할 서버를 선택해주세요."));
+		return;
+	}
+	m_strHost = m_serverHostList[selectedIndex];
 	m_editPort.GetWindowTextW(m_strPort);
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	//connect();
-	//Login();
-
-	//AfxMessageBox(_T("로그인 성공"));
-	////		m_pSock->m_bLoginPhase = FALSE; //로그인 끝
-	//EndDialog(IDOK);
 
 	if (m_bConnect == FALSE)
 		connect();
@@ -293,14 +319,41 @@ void CLogin::OnBnClickedButtonLogin()
 void CLogin::OnBnClickedButtonRegister()
 {
 	m_pSock->m_bRegister = TRUE;
-
 	if (m_bConnect == FALSE)
-		connect();
+	{
+		if (!connect())
+		{
+			m_pSock->m_bRegister = FALSE;
+			OutputDebugStringA("Login Server Connect Fail");
+			return;
+		}
+	}
 	else
 	{
-		m_pRegDlg->DoModal();
+		m_pRegDlg->DoModal(); //OnRegister 때문에 이렇게 진행
+		m_pSock->m_bRegister = FALSE;
 	}
-	m_pSock->m_bRegister = FALSE;
 }
 
 
+//서버 호스트 셀 변경시 이벤트 함수
+void CLogin::OnCbnSelchangeComboHost()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	const int selectedIndex = m_comboHost.GetCurSel();
+	if (selectedIndex == CB_ERR ||
+		selectedIndex >= static_cast<int>(m_serverHostList.size()))
+	{
+		return;
+	}
+
+	// 선택만 바꿔도 현재 서버 연결은 종료
+	if (m_bConnect)
+	{
+		m_pSock->Disconnect();
+		m_bConnect = FALSE;
+	}
+
+	// 다음 로그인 버튼 클릭 시 사용할 서버
+	m_strHost = m_serverHostList[selectedIndex];
+}

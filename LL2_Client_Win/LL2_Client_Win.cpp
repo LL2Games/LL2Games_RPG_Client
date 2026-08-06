@@ -49,10 +49,12 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-//로그인 아이디
-std::string g_account_id;
+//서버 호스트(IP)
+std::string g_server_ip;
 //채널 포트
 std::string g_channel_port;
+//로그인 아이디
+std::string g_account_id;
 //로그인 캐릭터 아이디
 std::string g_char_id;
 
@@ -91,7 +93,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif
 #if 1
     //캐릭터, 채널 선택
-    CWorld worldDlg;
+    CWorld worldDlg(logDlg.m_strHost, g_account_id);
     if (worldDlg.DoModal() != IDOK)
     {
         return FALSE;
@@ -112,6 +114,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     stb::g_ChannelPort = atoi(g_channel_port.c_str());
     stb::NetworkConfig::SetChannelTicket(g_channel_ticket);
     g_channel_ticket.clear();
+    stb::g_ServerIp = g_server_ip;
+
     //채팅서버 포트 = 채널서버 + 100 ex) channelport=9001 -> chatport = 9101
     stb::g_ChatPort = stb::g_ChannelPort + 100;
 #else

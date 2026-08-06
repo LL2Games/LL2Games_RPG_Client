@@ -8,17 +8,17 @@ namespace stb
     std::string g_ChannelTicket;
     int g_ChannelPort = 9001;
     int g_ChatPort = 9101;
+    std::string g_ServerIp;
 
+    //티켓관련
     void NetworkConfig::SetChannelTicket(const std::string& ticket)
     {
         g_ChannelTicket = ticket;
     }
-
     const std::string& NetworkConfig::GetChannelTicket()
     {
         return g_ChannelTicket;
     }
-
     void NetworkConfig::ClearChannelTicket()
     {
         g_ChannelTicket.clear();
