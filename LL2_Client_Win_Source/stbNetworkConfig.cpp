@@ -7,4 +7,5 @@ namespace stb
     std::string g_CharacterName;
     int g_ChannelPort = 9001;
     int g_ChatPort = 9101;
+    std::string g_ServerIp;
 }

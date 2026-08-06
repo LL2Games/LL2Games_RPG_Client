@@ -4,6 +4,7 @@
 #include <vector>
 #include "CLogin.h"
 #include "CWorld.h"
+#include "CWorldNewChar.h"
 //class CchatClientDlg;
 
 enum e_Status
@@ -14,6 +15,8 @@ enum e_Status
     E_WORLD_CHAR_LIST,
     E_WORLD_CHANNEL_SELECT,
     E_WORLD_CHAR_SELECT,
+    E_WORLD_NEW_CHARACTER,
+    E_WORLD_CHECK_DUP_NICK
 };
 
 class CMySocket : public CAsyncSocket {

@@ -46,10 +46,12 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-//로그인 아이디
-std::string g_account_id;
+//서버 호스트(IP)
+std::string g_server_ip;
 //채널 포트
 std::string g_channel_port;
+//로그인 아이디
+std::string g_account_id;
 //로그인 캐릭터 아이디
 std::string g_char_id;
 
@@ -78,7 +80,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-#if 0 /*gunoo22 260518 테스트*/
+#if 1 /*gunoo22 260518 테스트*/
     //로그인
     CLogin logDlg;
     if (logDlg.DoModal() != IDOK)
@@ -86,9 +88,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 #endif
-#if 0
+
+#if 1
     //캐릭터, 채널 선택
-    CWorld worldDlg;
+    CWorld worldDlg(logDlg.m_strHost, g_account_id);
     if (worldDlg.DoModal() != IDOK)
     {
         return FALSE;
@@ -101,12 +104,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
         CString strTmp;
-        strTmp.Format(_T("캐릭터[%s] 채널port[%s]"), strCharId, strChannelPort);
+        strTmp.Format(_T("캐릭터[%s] 채널port[%s]"), strCharId.GetString(), strChannelPort.GetString());
         AfxMessageBox(strTmp);
     }
 
     strcpy(stb::g_CharacterId, g_char_id.c_str());
+    stb::g_ServerIp = g_server_ip;
     stb::g_ChannelPort = atoi(g_channel_port.c_str());
+
 
 
     //채팅서버 포트 = 채널서버 + 100 ex) channelport=9001 -> chatport = 9101

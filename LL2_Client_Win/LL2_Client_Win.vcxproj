@@ -166,6 +166,7 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
     <ClInclude Include="CLogin.h" />
     <ClInclude Include="CRegister.h" />
     <ClInclude Include="CWorld.h" />
+    <ClInclude Include="CWorldNewChar.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MySocket.h" />
     <ClInclude Include="Resource.h" />
@@ -176,6 +177,7 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
     <ClCompile Include="CLogin.cpp" />
     <ClCompile Include="CRegister.cpp" />
     <ClCompile Include="CWorld.cpp" />
+    <ClCompile Include="CWorldNewChar.cpp" />
     <ClCompile Include="MySocket.cpp" />
     <ClCompile Include="LL2_Client_Win.cpp" />
   </ItemGroup>

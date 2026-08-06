@@ -13,6 +13,8 @@
 //#include "UTIL.h"
 #include "..\\LL2_Client_Win_Source\\stbLogger.h"
 
+#include "CWorldNewChar.h"
+
 //로그인 아이디
 extern std::string g_account_id;
 //채널 포트
@@ -121,6 +123,27 @@ namespace UTIL
 
 		return values;
 	}
+
+	static CString ConvertChannelStatusCString(int status)
+	{
+		switch (static_cast<ChannelInfo::e_ChannelInfo>(status))
+		{
+		case ChannelInfo::e_ChannelInfo::E_Normal:
+			return _T("원활");
+
+		case ChannelInfo::e_ChannelInfo::E_Busy:
+			return _T("혼잡");
+
+		case ChannelInfo::e_ChannelInfo::E_Full:
+			return _T("포화");
+
+		case ChannelInfo::e_ChannelInfo::E_Die:
+			return _T("점검");
+
+		default:
+			return _T("알 수 없음");
+		}
+	}
 };
 
 CWorld::CWorld(CWnd* pParent /*=nullptr*/)
@@ -129,6 +152,12 @@ CWorld::CWorld(CWnd* pParent /*=nullptr*/)
 	m_bConnect = FALSE;
 	m_pSock = new CMySocket(this, E_WORLD_INIT);
 	m_pRegDlg = new CRegister(m_pSock);
+}
+
+CWorld::CWorld(CString strHost, std::string account_id, CWnd* pParent /*=nullptr*/ ) : m_strHost(strHost), m_account_id(account_id), CDialogEx(IDD_WORLD, pParent)
+{
+	m_bConnect = FALSE;
+	m_pSock = new CMySocket(this, E_WORLD_INIT);
 }
 
 CWorld::CWorld(CMySocket* sock, CWnd* pParent /*=nullptr*/) : m_pSock(sock), CDialogEx(IDD_WORLD, pParent), m_bConnect(FALSE)
@@ -143,24 +172,26 @@ CWorld::~CWorld()
 void CWorld::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_CHARLIST, m_editCharList);
-	DDX_Control(pDX, IDC_EDIT_WORLD_CHARID, m_editCharId);
-	DDX_Control(pDX, IDC_EDIT_WORLD_CHANNELID, m_editChannelId);
+	//DDX_Control(pDX, IDC_EDIT_CHARLIST, m_editCharList);
+	//DDX_Control(pDX, IDC_EDIT_WORLD_CHARID, m_editCharId);
+	//DDX_Control(pDX, IDC_EDIT_WORLD_CHANNELID, m_editChannelId);
+	DDX_Control(pDX, IDC_COMBO_SELECT_CHANNEL, m_comboChannel);
+	DDX_Control(pDX, IDC_LIST_CTRL, m_listCharacter);
 }
 
 BOOL CWorld::connect()
 {
-	//BOOL bRet;
-	//CString strHost = _T("100.99.220.45");
-	CString strHost = _T("100.108.54.60");
+	//CString strHost = _T("100.108.54.60");
 	CString strPort = _T("5500");
 	
-	return m_pSock->connect(strHost, atoi(CT2A(strPort)));
+	return m_pSock->connect(m_strHost, atoi(CT2A(strPort)));
 }
 
 
 BEGIN_MESSAGE_MAP(CWorld, CDialogEx)
 	ON_BN_CLICKED(ID_BUTTON_WORLD_ENTER, &CWorld::OnBnClickedButtonEnter)
+	//IDC_COMBO_SELECT_CHANNEL
+	ON_BN_CLICKED(IDC_BUTTON_NEW_CHAR, &CWorld::OnBnClickedButtonNewChar)
 END_MESSAGE_MAP()
 
 
@@ -170,15 +201,19 @@ BOOL CWorld::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	/*m_editHost.SetWindowTextW(_T("100.114.42.54"));
-	m_editPort.SetWindowTextW(_T("5000"));
+	//캐릭터 리스트 초기화
+	m_listCharacter.ModifyStyle(0, LVS_REPORT);
+	m_listCharacter.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
-	m_editID.SetWindowTextW(_T("admin1"));
-	m_editPasswd.SetWindowTextW(_T("1111"));*/
+	m_listCharacter.InsertColumn(0, _T("이름"), LVCFMT_LEFT, 160);
+	m_listCharacter.InsertColumn(1, _T("레벨"), LVCFMT_RIGHT, 60);
+	m_listCharacter.InsertColumn(2, _T("직업"), LVCFMT_RIGHT, 60);
 
-	m_editCharId.SetWindowText(_T("1")); //캐릭터id
-	m_editChannelId.SetWindowText(_T("1")); //채널id
+	
+
+	//채널쪽 초기화
+	m_comboChannel.ResetContent();
+
 
 	if (m_bConnect == FALSE)
 		connect();
@@ -312,18 +347,40 @@ err:
 	return rc;
 }
 
+static CString ConvertJobCString(int nJob)
+{
+	CString strJob;
+	switch (nJob)
+	{
+	case 1:
+		strJob = _T("전사");
+		break;
+
+	case 2:
+		strJob = _T("궁수");
+		break;
+
+	case 3:
+		strJob = _T("마법사");
+		break;
+
+	case 4:
+		strJob = _T("도적");
+		break;
+	}
+
+	return strJob;
+}
+
 int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 {
-	//int i;
-	//char* context = NULL;
-	//char* pLine = NULL;
 	int rc = EXIT_FAILURE;
 	size_t offset = 0;
 	std::string status, errMsg;
-	CString strCharList;
 
 	std::string sBuff;
 	std::vector<char> vBuff;
+	int characterSize = 0;
 
 	sBuff.append(recvBuff, recvLen);
 	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
@@ -333,45 +390,106 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 		return -1;
 	}
 
-	
-	//반복하여 캐릭터 닉네임 추출
-	while (1)
+	if (!PacketParser::ParseLengthPrefixedString(
+		pkt->payload.c_str(),
+		pkt->payload.size(),
+		offset,
+		status,
+		errMsg))
 	{
-		std::string char_name;
+		return -1;
+	}
+
+	if (status == "nok")
+	{
+		PacketParser::ParseLengthPrefixedString(
+			pkt->payload.c_str(),
+			pkt->payload.size(),
+			offset,
+			errMsg,
+			errMsg);
+
+		CString strTmp;
+		strTmp.Format(_T("World CharacterList Error: %s"), CString(errMsg.c_str()));
+	}
+
+
+	//캐릭터 리스트 초기화
+	m_characters.clear();
+
+	if (!PacketParser::ParseNextIntField(
+		pkt->payload.c_str(),
+		pkt->payload.size(),
+		offset,
+		characterSize,
+		errMsg))
+	{
+		return -1;
+	}
+
+	//반복하여 캐릭터 닉네임 추출
+	for (int i = 0; i < characterSize; i++)
+	{
+		std::string char_data;
 
 		if (!PacketParser::ParseLengthPrefixedString(
 			pkt->payload.c_str(),
 			pkt->payload.size(),
 			offset,
-			char_name,
+			char_data,
 			errMsg))
 		{
-			//더이상 없으면 중단
-			//K_slog_trace(K_SLOG_DEBUG, "[%s][%d]gunoo22_TEST", __FUNCTION__, __LINE__);
 			break;
 		}
 
-		CString wideValue = UTIL::Utf8ToCString(char_name);
+		//3$god123$8$1
+		std::vector<std::string> tokens;
+		std::stringstream stream(char_data);
+		std::string token;
 
-		/*CString line;
-		line.Format(
-			L"FIELD[%d] : %s\r\n",
-			fieldIndex++,
-			wideValue.GetString()
-		);
-		m_listResponse.InsertString(nIdxResponse++, line);*/
+		while (std::getline(stream, token, '$'))
+		{
+			tokens.push_back(token);
+		}
+
+		const long long charId = std::stoll(tokens[0]);
+		const CString name = UTIL::Utf8ToCString(tokens[1]);
+		const int level = std::stoi(tokens[2]);
+		const int job = std::stoi(tokens[3]);
+
+
+		CharacterInfo info;
+		info.char_id = charId;
+		info.name = name;
+		info.level = level;
+		info.job = job;
+
+		m_characters.push_back(info);
 		
-		if (strCharList.GetLength() == 0)
-		{
-			strCharList.Format(L"%s", wideValue.GetString());
-		}
-		else
-		{
-			strCharList.Format(L"%s,%s", strCharList.GetString(), wideValue.GetString());
-		}
 	}
 
-	m_editCharList.SetWindowText(strCharList);
+	//채널 정보 수신
+	m_channels.clear(); //기존 채널 정보 초기화
+	//반복하여 채널 정보 수신
+	for (int channel_id = 1 ; ; channel_id++)
+	{
+		int channelState;
+
+		if (!PacketParser::ParseNextIntField(
+			pkt->payload.c_str(),
+			pkt->payload.size(),
+			offset,
+			channelState,
+			errMsg))
+		{
+			break;
+		}
+
+		ChannelInfo channel;
+		channel.channel_id = channel_id;
+		channel.state = static_cast<ChannelInfo::e_ChannelInfo>(channelState);
+		m_channels.push_back(channel);
+	}
 
 
 	rc = EXIT_SUCCESS;
@@ -384,9 +502,33 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 	else
 	{
 		AfxMessageBox(_T("CharList 성공"));
-		//this->CharacterList(); //캐릭터 선택
-		//m_pSock->m_bWorldPhase = FALSE; //로그인 끝
-		//EndDialog(IDOK);
+		
+		//캐릭터 리스트 
+		m_listCharacter.DeleteAllItems();
+		for (int i = 0; i < static_cast<int>(m_characters.size()); ++i)
+		{
+			const auto& character = m_characters[i];
+
+			const int row = m_listCharacter.InsertItem(i, character.name);
+
+			CString level;
+			level.Format(_T("%d"), character.level);
+			m_listCharacter.SetItemText(row, 1, level);
+
+			CString job = ConvertJobCString(character.job);
+			m_listCharacter.SetItemText(row, 2, job);
+		}
+
+		//채널
+		m_comboChannel.ResetContent();
+		for (int i = 0; i < static_cast<int>(m_channels.size()); ++i)
+		{
+			CString strChannel;
+			strChannel.Format(_T("%d 채널(%s)"), m_channels[i].channel_id, UTIL::ConvertChannelStatusCString((int)m_channels[i].state).GetString());
+			m_comboChannel.InsertString(i, strChannel);
+		}
+		m_comboChannel.SetCurSel(0); //1채널로 초기화
+		
 	}
 
 	return rc;
@@ -395,30 +537,65 @@ int CWorld::OnCharacterList(const char* recvBuff, const size_t recvLen)
 //채널 접속버튼 클릭
 void CWorld::OnBnClickedButtonEnter()
 {
-	CString strCharId;
-	CString strChannelId;
-	m_editCharId.GetWindowTextW(strCharId);
-	m_editChannelId.GetWindowTextW(strChannelId);
+	if (m_pSock == nullptr)
+	{
+		AfxMessageBox(_T("소켓 정보가 없습니다."));
+		return;
+	}
 
-	/*std::vector<std::string> payload;
-	payload = UTIL::ParsePayload(strChannelId);*/
+	//1. 선택된 캐릭터 행 가져오기
+	POSITION pos = m_listCharacter.GetFirstSelectedItemPosition();
 
-	//캐릭터 아이디 전역변수 등록
-	g_char_id = CStringA(strCharId);
-	
+	if (pos == nullptr)
+	{
+		AfxMessageBox(_T("접속할 캐릭터를 선택해주세요."));
+		return;
+	}
+	const int selectedRow = m_listCharacter.GetNextSelectedItem(pos);
+
+	//리스트 행과 m_characters 벡터의 인덱스가 동일하다는 전제
+	if (selectedRow < 0 || selectedRow >= static_cast<int>(m_characters.size()))
+	{
+		AfxMessageBox(_T("선택한 캐릭터 정보를 찾을 수 없습니다."));
+		return;
+	}
+
+	m_selectedCharacterIndex = selectedRow;
+	const CharacterInfo& selectedCharacter = m_characters[m_selectedCharacterIndex];
+	const long long charId = selectedCharacter.char_id;
+
+	//2. 선택된 채널 가져오기
+	const int channelIndex = m_comboChannel.GetCurSel();
+	if (channelIndex == CB_ERR)
+	{
+		AfxMessageBox(_T("접속할 채널을 선택해주세요."));
+		return;
+	}
+	// 콤보박스 0번 인덱스 = 1채널
+	// 콤보박스 1번 인덱스 = 2채널
+	const int channelId = channelIndex + 1;
+
+	// 3. 전역 캐릭터 ID 등록
+	g_char_id = std::to_string(charId);
+
+	// 4. 채널 선택 요청 상태로 변경
 	m_pSock->m_status = E_WORLD_CHANNEL_SELECT;
 
-	std::string body, pkt;
+	//test
+	if (0)
+		return;
 
+	// 5. 패킷 생성 및 전송
 	try
 	{
 		std::vector<std::string> datas;
-		datas.push_back(std::string(CStringA(strChannelId)));
-		//body = PacketParser::MakeBody(payload);
-		body = PacketParser::MakeBody(datas);
-		pkt = PacketParser::MakePacket(PKT_SELECT_CHANNEL, body);
-		//std::string utf8Packet = UTIL::AnsiToUTF8(pkt);
-		//m_pSock->SendPacket(utf8Packet);
+
+		// 서버 프로토콜에 맞춰 채널 ID 전달
+		datas.push_back(std::to_string(channelId));
+		
+		std::string body = PacketParser::MakeBody(datas);
+		std::string pkt = PacketParser::MakePacket(PKT_SELECT_CHANNEL, body);
+		
 		m_pSock->SendPacket(pkt);
 	}
 	catch (const std::length_error& e)
@@ -558,3 +735,20 @@ err:
 //		OnSocketConnect(m_bConnect);
 //}
 //
+
+void CWorld::OnBnClickedButtonNewChar()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CWorldNewChar dlg(m_pSock, m_account_id);
+	if (dlg.DoModal() != IDOK)
+	{
+		AfxMessageBox(_T("캐릭터 생성 다이얼로그 모달 오류"));
+		return;
+	}
+
+	//CWorldNewChar 내부에서는 CWorldNewChar로 되었었으므로 다시 CWorld로 돌리기
+	m_pSock->m_dlg = this;
+
+	//캐릭터 생성 이후에 다시 캐릭터 리스트 호출
+	this->CharacterList(); //캐릭터 선택
+}
