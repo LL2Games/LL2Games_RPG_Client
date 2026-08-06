@@ -8,6 +8,7 @@ namespace stb
     extern std::string g_CharacterName;
     extern int g_ChannelPort;
     extern int g_ChatPort;
+    extern std::string g_ServerIp;
 
     // 네트워크 설정
     // 서버 IP와 포트를 여기서 변경하세요!
@@ -16,9 +17,9 @@ namespace stb
         // ========== 여기를 수정하세요! ==========
         
         // 외부 서버 IP 주소 (예시)
-        static constexpr const char* SERVER_IP = "100.108.54.60";  // 실제 서버 IP로 변경!
+        //static constexpr const char* SERVER_IP = "100.108.54.60";  // 실제 서버 IP로 변경!
         //static constexpr const char* SERVER_IP = "100.114.42.54";  // 실제 서버 IP로 변경!
-       
+        static constexpr const char* SERVER_IP = "1.1.1.1"; //여기가 아닌 g_ServerIp를 씀
         // 서버 포트
         //static constexpr int SERVER_PORT = 1234;  // 서버 포트에 맞게 변경
         static constexpr int SERVER_PORT = 9001;  // 서버 포트에 맞게 변경

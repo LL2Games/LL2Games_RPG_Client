@@ -13,6 +13,9 @@
 #include "MySocket.h"
 
 
+//서버 호스트(IP)
+extern std::string g_server_ip;
+
 //로그인 아이디
 extern std::string g_account_id;
 
@@ -208,6 +211,7 @@ int CLogin::OnLogin(const char * recvBuff, const size_t recvLen)
 		m_pSock->m_bLoginPhase = FALSE; //로그인 끝
 		m_pSock->Disconnect(); //연결 끊기
 		g_account_id = CStringA(m_strID); //전역변수에 id 담기
+		g_server_ip = CStringA(m_strHost); //전역변수에 id 담기
 		EndDialog(IDOK);
 
 	}

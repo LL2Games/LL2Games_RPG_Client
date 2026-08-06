@@ -60,7 +60,8 @@ namespace stb
 
 		// 채팅 서버 접속 (PlayScene의 채널 서버와는 별개)
 		ChatNetworkManager::getInstance()->Connect(
-			NetworkConfig::SERVER_IP,
+			g_ServerIp,
+			//NetworkConfig::SERVER_IP,
 			g_ChatPort,
 			hWnd);
 
