@@ -118,7 +118,7 @@ void CMySocket::OnReceive(int nErrorCode)
         case E_WORLD_NEW_CHARACTER:
         {
             CWorldNewChar* pDlg = (CWorldNewChar*)m_dlg;
-            pDlg->OnGenNewChar(buf.c_str(), len);
+            pDlg->OnGenNewChar(packetData, packetSize);
             break;
         }
 
@@ -126,7 +126,7 @@ void CMySocket::OnReceive(int nErrorCode)
         case E_WORLD_CHECK_DUP_NICK:
         {
             CWorldNewChar* pDlg = (CWorldNewChar*)m_dlg;
-            pDlg->OnCheckDupNick(buf.c_str(), len);
+            pDlg->OnCheckDupNick(packetData, packetSize);
             break;
         }
             default:
