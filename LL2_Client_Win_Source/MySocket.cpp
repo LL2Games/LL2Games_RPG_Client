@@ -9,7 +9,7 @@ MySocket::MySocket()
     : m_socket(INVALID_SOCKET)
     , m_hNotifyWnd(nullptr)
 {
-    m_recvBuffer.reserve(BUFFER_SIZE);
+    m_recvBuffer.reserve(PacketLimits::kMaxPacketSize);
 }
 
 MySocket::~MySocket()

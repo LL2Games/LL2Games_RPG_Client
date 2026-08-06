@@ -233,6 +233,15 @@ bool PacketManager::RegisterAllHandlers()
 		{
 			PortalPacketHandler::HandleMoveMap(pkt);
 		});
+
+	// 맵 입장 핸들러 등록
+	networkManager->RegisterHandler(
+		PKT_ENTER_MAP,
+		[](const ParsedPacket& pkt)
+		{
+			PortalPacketHandler::HandleMoveMap(pkt);
+		}
+	);
 	
 	return true;
 }

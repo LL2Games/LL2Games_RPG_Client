@@ -12,6 +12,7 @@
 #include "MySocket.h"
 //#include "UTIL.h"
 #include "..\\LL2_Client_Win_Source\\stbLogger.h"
+#include <algorithm>
 
 #include "CWorldNewChar.h"
 
@@ -21,6 +22,10 @@ extern std::string g_account_id;
 extern std::string g_channel_port;
 //로그인 캐릭터 아이디
 extern std::string g_char_id;
+// 로그인 일회용 토큰
+extern std::string g_world_ticket;
+// 채널 일회용 토큰
+extern std::string g_channel_ticket;
 
 
 // CWorld 대화 상자
@@ -236,82 +241,124 @@ void CWorld::OnSocketConnect(BOOL bConnect)
 
 int CWorld::InitWorld()
 {
-	int rc = EXIT_FAILURE;
-
 	m_pSock->m_status = E_WORLD_INIT;
 
-	std::vector<std::string> datas;
-	std::string body, pkt;
+	if (g_world_ticket.size() != 64)
+	{
+		M_LOGGER("World ticket is missing or invalid");
+		AfxMessageBox(_T("World 인증 티켓이 없습니다. 다시 로그인하세요."));
+		return EXIT_FAILURE;
+	}
 
 	try
 	{
-		datas.push_back(g_account_id);
-		body = PacketParser::MakeBody(datas);
-		pkt = PacketParser::MakePacket(PKT_INIT_WORLD, body);
+		const std::string body = PacketParser::MakeBody({ g_world_ticket });
 
-		m_pSock->SendPacket(pkt);
+		const std::string packet = PacketParser::MakePacket(PKT_INIT_WORLD, body);
+
+		if (!m_pSock->SendPacket(packet))
+		{
+			M_LOGGER("Failed to send World initialization packet");
+			AfxMessageBox(_T("World 인증 요청 전송에 실패했습니다."));
+			return EXIT_FAILURE;
+		}
 	}
-	catch (const std::length_error& e)
+	catch (const std::length_error& exception)
 	{
-		M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
-		goto err;
+		M_LOGGER("World initialization packet is too large: %s", exception.what());
+		return EXIT_FAILURE;
 	}
-	catch (const std::exception& e)
+	catch (const std::exception& exception)
 	{
-		M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
-		goto err;
+		M_LOGGER("World initialization packet creation failed: %s",exception.what());
+		return EXIT_FAILURE;
 	}
 
-	rc = EXIT_SUCCESS;
-err:
-
-	return rc;
+	return EXIT_SUCCESS;
 }
 
 int CWorld::OnInitWorld(const char* recvBuff, const size_t recvLen)
 {
-	int rc = EXIT_FAILURE;
-
-	size_t offset = 0;
-	std::string status, errMsg;
-	std::string sBuff;
-	std::vector<char> vBuff;
-
-	sBuff.append(recvBuff, recvLen);
-	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
-	auto pkt = PacketParser::Parse(vBuff);
-	if (!pkt.has_value())
+	if (recvBuff == nullptr || recvLen == 0)
 	{
-		return -1;
+		AfxMessageBox(_T("World 서버 응답이 비어 있습니다."));
+		return EXIT_FAILURE;
 	}
 
-	PacketParser::ParseLengthPrefixedString(pkt->payload.c_str(), pkt->payload.size(), offset, status, errMsg);
+	std::vector<char> packetBuffer(recvBuff,recvBuff + recvLen);
 
-	if (status == "nok")
+	ParseResult parseResult = PacketParser::TryParse(packetBuffer);
+
+	if (parseResult.status != ParseStatus::Complete)
 	{
-		CString strTmp;
-		PacketParser::ParseLengthPrefixedString(recvBuff, recvLen, offset, status, errMsg);
-		strTmp.Format(_T("World 초기화 실패: %s"), CString(status.c_str()));
-		AfxMessageBox(strTmp);
-		goto err;
+		M_LOGGER("World initialization response parse failed");
+		AfxMessageBox(_T("World 서버 응답 패킷이 올바르지 않습니다."));
+		return EXIT_FAILURE;
 	}
 
-	rc = EXIT_SUCCESS;
-err:
+	const ParsedPacket& packet = parseResult.packet;
 
-	if (rc != EXIT_SUCCESS)
+	if (packet.type != PKT_INIT_WORLD)
 	{
-		//AfxMessageBox(_T("로그인 실패: 회원가입을 하세요"));
-	}
-	else
-	{
-		AfxMessageBox(_T("World 성공"));
-		this->CharacterList(); //캐릭터 선택
-		//m_pSock->m_bWorldPhase = FALSE; //로그인 끝
-		//EndDialog(IDOK);
+		M_LOGGER("Unexpected World initialization packet type: %u", static_cast<unsigned int>(packet.type));
+		g_world_ticket.clear();
+		AfxMessageBox(_T("잘못된 World 서버 응답입니다."));
+		return EXIT_FAILURE;
 	}
 
-	return rc;
+	std::size_t offset = 0;
+	std::string status;
+	std::string errorMessage;
+
+	if (!PacketParser::ParseLengthPrefixedString(
+		packet.payload.data(),
+		packet.payload.size(),
+		offset,
+		status,
+		errorMessage))
+	{
+		M_LOGGER("World initialization status parse failed: %s", errorMessage.c_str());
+		g_world_ticket.clear();
+		AfxMessageBox(_T("World 인증 결과를 읽지 못했습니다."));
+		return EXIT_FAILURE;
+	}
+
+	if (status != "ok")
+	{
+		std::string serverError;
+
+		if (offset < packet.payload.size())
+		{
+			PacketParser::ParseLengthPrefixedString(
+				packet.payload.data(),
+				packet.payload.size(),
+				offset,
+				serverError,
+				errorMessage
+			);
+		}
+
+		M_LOGGER("World initialization rejected: %s",serverError.c_str());
+
+		// 실패한 티켓을 다시 사용하지 않음
+		g_world_ticket.clear();
+		AfxMessageBox(_T("World 인증에 실패했습니다. 다시 로그인하세요."));
+		return EXIT_FAILURE;
+	}
+
+	if (offset != packet.payload.size())
+	{
+		M_LOGGER("Unexpected field in World initialization response");
+		g_world_ticket.clear();
+		AfxMessageBox(_T("World 서버 응답에 알 수 없는 데이터가 있습니다."));
+		return EXIT_FAILURE;
+	}
+
+	// 서버에서 이미 소비한 일회성 티켓이므로 클라이언트에서도 제거
+	g_world_ticket.clear();
+	AfxMessageBox(_T("World 인증 성공"));
+	CharacterList();
+	return EXIT_SUCCESS;
 }
 
 int CWorld::CharacterList()
@@ -591,6 +638,7 @@ void CWorld::OnBnClickedButtonEnter()
 		std::vector<std::string> datas;
 
 		// 서버 프로토콜에 맞춰 채널 ID 전달
+    datas.push_back(std::to_string(charId)); //캐릭터 id 추가 (티켓생성을 위함)
 		datas.push_back(std::to_string(channelId));
 		
 		std::string body = PacketParser::MakeBody(datas);
@@ -598,121 +646,137 @@ void CWorld::OnBnClickedButtonEnter()
 		
 		m_pSock->SendPacket(pkt);
 	}
-	catch (const std::length_error& e)
+	catch (const std::length_error& exception)
 	{
-		M_LOGGER("CharacterList 패킷 크기 초과: %s", e.what());
+		M_LOGGER("ChannelSelect 패킷 크기 초과: %s",exception.what());
 	}
-	catch (const std::exception& e)
+	catch (const std::exception& exception)
 	{
-		M_LOGGER("CharacterList 패킷 생성 실패: %s", e.what());
+		M_LOGGER("ChannelSelect 패킷 생성 실패: %s",exception.what());
 	}
-
 
 }
 
 
 int CWorld::OnChannelSelect(const char* recvBuff, const size_t recvLen)
 {
-	//int i;
-	//char* context = NULL;
-	//char* pLine = NULL;
-	int rc = EXIT_FAILURE;
-	size_t offset = 0;
-	std::string errMsg;
-	CString strCharList;
-
-	std::string sBuff;
-	std::vector<char> vBuff;
-	CString wideValue;
-
-	sBuff.append(recvBuff, recvLen);
-	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
-	auto pkt = PacketParser::Parse(vBuff);
-	if (!pkt.has_value())
+	if (recvBuff == nullptr || recvLen == 0)
 	{
-		return -1;
+		AfxMessageBox(_T("잘못된 채널 선택 응답입니다."));
+		return EXIT_FAILURE;
 	}
 
-	std::string status, channel_ip, channel_port;
+	std::vector<char> packetBuffer(recvBuff, recvBuff + recvLen);
 
-	//status
-	if (!PacketParser::ParseLengthPrefixedString(
-		pkt->payload.c_str(),
-		pkt->payload.size(),
-		offset,
-		status,
-		errMsg))
+	auto packet = PacketParser::Parse(packetBuffer);
+
+	if (!packet.has_value() || packet->type != PKT_SELECT_CHANNEL)
 	{
-		//더이상 없으면 중단
-		//K_slog_trace(K_SLOG_DEBUG, "[%s][%d]gunoo22_TEST", __FUNCTION__, __LINE__);
-		rc = -1;
-		goto err;
+		AfxMessageBox(_T("채널 선택 응답 파싱에 실패했습니다."));
+		return EXIT_FAILURE;
 	}
 
-	if (status == "nok")
+	std::size_t offset = 0;
+	std::string errorMessage;
+
+	std::string status;
+	std::string channelIp;
+	std::string channelPort;
+	std::string channelState;
+	std::string channelTicket;
+
+	const auto parseField = [&](std::string& output)
+		{
+			return PacketParser::ParseLengthPrefixedString(
+				packet->payload.c_str(),
+				packet->payload.size(),
+				offset,
+				output,
+				errorMessage
+			);
+		};
+
+	if (!parseField(status))
 	{
-		rc = -1;
-		goto err;
+		AfxMessageBox(_T("채널 선택 상태 파싱에 실패했습니다."));
+		return EXIT_FAILURE;
 	}
 
-	//ip
-	if (!PacketParser::ParseLengthPrefixedString(
-		pkt->payload.c_str(),
-		pkt->payload.size(),
-		offset,
-		channel_ip,
-		errMsg))
+	if (status != "ok")
 	{
-		//더이상 없으면 중단
-		//K_slog_trace(K_SLOG_DEBUG, "[%s][%d]gunoo22_TEST", __FUNCTION__, __LINE__);
-		rc = -1;
-		goto err;
+		std::string serverError;
+
+		// NOK 응답에 오류 메시지가 있다면 읽는다.
+		if (offset < packet->payload.size())
+		{
+			parseField(serverError);
+		}
+
+		if (!serverError.empty())
+		{
+			AfxMessageBox(UTIL::Utf8ToCString(serverError));
+		}
+		else
+		{
+			AfxMessageBox(_T("채널 선택에 실패했습니다."));
+		}
+
+		return EXIT_FAILURE;
 	}
 
-	//port
-	if (!PacketParser::ParseLengthPrefixedString(
-		pkt->payload.c_str(),
-		pkt->payload.size(),
-		offset,
-		channel_port,
-		errMsg))
+	if (!parseField(channelIp) || !parseField(channelPort) || !parseField(channelState) || !parseField(channelTicket))
 	{
-		//더이상 없으면 중단
-		//K_slog_trace(K_SLOG_DEBUG, "[%s][%d]gunoo22_TEST", __FUNCTION__, __LINE__);
-		rc = -1;
-		goto err;
+		AfxMessageBox(_T("채널 선택 응답 필드가 부족합니다."));
+		return EXIT_FAILURE;
 	}
 
-
-
-	rc = EXIT_SUCCESS;
-err:
-
-	if (rc != EXIT_SUCCESS)
+	// 정의되지 않은 추가 데이터도 거부한다.
+	if (offset != packet->payload.size())
 	{
-		AfxMessageBox(_T("실패"));
-	}
-	else
-	{
-		CString strTmp;
-		CString wideValueIp = UTIL::Utf8ToCString(channel_ip);
-		CString wideValuePort = UTIL::Utf8ToCString(channel_port);
-		strTmp.Format(_T("Channel Select 성공 IP[%s], PORT[%s]"), wideValueIp.GetString(), wideValuePort.GetString());
-		AfxMessageBox(strTmp);
-		//this->CharacterList(); //캐릭터 선택
-		//m_pSock->m_bWorldPhase = FALSE; //로그인 끝
-		//EndDialog(IDOK);
-
-		//채널 포트 전역변수 등록
-		g_channel_port = CStringA(wideValuePort);
-
-		m_pSock->Disconnect(); //연결 끊기
-
-		//다이얼로그 종료
-		EndDialog(IDOK);
+		AfxMessageBox(_T("채널 선택 응답에 잘못된 데이터가 포함되어 있습니다."));
+		return EXIT_FAILURE;
 	}
 
-	return rc;
+	const bool isValidTicket = channelTicket.size() == 64 && std::all_of(
+			channelTicket.begin(),
+			channelTicket.end(),
+			[](const char value)
+			{
+				return
+					(value >= '0' && value <= '9') ||
+					(value >= 'a' && value <= 'f');
+			}
+		);
+
+	if (!isValidTicket)
+	{
+		AfxMessageBox(_T("Channel 인증 티켓이 올바르지 않습니다."));
+		return EXIT_FAILURE;
+	}
+
+	// 다음 Channel 서버 접속에서 사용할 정보를 보관한다.
+	g_channel_port = channelPort;
+	g_channel_ticket = channelTicket;
+
+	const CString wideIp = UTIL::Utf8ToCString(channelIp);
+
+	const CString widePort = UTIL::Utf8ToCString(channelPort);
+
+	const CString wideState = UTIL::Utf8ToCString(channelState);
+
+	CString message;
+	message.Format(_T("Channel Select 성공 IP[%s], PORT[%s], STATE[%s]"),
+		wideIp.GetString(),
+		widePort.GetString(),
+		wideState.GetString()
+	);
+
+	AfxMessageBox(message);
+
+	m_pSock->Disconnect();
+	EndDialog(IDOK);
+
+	return EXIT_SUCCESS;
 }
 //
 ////로그인 버튼 클릭

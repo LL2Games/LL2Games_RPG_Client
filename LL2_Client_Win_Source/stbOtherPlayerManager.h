@@ -32,7 +32,7 @@ namespace stb
         // 플레이어 맵 접근
         std::map<std::string, OtherPlayer*>& GetPlayers() { return m_players; }
 
-        void RemoveAllPlayersFromScene(Scene* scene);
+        void ClearFromScene(Scene* scene);
     private:
         std::map<std::string, OtherPlayer*> m_players;
     };

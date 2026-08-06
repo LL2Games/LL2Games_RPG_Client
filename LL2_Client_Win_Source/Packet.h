@@ -2,8 +2,9 @@
 #include <string>
 #include <cstdint>
 #include <vector>
+#include <cstddef>
+#include <limits>
 
-#define BUFFER_SIZE 1024
 #define WM_SOCKET_RECEIVE (WM_USER + 100)
 #define WM_SOCKET_DISCONNECT (WM_USER + 101)
 #define WM_CHAT_SOCKET_RECEIVE (WM_USER + 102)   // ← 추가
@@ -16,6 +17,21 @@ struct PacketHeader
 };
 
 #pragma pack(pop)
+
+enum class ParseStatus
+{
+    Complete,
+    NeedMoreData,
+    InvalidPacket,
+};
+
+namespace PacketLimits
+{
+    inline constexpr std::size_t kReceiveChunkSize = 4 * 1024;
+    inline constexpr std::size_t kMaxPacketSize = 16 * 1024;
+
+    static_assert(kMaxPacketSize <= (std::numeric_limits<uint16_t>::max)(),"Maximum packet size exceeds PacketHeader::length range");
+}
 
 enum PACKET_TYPE : uint16_t {
     // 0x0001 ~ 0x001F : 로그인 / 월드
@@ -85,6 +101,12 @@ struct ParsedPacket
 {
     uint16_t type;
     std::string payload;
+};
+
+struct ParseResult
+{
+    ParseStatus status;
+    ParsedPacket packet;
 };
 
 struct PacketContext

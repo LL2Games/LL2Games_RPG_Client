@@ -74,44 +74,6 @@ namespace stb
         }
     }
 
-    // 채널 인증 응답 핸들러 등록
-    inline void RegisterChannelAuthHandler()
-    {
-        NetworkManager::getInstance()->RegisterHandler(PKT_CHANNEL_AUTH,
-            [](const ParsedPacket& pkt)
-            {
-                OutputDebugStringA("채널 인증 응답 받음!\n");
-                
-                // 응답 데이터 파싱 (필요시)
-                try
-                {
-                    if (pkt.payload.size() > sizeof(uint16_t))
-                    {
-                        const char* data = pkt.payload.data();
-                        size_t offset = 0;
-
-                        uint16_t len = *(uint16_t*)(data + offset);
-                        offset += sizeof(uint16_t);
-
-                        if (offset + len <= pkt.payload.size())
-                        {
-                            std::string response(data + offset, len);
-                            std::string msg = "서버 응답: " + response + "\n";
-                            OutputDebugStringA(msg.c_str());
-                        }
-                    }
-                    
-                    // 채널 인증 성공 후 맵 입장 패킷 전송
-                    OutputDebugStringA("채널 인증 완료! 맵 입장 패킷 전송...\n");
-                    SendEnterMap(NetworkConfig::GetCharacterId(), NetworkConfig::MAP_ID);
-                }
-                catch (...)
-                {
-                    OutputDebugStringA("채널 인증 응답 파싱 중 오류\n");
-                }
-            }
-        );
-    }
 
     // 채널 인증 패킷 전송 (패킷 타입 0x09, 데이터: 캐릭터 ID)
     inline void SendChannelAuth()

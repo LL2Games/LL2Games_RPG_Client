@@ -8,6 +8,7 @@ namespace stb
     extern std::string g_CharacterName;
     extern int g_ChannelPort;
     extern int g_ChatPort;
+    extern std::string g_ChannelTicket;
     extern std::string g_ServerIp;
 
     // 네트워크 설정
@@ -32,7 +33,7 @@ namespace stb
 
         
         // 맵 ID
-        static constexpr const char* MAP_ID = "100000000";
+        //static constexpr const char* MAP_ID = "100000000";
         
         // ==============================
         
@@ -41,6 +42,10 @@ namespace stb
         
         // 재연결 시도 횟수
         static constexpr int RECONNECT_ATTEMPTS = 3;
+
+        static void SetChannelTicket(const std::string& ticket);
+        static const std::string& GetChannelTicket();
+        static void ClearChannelTicket();
     };
 }
 
