@@ -10,6 +10,40 @@
 
 #include "..\\LL2_Client_Win_Source\\Packet.h"
 #include "..\\LL2_Client_Win_Source\\PacketParser.h"
+#include "..\\LL2_Client_Win_Source\\Util.h"
+
+static BOOL CheckIdValidate(const CString& strName, CString& strErrMsg)
+{
+	if (strName.GetLength() == 0)
+	{
+		strErrMsg = _T("ID를 입력하세요");
+		return FALSE;
+	}
+
+	//글자수 제한
+	if (strName.GetLength() < 5 || strName.GetLength() > 20)
+	{
+		strErrMsg = _T("ID는 최소 5자리 이상 20자리 이하여야 합니다.");
+		return FALSE;
+	}
+
+	CStringW wName(strName);  // 유니코드 변환
+	for (int i = 0; i < wName.GetLength(); ++i)
+	{
+		WCHAR ch = wName[i];
+		if (!(
+			(ch >= L'A' && ch <= L'Z') ||
+			(ch >= L'a' && ch <= L'z') ||
+			(ch >= L'0' && ch <= L'9')
+			))
+		{
+			strErrMsg = _T("아이디는 영어, 숫자로만 이루어져야 합니다");
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
 
 
 // CRegister 대화 상자
@@ -115,6 +149,7 @@ int CRegister::OnRegister(const char* recvBuff, const size_t recvLen)
 }
 void CRegister::OnBnClickedButtonRegister()
 {
+	CString strErrMsg;
 	CString strID;
 	CString strPw;
 	CString strPwChecked;
@@ -125,9 +160,9 @@ void CRegister::OnBnClickedButtonRegister()
 
 #if 1 //예외처리
 	//ID 예외처리
-	if (strID.GetLength() == 0)
+	if (!CheckIdValidate(strID, strErrMsg))
 	{
-		AfxMessageBox(_T("ID를 입력하세요"));
+		AfxMessageBox(strErrMsg);
 		return;
 	}
 
