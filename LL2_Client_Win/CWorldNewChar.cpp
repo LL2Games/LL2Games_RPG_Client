@@ -6,6 +6,7 @@
 #include "MySocket.h"
 #include "..\\LL2_Client_Win_Source\\Packet.h"
 #include "..\\LL2_Client_Win_Source\\PacketParser.h"
+#include "..\\LL2_Client_Win_Source\\StringConvert.h"
 
 
 static BOOL CheckNickValidate(const CString& strName, CString& strErrMsg)
@@ -104,7 +105,7 @@ void CWorldNewChar::CheckDupNick(const CString& strNick)
 	std::vector<std::string> datas;
 	std::string body, pkt;
 
-	datas.push_back(std::string(nickA));
+	datas.push_back(Convert::AnsiToUtf8(std::string(nickA)));
 
 	body = PacketParser::MakeBody(datas);
 	pkt = PacketParser::MakePacket(PKT_CHECK_DUP_CHAR, body);
@@ -203,7 +204,7 @@ void CWorldNewChar::GenNewChar(const CString& strNick, const int job)
 	std::string body, pkt;
 
 	datas.push_back(m_account_id);
-	datas.push_back(std::string(nickA));
+	datas.push_back(Convert::AnsiToUtf8(std::string(nickA)));
 	datas.push_back(std::to_string(job));
 
 	body = PacketParser::MakeBody(datas);

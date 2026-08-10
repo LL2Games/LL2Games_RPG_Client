@@ -168,6 +168,78 @@ namespace Convert
 		return ansi;
 	}
 
+	inline std::string AnsiToUtf8(const std::string& ansi)
+	{
+		if (ansi.empty())
+			return std::string();
+
+		// 1. CP949 -> UTF-16
+		int wideLen = MultiByteToWideChar(
+			949,    // CP949
+			0,
+			ansi.c_str(),
+			-1,
+			nullptr,
+			0
+		);
+
+		if (wideLen <= 0)
+			return std::string();
+
+		std::wstring wide;
+		wide.resize(wideLen);
+
+		int wideResult = MultiByteToWideChar(
+			949,    // CP949
+			0,
+			ansi.c_str(),
+			-1,
+			&wide[0],
+			wideLen
+		);
+
+		if (wideResult <= 0)
+			return std::string();
+
+		// 2. UTF-16 -> UTF-8
+		int utf8Len = WideCharToMultiByte(
+			CP_UTF8,
+			0,
+			wide.c_str(),
+			-1,
+			nullptr,
+			0,
+			nullptr,
+			nullptr
+		);
+
+		if (utf8Len <= 0)
+			return std::string();
+
+		std::string utf8;
+		utf8.resize(utf8Len);
+
+		int utf8Result = WideCharToMultiByte(
+			CP_UTF8,
+			0,
+			wide.c_str(),
+			-1,
+			&utf8[0],
+			utf8Len,
+			nullptr,
+			nullptr
+		);
+
+		if (utf8Result <= 0)
+			return std::string();
+
+		// resize에 null 문자까지 포함되어 있으므로 제거
+		if (!utf8.empty() && utf8.back() == '\0')
+			utf8.pop_back();
+
+		return utf8;
+	}
+
 	inline std::wstring StringToWString(const std::string& str)
 	{
 		if (str.empty())
