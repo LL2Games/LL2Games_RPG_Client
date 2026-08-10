@@ -56,7 +56,7 @@ void MovePacketHandler::Execute(const ParsedPacket& pkt)
         // 서버가 이동을 거부한 경우 서버 좌표로 보정
         if (firstField == "nok")
         {
-            OutputDebugStringA("[MOVE] entered NOK handler\n");
+            OutputDebugStringW(L"[이동] 서버 이동 거부 응답 처리 시작\n");
             std::string reason;
             float serverX = 0.0F;
             float serverY = 0.0F;
@@ -73,8 +73,9 @@ void MovePacketHandler::Execute(const ParsedPacket& pkt)
                 return;
             }
 
-            std::string positionLog ="[MOVE] parsed server position x=" + std::to_string(serverX) + " y=" + std::to_string(serverY) +"\n";
-            OutputDebugStringA(positionLog.c_str());
+            wchar_t positionLog[256]{};
+            swprintf_s(positionLog,L"[이동] 서버 좌표 파싱 완료 X=%.3f Y=%.3f\n",serverX,serverY);
+            OutputDebugStringW(positionLog);
 
             stb::Player* localPlayer = M_PLAYERMANAGER->GetLocalPlayer();
 
@@ -102,7 +103,7 @@ void MovePacketHandler::Execute(const ParsedPacket& pkt)
                 localPlayer->GetPlayerLocation()->pos = serverPosition;
             }
 
-            OutputDebugStringA("[MOVE] correction applied\n");
+            OutputDebugStringW(L"[이동] 서버 기준 좌표로 위치 보정 완료\n");
 
             return;
         }
@@ -158,14 +159,12 @@ void MovePacketHandler::Execute(const ParsedPacket& pkt)
     }
     catch (const std::exception& exception)
     {
-        M_LOGGER(
-            "이동 패킷 처리 중 예외 발생: %s",
-            exception.what()
-        );
+        OutputDebugStringA(exception.what());
+         
     }
     catch (...)
     {
-        M_LOGGER("이동 패킷 처리 중 알 수 없는 예외 발생");
+        OutputDebugStringA("이동 패킷 처리 중 알 수 없는 예외 발생\n");
     }
 }
 

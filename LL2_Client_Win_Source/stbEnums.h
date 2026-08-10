@@ -23,12 +23,11 @@ namespace stb::enums
 		None,
 		BackGround,
 		Tile,
+		Floor,      // 포탈 등 맵 오브젝트
 		Animal,
-		Player,
-		Floor,
+		Player,     // 로컬 및 다른 플레이어
 		Particle,
 		Max = 16,
-
 	};
 
 	enum class eResourceType

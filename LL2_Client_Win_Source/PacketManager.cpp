@@ -102,6 +102,13 @@ bool PacketManager::RegisterAllHandlers()
 			OtherPlayerPacketHandler::HandleOtherPlayerEnter(pkt);
 		});
 
+	networkManager->RegisterHandler(PKT_OTHERPLAYER_LEAVE,
+		[](const ParsedPacket& pkt)
+		{
+			OtherPlayerPacketHandler::HandleOtherPlayerLeave(pkt);
+		}
+	);
+
 	// 다른 플레이어 스냅샷 핸들러 등록
 	networkManager->RegisterHandler(PKT_OTHERPLAYER_SNAPSHOT,
 		[](const ParsedPacket& pkt)

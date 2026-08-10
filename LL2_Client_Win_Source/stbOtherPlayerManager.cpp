@@ -187,18 +187,40 @@ namespace stb
 
     void OtherPlayerManager::RemovePlayer(const std::string& charId)
     {
-        auto it = m_players.find(charId);
-        if (it != m_players.end())
+        const auto it = m_players.find(charId);
+
+        if (it == m_players.end())
         {
-            if (it->second != nullptr)
-            {
-                delete it->second;
-            }
-            m_players.erase(it);
-            
-            std::string msg = "다른 플레이어 제거: " + charId + "\n";
-            OutputDebugStringA(msg.c_str());
+            return;
         }
+
+        OtherPlayer* player = it->second;
+
+        if (player != nullptr)
+        {
+            SceneManager* sceneManager = SingletonBase<SceneManager>::getInstance();
+
+            if (sceneManager != nullptr)
+            {
+                Scene* activeScene = sceneManager->GetActiveScene();
+
+                if (activeScene != nullptr)
+                {
+                    Layer* playerLayer = activeScene->GetLayer(enums::eLayerType::Player);
+
+                    if (playerLayer != nullptr)
+                    {
+                        playerLayer->RemoveGameObject(player);
+                    }
+                }
+            }
+
+            delete player;
+        }
+
+        m_players.erase(it);
+        const std::string message ="다른 플레이어 제거: " + charId + "\n";
+        OutputDebugStringA(message.c_str());
 
     }
 
