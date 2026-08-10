@@ -14,6 +14,8 @@
 #include "stbPlayScene.h"
 #include "MovePacketHandler.h"
 
+#include <cmath>
+
 
 #define M_INPUT stb::SingletonBase<stb::Input>::getInstance()
 #define M_TIME  stb::SingletonBase<stb::Time>::getInstance()
@@ -113,61 +115,96 @@ namespace stb
 	void PlayerScript::Idle(bool changeState)
 	{
 		if (M_UIMANAGER->IsInputFocused())
-			return; 
-		Transform* tr = GetOwner()->GetComponent<Transform>();
-		if (tr == nullptr)
+		{
 			return;
+		}
+
+		Transform* tr = GetOwner()->GetComponent<Transform>();
+
+		if (tr == nullptr)
+		{
+			return;
+		}
 
 		Vector2 pos = tr->GetPosition();
 		bool moved = false;
 
-		//스킬 사용중에 이동을 막으려면 이곳에 Skill 조건 추가하면됌
+		const float moveSpeed = m_player->GetPlayerMoveSpeed();
+
 		if (m_player->GetState() != PlayerState::Attack)
 		{
+			float moveX = 0.0F;
+			float moveY = 0.0F;
+
 			if (M_INPUT->GetAction(eActionCode::MoveRight))
 			{
-				pos.x += 200.0f * M_TIME->GetDeltaTime();
-				m_player->SetFacing(FacingDirection::Right);
-				m_animator->SetFlipX(true);
-				moved = true;
+				moveX += 1.0F;
 			}
 
 			if (M_INPUT->GetAction(eActionCode::MoveLeft))
 			{
-				pos.x -= 200.0f * M_TIME->GetDeltaTime();
-				m_player->SetFacing(FacingDirection::Left);
-				m_animator->SetFlipX(false);
-				moved = true;
+				moveX -= 1.0F;
 			}
 
 			if (M_INPUT->GetAction(eActionCode::MoveUp))
 			{
-				pos.y -= 200.0f * M_TIME->GetDeltaTime();
-				moved = true;
+				moveY -= 1.0F;
 			}
 
 			if (M_INPUT->GetAction(eActionCode::MoveDown))
 			{
-				pos.y += 200.0f * M_TIME->GetDeltaTime();
-				moved = true;
+				moveY += 1.0F;
 			}
 
-			tr->SetPosition(pos);
-			if (m_player->GetPlayerLocation() != nullptr)
+			const float directionLength = std::sqrt(moveX * moveX +moveY * moveY);
+
+			if (directionLength > 0.0F)
 			{
-				m_player->GetPlayerLocation()->pos = pos;
+				// 대각선 방향을 포함해 방향 벡터의 길이를 1로 만든다.
+				moveX /= directionLength;
+				moveY /= directionLength;
+
+				const float movedDistance = moveSpeed * M_TIME->GetDeltaTime();
+
+				pos.x += moveX * movedDistance;
+				pos.y += moveY * movedDistance;
+
+				if (moveX > 0.0F)
+				{
+					m_player->SetFacing(FacingDirection::Right);
+					m_animator->SetFlipX(true);
+				}
+				else if (moveX < 0.0F)
+				{
+					m_player->SetFacing(FacingDirection::Left);
+					m_animator->SetFlipX(false);
+				}
+
+				moved = true;
+
+				tr->SetPosition(pos);
+
+				if (m_player->GetPlayerLocation() != nullptr)
+				{
+					m_player->GetPlayerLocation()->pos = pos;
+				}
 			}
 		}
-		
+
 		if (changeState)
 		{
 			stb::Player* player = M_PLAYERMANAGER->GetLocalPlayer();
+
 			if (player != nullptr)
 			{
 				if (moved)
+				{
 					player->SetState(PlayerState::Walk);
+				}
 				else
+				{
 					player->SetState(PlayerState::Idle);
+				}
 			}
 		}
 
@@ -179,19 +216,22 @@ namespace stb
 
 			if (mNetworkSendTimer >= NETWORK_SEND_INTERVAL)
 			{
-				auto netMgr = stb::NetworkManager::getInstance();
-				if (netMgr != nullptr && netMgr->IsConnected())
+				auto networkManager = stb::NetworkManager::getInstance();
+
+				if (networkManager != nullptr &&
+					networkManager->IsConnected())
 				{
-					MovePacketHandler::SendPlayerMove(m_player);
-					//stb::SendPlayerMove(pos.x, pos.y, 100.0f);
+					MovePacketHandler::SendPlayerMove(
+						m_player
+					);
 				}
 
-				mNetworkSendTimer = 0.0f;
+				mNetworkSendTimer = 0.0F;
 			}
 		}
 		else
 		{
-			mNetworkSendTimer = 0.0f;
+			mNetworkSendTimer = 0.0F;
 		}
 	}
 
