@@ -114,6 +114,7 @@ void CMySocket::OnReceive(int nErrorCode)
             pWorldDlg->OnChannelSelect(packetData, packetSize);
             break;
         }
+
         //캐릭터 생성
         case E_WORLD_NEW_CHARACTER:
         {
@@ -129,11 +130,23 @@ void CMySocket::OnReceive(int nErrorCode)
             pDlg->OnCheckDupNick(packetData, packetSize);
             break;
         }
-            default:
+
+        //캐릭터 삭제
+        case E_WORLD_DEL_CHARACTER:
+        {
+            CWorld* pWorldDlg = static_cast<CWorld*>(m_dlg);
+            pWorldDlg->OnDelCharacter(packetData, packetSize);
+            break;
+        }
+
+        default:
+        {
             M_LOGGER("Unhandled socket state: %d", static_cast<int>(m_status));
             break;
+        }
 
         }
+
     }
 }
 

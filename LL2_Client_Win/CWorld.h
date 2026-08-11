@@ -87,4 +87,8 @@ public:
 	CComboBox m_comboChannel;
 	CListCtrl m_listCharacter;
 	afx_msg void OnBnClickedButtonNewChar();
+	afx_msg void OnBnClickedButtonDelChar();
+
+	int DelCharacter(const long long charId);
+	void OnDelCharacter(const char* recvBuff, const size_t recvLen);
 };

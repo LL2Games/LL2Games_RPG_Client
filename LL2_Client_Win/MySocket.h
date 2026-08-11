@@ -16,7 +16,8 @@ enum e_Status
     E_WORLD_CHANNEL_SELECT,
     E_WORLD_CHAR_SELECT,
     E_WORLD_NEW_CHARACTER,
-    E_WORLD_CHECK_DUP_NICK
+    E_WORLD_CHECK_DUP_NICK,
+    E_WORLD_DEL_CHARACTER,
 };
 
 class CMySocket : public CAsyncSocket {
