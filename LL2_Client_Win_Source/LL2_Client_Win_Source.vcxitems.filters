@@ -367,9 +367,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkDebug.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkInit.h">
-      <Filter>Networking</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkManager.h">
       <Filter>Networking</Filter>
     </ClInclude>

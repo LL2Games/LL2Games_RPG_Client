@@ -95,7 +95,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)stbMath.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkConfig.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkDebug.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkInit.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbNetworkManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stbOtherPlayer.h" />
