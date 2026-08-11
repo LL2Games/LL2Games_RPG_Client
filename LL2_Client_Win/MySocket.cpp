@@ -147,6 +147,9 @@ void CMySocket::OnConnect(int nErrorCode)
             CString msg;
             msg.Format(_T("서버 연결 실패: %d"), nErrorCode);
             AfxMessageBox(msg);
+
+            //서버연결 실패 후 소켓 클로즈
+            this->Close();
         }
 
         switch (m_status)
@@ -173,6 +176,12 @@ void CMySocket::OnConnect(int nErrorCode)
 BOOL CMySocket::connect(const CString &strHost, const int nPort)
 {
     BOOL bRet;
+
+    // 0. 기존 소켓이 남아 있으면 정리 
+    if (m_hSocket != INVALID_SOCKET)
+    {
+        this->Close();
+    }
     
     // 1. Socket 생성
     bRet = this->Create();
