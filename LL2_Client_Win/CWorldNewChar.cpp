@@ -6,6 +6,42 @@
 #include "MySocket.h"
 #include "..\\LL2_Client_Win_Source\\Packet.h"
 #include "..\\LL2_Client_Win_Source\\PacketParser.h"
+#include "..\\LL2_Client_Win_Source\\StringConvert.h"
+
+
+static BOOL CheckNickValidate(const CString& strName, CString& strErrMsg)
+{
+	if (strName.GetLength() == 0)
+	{
+		strErrMsg = _T("닉네임을 입력하세요");
+		return FALSE;
+	}
+
+	//글자수 제한
+	if (strName.GetLength() < 2 || strName.GetLength() > 10)
+	{
+		strErrMsg = _T("닉네임은 최소 2자리 이상 10자리 이하여야 합니다.");
+		return FALSE;
+	}
+
+	CStringW wName(strName);  // 유니코드 변환
+	for (int i = 0; i < wName.GetLength(); ++i)
+	{
+		WCHAR ch = wName[i];
+		if (!(
+			(ch >= L'A' && ch <= L'Z') ||
+			(ch >= L'a' && ch <= L'z') ||
+			(ch >= L'0' && ch <= L'9') ||
+			(ch >= 0xAC00 && ch <= 0xD7A3)   // 한글 완성형
+			))
+		{
+			strErrMsg = _T("닉네임은 영어, 숫자, 한글로만 이루어져야 합니다.");
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
 
 // CWorldNewChar 대화 상자
 
@@ -48,12 +84,13 @@ BOOL CWorldNewChar::OnInitDialog()
 void CWorldNewChar::OnBnClickedButtonCheckDup()
 {
 	CString strNick;
+	CString strErrMsg;
 	m_editNick.GetWindowText(strNick);
 	
 	//Nick 예외처리
-	if (strNick.GetLength() == 0)
+	if (!CheckNickValidate(strNick, strErrMsg))
 	{
-		AfxMessageBox(_T("닉네임을 입력하세요"));
+		AfxMessageBox(strErrMsg);
 		return;
 	}
 
@@ -68,7 +105,7 @@ void CWorldNewChar::CheckDupNick(const CString& strNick)
 	std::vector<std::string> datas;
 	std::string body, pkt;
 
-	datas.push_back(std::string(nickA));
+	datas.push_back(Convert::AnsiToUtf8(std::string(nickA)));
 
 	body = PacketParser::MakeBody(datas);
 	pkt = PacketParser::MakePacket(PKT_CHECK_DUP_CHAR, body);
@@ -167,7 +204,7 @@ void CWorldNewChar::GenNewChar(const CString& strNick, const int job)
 	std::string body, pkt;
 
 	datas.push_back(m_account_id);
-	datas.push_back(std::string(nickA));
+	datas.push_back(Convert::AnsiToUtf8(std::string(nickA)));
 	datas.push_back(std::to_string(job));
 
 	body = PacketParser::MakeBody(datas);
