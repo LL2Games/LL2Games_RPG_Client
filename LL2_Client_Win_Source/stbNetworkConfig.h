@@ -10,6 +10,7 @@ namespace stb
     extern int g_ChatPort;
     extern std::string g_ChannelTicket;
     extern std::string g_ServerIp;
+    extern std::string g_CurMapId;
 
     // 네트워크 설정
     // 서버 IP와 포트를 여기서 변경하세요!
@@ -29,6 +30,7 @@ namespace stb
         static const char* GetCharacterId() { return g_CharacterId; }
 
         static void SetCharacterName(const std::string& name) { g_CharacterName = name; }
+        static void SetMapId(const std::string& mapId) { g_CurMapId = mapId; }
         static std::string GetCharacterName() { return g_CharacterName; }
 
         

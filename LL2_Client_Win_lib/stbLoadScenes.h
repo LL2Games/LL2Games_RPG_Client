@@ -9,6 +9,8 @@
 #include "Map_100000001.h"
 #include "Map_100000002.h"
 
+#include "..\\LL2_Client_Win_Source\\stbNetworkConfig.h"
+
 #define SCENEMANAGER stb::SingletonBase<stb::SceneManager>::getInstance()
 #define M_GAMESESSION stb::SingletonBase<GameSession>::getInstance()
 
@@ -24,7 +26,9 @@ namespace stb
 		SCENEMANAGER->CreateScene<Map_100000001>(L"Map_100000001");
 		SCENEMANAGER->CreateScene<Map_100000002>(L"Map_100000002");
 
-		SCENEMANAGER->LoadScene(L"Map_100000000");
+		//SCENEMANAGER->LoadScene(L"Map_100000000");
+		std::wstring wCurMapId(g_CurMapId.begin(), g_CurMapId.end());
+		SCENEMANAGER->LoadScene(wCurMapId.c_str());
 		SCENEMANAGER->SetOverlayScene(L"ChatScene");
 	}
 

@@ -18,7 +18,7 @@ void ChannelInitPacketHandler::Execute(const ParsedPacket& pkt)
         size_t offset = 0;
         const char* data = pkt.payload.c_str();
         size_t payloadSize = pkt.payload.size();
-        std::string status, name, errMsg;
+        std::string status, name, mapId, errMsg;
 
         if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, status, errMsg))
         {
@@ -48,6 +48,9 @@ void ChannelInitPacketHandler::Execute(const ParsedPacket& pkt)
         if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, name, errMsg))
             return;
 
+        if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, mapId, errMsg))
+            return;
+
         if (offset != payloadSize)
         {
             M_LOGGER("Channel authentication response contains trailing data");
@@ -55,6 +58,7 @@ void ChannelInitPacketHandler::Execute(const ParsedPacket& pkt)
         }
 
         stb::NetworkConfig::SetCharacterName(name); 
+        stb::NetworkConfig::SetMapId(mapId);
         // 채널 인증 성공 후 맵 입장 패킷 전송
         OutputDebugStringA("채널 인증 완료! 맵 입장 패킷 전송...\n");
         SendEnterMap();
@@ -111,7 +115,7 @@ void ChannelInitPacketHandler::SendChannelAuth()
 
 void ChannelInitPacketHandler::SendEnterMap()
 {
-    const std::vector<std::string> data;
+    std::vector<std::string> data;
 
     try
     {
