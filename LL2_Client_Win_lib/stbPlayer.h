@@ -76,7 +76,7 @@ namespace stb
 
 		Animator* GetAnimator() { return m_animator; }
 
-		float GetPlayerMoveSpeed() { return m_moveSpeed; }
+		const float GetPlayerMoveSpeed() { return m_moveSpeed; }
 
 		StatViewData GetStatViewData() const;
 	public:

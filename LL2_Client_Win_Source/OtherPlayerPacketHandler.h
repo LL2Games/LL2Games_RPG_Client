@@ -6,6 +6,7 @@ class OtherPlayerPacketHandler
 {
 public:
 	static void HandleOtherPlayerEnter(const ParsedPacket& pkt);
+	static void HandleOtherPlayerLeave(const ParsedPacket& pkt);
 	static void HandleOtherPlayerSnapShot(const ParsedPacket& pkt);
 	static void Execute(const ParsedPacket& pkt) ;
 	

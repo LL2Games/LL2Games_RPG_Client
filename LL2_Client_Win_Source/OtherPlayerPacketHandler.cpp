@@ -96,6 +96,39 @@ void OtherPlayerPacketHandler::HandleOtherPlayerEnter(const ParsedPacket& pkt)
 
 }
 
+void OtherPlayerPacketHandler::HandleOtherPlayerLeave(const ParsedPacket& pkt)
+{
+    try
+    {
+        std::size_t offset = 0;
+        std::string errMsg;
+        int playerId = 0;
+
+        if (!PacketParser::ParseNextIntField(pkt.payload.c_str(), pkt.payload.size(), offset, playerId, errMsg))
+        {
+            throw std::runtime_error(errMsg);
+        }
+
+        auto* otherPlayerManager = stb::OtherPlayerManager::getInstance();
+
+        if (otherPlayerManager == nullptr)
+        {
+            throw std::runtime_error("OtherPlayerManager is not available");
+        }
+
+        otherPlayerManager->RemovePlayer(std::to_string(playerId));
+
+        const std::string message = "[OtherLeave] playerId=" +std::to_string(playerId) + "\n";
+        OutputDebugStringA(message.c_str());
+    }
+    catch (const std::exception& exception)
+    {
+        OutputDebugStringA("[OtherLeave] packet handling failed: ");
+        OutputDebugStringA(exception.what());
+        OutputDebugStringA("\n");
+    }
+}
+
 void OtherPlayerPacketHandler::HandleOtherPlayerSnapShot(const ParsedPacket& pkt)
 {
     try

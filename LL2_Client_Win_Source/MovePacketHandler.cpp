@@ -6,6 +6,10 @@
 #include "PacketData.h"
 #include "stbNetworkManager.h"
 #include "stbTransform.h"
+#include "stbLogger.h"
+#include "PlayerManager.h"
+
+#define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 
 
 /*
@@ -17,95 +21,151 @@ struct ParsedPacket
 */
 
 
-
 void MovePacketHandler::Execute(const ParsedPacket& pkt)
 {
     try
     {
-        size_t offset = 0;
-        size_t payloadSize = pkt.payload.size();
+        std::size_t offset = 0;
+        const std::size_t payloadSize = pkt.payload.size();
+        const char* data = pkt.payload.c_str();
 
-        std::string playerId;
+        std::string firstField;
         std::string errMsg;
-        int state = 0;
-        OtherPlayerMove otherPlayerMove{};
 
-        if (payloadSize < sizeof(uint16_t))
+        if (payloadSize < sizeof(std::uint16_t))
         {
-            //LOG("[이동 패킷] 페이로드 크기 부족\n");
             return;
         }
 
-        // 1. playerID (char_id)
-        if (!PacketParser::ParseLengthPrefixedString(
-            pkt.payload.c_str(),
-            payloadSize,
-            offset,
-            playerId,
-            errMsg
-        ))
+        // 첫 필드는 ok, nok 또는 이동한 플레이어 ID다.
+        if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, firstField, errMsg))
         {
-            // 로그 출력 필요
+            M_LOGGER("이동 패킷 첫 필드 파싱 실패: %s",errMsg.c_str());
             return;
         }
+
+        std::string debugMessage ="[PKT_PLAYER_MOVE 수신] firstField=[" + firstField +"]\n";
+        OutputDebugStringA(debugMessage.c_str());
+
+        // 서버가 보낸 정상 이동 응답
+        if (firstField == "ok")
+        {
+            return;
+        }
+
+        // 서버가 이동을 거부한 경우 서버 좌표로 보정
+        if (firstField == "nok")
+        {
+            OutputDebugStringW(L"[이동] 서버 이동 거부 응답 처리 시작\n");
+            std::string reason;
+            float serverX = 0.0F;
+            float serverY = 0.0F;
+
+            if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, reason, errMsg))
+            {
+                OutputDebugStringA("[MOVE] failed to parse reason\n");
+                return;
+            }
+
+            if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, serverX, errMsg) || !PacketParser::ParseNextFloatField(data, payloadSize, offset, serverY, errMsg))
+            {
+                OutputDebugStringA("[MOVE] failed to parse server position\n");
+                return;
+            }
+
+            wchar_t positionLog[256]{};
+            swprintf_s(positionLog,L"[이동] 서버 좌표 파싱 완료 X=%.3f Y=%.3f\n",serverX,serverY);
+            OutputDebugStringW(positionLog);
+
+            stb::Player* localPlayer = M_PLAYERMANAGER->GetLocalPlayer();
+
+            if (localPlayer == nullptr)
+            {
+                OutputDebugStringA("[MOVE] local player is null\n");
+                return;
+            }
+
+            stb::Transform* transform =
+                localPlayer->GetComponent<stb::Transform>();
+
+            if (transform == nullptr)
+            {
+                OutputDebugStringA("[MOVE] local transform is null\n");
+                return;
+            }
+
+            const stb::math::Vector2 serverPosition{serverX,serverY};
+
+            transform->SetPosition(serverPosition);
+
+            if (localPlayer->GetPlayerLocation() != nullptr)
+            {
+                localPlayer->GetPlayerLocation()->pos = serverPosition;
+            }
+
+            OutputDebugStringW(L"[이동] 서버 기준 좌표로 위치 보정 완료\n");
+
+            return;
+        }
+
+        // ok/nok가 아니면 다른 플레이어의 ID다.
+        const std::string& playerId = firstField;
 
         if (playerId == stb::NetworkConfig::GetCharacterId())
         {
             return;
         }
 
-        if(!PacketParser::ParseNextFloatField(pkt.payload.c_str(), payloadSize, offset, otherPlayerMove.xPos, errMsg))
+        int state = 0;
+        OtherPlayerMove otherPlayerMove{};
+
+        if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, otherPlayerMove.xPos, errMsg))
         {
             return;
         }
 
-        if (!PacketParser::ParseNextFloatField(pkt.payload.c_str(), payloadSize, offset, otherPlayerMove.yPos, errMsg))
+        if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, otherPlayerMove.yPos, errMsg))
         {
             return;
         }
 
-        if (!PacketParser::ParseNextFloatField(pkt.payload.c_str(), payloadSize, offset, otherPlayerMove.speed, errMsg))
+        if (!PacketParser::ParseNextFloatField( data, payloadSize, offset, otherPlayerMove.speed, errMsg))
         {
             return;
         }
 
-        if (!PacketParser::ParseNextIntField(pkt.payload.c_str(), payloadSize, offset, otherPlayerMove.dir, errMsg))
+        if (!PacketParser::ParseNextIntField(data, payloadSize, offset, otherPlayerMove.dir, errMsg))
         {
             return;
         }
 
-        if (!PacketParser::ParseNextIntField(pkt.payload.c_str(), payloadSize, offset, state, errMsg))
+        if (!PacketParser::ParseNextIntField(data, payloadSize, offset, state, errMsg))
         {
             return;
         }
 
         otherPlayerMove.state = (state == 1) ? PlayerState::Walk : PlayerTypeUtil::IntToState(state);
+
         otherPlayerMove.playerId = playerId;
 
-        auto otherPlayerMgr = stb::OtherPlayerManager::getInstance();
+        auto otherPlayerManager = stb::OtherPlayerManager::getInstance();
 
-        if (otherPlayerMgr != nullptr)
-        { 
-            otherPlayerMgr->HandleMovePacket(otherPlayerMove);
-        }
-        else
+        if (otherPlayerManager == nullptr)
         {
-            // 로그 출력 필요
             return;
         }
+
+        otherPlayerManager->HandleMovePacket(otherPlayerMove);
     }
-    catch (const std::exception& e)
+    catch (const std::exception& exception)
     {
-        std::string msg = "[이동 패킷] 예외 발생: ";
-        msg += e.what();
-        msg += "\n";
-        //LOG(msg);
+        OutputDebugStringA(exception.what());
+         
     }
     catch (...)
     {
-        //LOG("[이동 패킷] 알 수 없는 예외 발생\n");
+        OutputDebugStringA("이동 패킷 처리 중 알 수 없는 예외 발생\n");
     }
-    
 }
 
 void MovePacketHandler::SendPlayerMove(stb::Player* player)
