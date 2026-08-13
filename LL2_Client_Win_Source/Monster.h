@@ -34,6 +34,7 @@ public:
     void RespawnFromServer(const MonsterUpdateInfo& info);
 public:
     int GetInstanceId() const { return m_instanceId; }
+    int GetMonsterId() const { return m_monsterId; }
     int GetMoveSpeed() const { return m_moveSpeed; }
     bool IsDead() { return m_isDead; }
 

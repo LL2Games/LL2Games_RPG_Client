@@ -77,9 +77,9 @@ void Monster::SetState(MonsterState state)
 	switch (state)
 	{
 		case MonsterState::E_Idle : 
-			m_currentAnimation = L"idle";
+			/*m_currentAnimation = L"stand";
 			M_LOGGER("MonsterState[idle]");
-			break;
+			break;*/
 		case MonsterState::E_Move:
 			m_currentAnimation = L"move";
 			M_LOGGER("MonsterState[move]");
@@ -280,10 +280,8 @@ void Monster::ResetFromSpawnInfo(const MonsterSpawnInfo& info)
 	m_moveSpeed = info.moveSpeed;
 	m_curHp = info.curHp;
 	m_maxHp = info.maxHp;
-	m_state = info.state;
-
-	m_state = MonsterState::E_Idle; // 있으면 추천
 	m_isDead = false;
+	m_isDeathAnimationFinished = false; 
 
 	if (m_transform != nullptr)
 		m_transform->SetPosition(m_pos);
