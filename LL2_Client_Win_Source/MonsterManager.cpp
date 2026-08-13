@@ -7,7 +7,9 @@ void MonsterManager::Init()
 
 void MonsterManager::Update(float deltaTime)
 {
-    for (auto& monster : m_monsters)
+    if (m_monsters == nullptr) return;
+
+    for (auto& monster : *m_monsters)
     {
         if (!monster.second->IsDead())
         {
@@ -18,7 +20,9 @@ void MonsterManager::Update(float deltaTime)
 
 void MonsterManager::Render(stbD2DRenderer& renderer)
 {
-    for (auto& monster : m_monsters)
+    if (m_monsters == nullptr) return;
+
+    for (auto& monster : *m_monsters)
     {
         if (!monster.second->IsDead()) 
         {
@@ -29,9 +33,11 @@ void MonsterManager::Render(stbD2DRenderer& renderer)
 
 void MonsterManager::SpawnMonster(const MonsterSpawnInfo& info)
 {
-    auto it = m_monsters.find(info.instanceId);
+    if (m_monsters == nullptr) return;
 
-    if (it != m_monsters.end())
+    auto it = m_monsters->find(info.instanceId);
+
+    if (it != m_monsters->end())
     {
         it->second->ResetFromSpawnInfo(info);
         return;
@@ -45,19 +51,22 @@ void MonsterManager::SpawnMonster(const MonsterSpawnInfo& info)
 
     OutputDebugStringA(DebugMsg.c_str());
 
-    m_monsters.emplace(info.instanceId, std::move(monster));
+    m_monsters->emplace(info.instanceId, std::move(monster));
 }
 
 void MonsterManager::RemoveMonster(int /*instanceId*/)
 {
+    if (m_monsters == nullptr) return;
 
 }
 
 void MonsterManager::ApplyServerUpdate(const MonsterUpdateInfo& info)
 {
-    auto it = m_monsters.find(info.instanceId);
+    if (m_monsters == nullptr) return;
 
-    if (it == m_monsters.end())
+    auto it = m_monsters->find(info.instanceId);
+
+    if (it == m_monsters->end())
         return;
 
     Monster* monster = it->second.get();
@@ -73,8 +82,10 @@ void MonsterManager::ApplyServerUpdate(const MonsterUpdateInfo& info)
 
 void MonsterManager::ApplyAttackResult(const AttackResult& result)
 {
-    auto it = m_monsters.find(result.monster_instance_id);
-    if (it == m_monsters.end())
+    if (m_monsters == nullptr) return;
+
+    auto it = m_monsters->find(result.monster_instance_id);
+    if (it == m_monsters->end())
         return;
 
     Monster* monster = it->second.get();
@@ -86,9 +97,11 @@ void MonsterManager::ApplyAttackResult(const AttackResult& result)
 
 void MonsterManager::RespawnMonster(const MonsterUpdateInfo& info)
 {
-    auto it = m_monsters.find(info.instanceId);
+    if (m_monsters == nullptr) return;
 
-    if (it != m_monsters.end())
+    auto it = m_monsters->find(info.instanceId);
+
+    if (it != m_monsters->end())
     {
         // 이미 있으면 재활성화(부활) 처리
         it->second->RespawnFromServer(info);
@@ -112,5 +125,4 @@ void MonsterManager::RespawnMonster(const MonsterUpdateInfo& info)
 
     OutputDebugStringA("Monster Respawn (created)\n");
 }
-
 

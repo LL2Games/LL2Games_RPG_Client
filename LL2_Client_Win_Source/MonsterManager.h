@@ -20,8 +20,10 @@ public:
     void RespawnMonster(const MonsterUpdateInfo& info);
     //void ApplyMonsterDamage(const MonsterHitInfo& info);
 
+public:
+    void BindMonsters(std::unordered_map<int, std::unique_ptr<Monster>>* monsters) { m_monsters = monsters; }
 
 private:
-    std::unordered_map<int, std::unique_ptr<Monster>> m_monsters;
+    std::unordered_map<int, std::unique_ptr<Monster>>* m_monsters;
 };
 

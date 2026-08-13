@@ -45,13 +45,17 @@ void MapScene::OnEnter()
 	Scene::OnEnter();
 
 	M_GAMESESSION->EnsurePersistentObjects();
-	OnMapEnter();;
+	OnMapEnter();
+
+    M_MONSTERMANAGER->BindMonsters(&m_monsters);
 }
 
 void MapScene::OnExit()
 {
 	OnMapExit();
 	Scene::OnExit();
+
+    M_MONSTERMANAGER->BindMonsters(nullptr);
 }
 
 void MapScene::CreatePortals()

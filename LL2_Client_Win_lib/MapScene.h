@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "..\\LL2_Client_Win_Source\\stbScene.h"
+#include "..\\LL2_Client_Win_Source\\Monster.h"
 #include "Portal.h"
 
 using namespace stb;
@@ -28,5 +29,6 @@ protected:
 private:
     void CreatePortals();
     std::unordered_map<std::string, Portal*> m_portals;
+    std::unordered_map<int, std::unique_ptr<Monster>> m_monsters;
 };
 
