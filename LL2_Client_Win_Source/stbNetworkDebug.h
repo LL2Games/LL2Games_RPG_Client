@@ -169,7 +169,7 @@ namespace stb
         NetworkManager::getInstance()->SendPacket(PKT_PLAYER_MOVE, data);
         
         // 디버그 로그 (너무 많이 나올 수 있으니 주석 처리 가능)
-        // std::stringstream ss;
+        // std::stringstream ss;1
         // ss << "[전송] 이동 패킷: (" << x << ", " << y << ")\n";
         // OutputDebugStringA(ss.str().c_str());
     }
