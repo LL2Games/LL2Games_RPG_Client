@@ -1,4 +1,8 @@
-﻿#include <cstring>
+﻿#include <WinSock2.h>
+
+#pragma comment(lib, "Ws2_32.lib")
+
+#include <cstring>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -36,23 +40,15 @@ namespace
         const ParseResult result =PacketParser::TryParse(buffer);
 
         return
-            Check(result.status == ParseStatus::Complete,
-                "maximum packet was not accepted") &&
-            Check(
-                result.packet.type == PKT_CHAT,
-                "packet type mismatch") &&
-            Check(
-                result.packet.payload == body,
-                "packet payload mismatch") &&
-            Check(
-                buffer.empty(),
-                "parsed packet remained in buffer");
+            Check(result.status == ParseStatus::Complete, "maximum packet was not accepted") &&
+            Check(result.packet.type == PKT_CHAT, "packet type mismatch") &&
+            Check(result.packet.payload == body, "packet payload mismatch") &&
+            Check(buffer.empty(),"parsed packet remained in buffer");
     }
 
     bool TestOversizedPacketRejected()
     {
-        const std::size_t oversizedBodySize = PacketLimits::kMaxPacketSize -
-            sizeof(PacketHeader) + 1;
+        const std::size_t oversizedBodySize = PacketLimits::kMaxPacketSize - sizeof(PacketHeader) + 1;
 
         bool exceptionThrown = false;
 
@@ -76,10 +72,8 @@ namespace
         }
 
         PacketHeader header{};
-        header.length = static_cast<uint16_t>(
-            PacketLimits::kMaxPacketSize + 1
-            );
-        header.type = PKT_CHAT;
+        header.length = htons(static_cast<uint16_t>(PacketLimits::kMaxPacketSize + 1));
+        header.type = htons(static_cast<uint16_t>(PKT_CHAT));
 
         std::vector<char> buffer(sizeof(header));
         std::memcpy(
@@ -100,61 +94,35 @@ namespace
     bool TestUndersizedPacketRejected()
     {
         PacketHeader header{};
-        header.length = static_cast<uint16_t>(
-            sizeof(PacketHeader) - 1
-            );
-        header.type = PKT_CHAT;
+        header.length = htons(static_cast<uint16_t>(sizeof(PacketHeader) - 1));
+        header.type = htons(static_cast<uint16_t>(PKT_CHAT));
 
         std::vector<char> buffer(sizeof(header));
-        std::memcpy(
-            buffer.data(),
-            &header,
-            sizeof(header)
-        );
+        std::memcpy(buffer.data(),&header,sizeof(header));
 
-        const ParseResult result =
-            PacketParser::TryParse(buffer);
+        const ParseResult result =PacketParser::TryParse(buffer);
 
-        return Check(
-            result.status == ParseStatus::InvalidPacket,
-            "packet smaller than header was accepted"
-        );
+        return Check(result.status == ParseStatus::InvalidPacket,"packet smaller than header was accepted");
     }
 
     bool TestPartialPacketNeedsMoreData()
     {
-        const std::string body =
-            PacketParser::MakeBody({ "partial-packet" });
+        const std::string body = PacketParser::MakeBody({ "partial-packet" });
+        const std::string packet = PacketParser::MakePacket(PKT_CHAT, body);
 
-        const std::string packet =
-            PacketParser::MakePacket(PKT_CHAT, body);
+        std::vector<char> buffer(packet.begin(), packet.begin() + 2);
 
-        std::vector<char> buffer(
-            packet.begin(),
-            packet.begin() + 2
-        );
+        ParseResult result = PacketParser::TryParse(buffer);
 
-        ParseResult result =
-            PacketParser::TryParse(buffer);
-
-        if (!Check(
-            result.status == ParseStatus::NeedMoreData,
-            "partial header was not held"))
+        if (!Check(result.status == ParseStatus::NeedMoreData, "partial header was not held"))
         {
             return false;
         }
 
-        buffer.insert(
-            buffer.end(),
-            packet.begin() + 2,
-            packet.end() - 1
-        );
-
+        buffer.insert(buffer.end(), packet.begin() + 2, packet.end() - 1);
         result = PacketParser::TryParse(buffer);
 
-        if (!Check(
-            result.status == ParseStatus::NeedMoreData,
-            "partial body was not held"))
+        if (!Check(result.status == ParseStatus::NeedMoreData, "partial body was not held"))
         {
             return false;
         }
@@ -164,69 +132,35 @@ namespace
         result = PacketParser::TryParse(buffer);
 
         return
-            Check(
-                result.status == ParseStatus::Complete,
-                "completed packet was not parsed") &&
-            Check(
-                result.packet.payload == body,
-                "completed packet payload mismatch") &&
-            Check(
-                buffer.empty(),
-                "completed packet remained in buffer");
+            Check(result.status == ParseStatus::Complete, "completed packet was not parsed") &&
+            Check(result.packet.payload == body, "completed packet payload mismatch") &&
+            Check(buffer.empty(), "completed packet remained in buffer");
     }
 
     bool TestCoalescedPacketsParsedInOrder()
     {
-        const std::string firstBody =
-            PacketParser::MakeBody({ "first" });
-
-        const std::string secondBody =
-            PacketParser::MakeBody({ "second" });
-
-        const std::string firstPacket =
-            PacketParser::MakePacket(
-                PKT_LOGIN,
-                firstBody
-            );
-
-        const std::string secondPacket =
-            PacketParser::MakePacket(
-                PKT_CHAT,
-                secondBody
-            );
+        const std::string firstBody = PacketParser::MakeBody({ "first" });
+        const std::string secondBody = PacketParser::MakeBody({ "second" });
+        const std::string firstPacket =PacketParser::MakePacket(PKT_LOGIN, firstBody);
+        const std::string secondPacket =PacketParser::MakePacket(PKT_CHAT, secondBody);
 
         std::vector<char> buffer;
-        buffer.insert(
-            buffer.end(),
-            firstPacket.begin(),
-            firstPacket.end()
-        );
-        buffer.insert(
-            buffer.end(),
-            secondPacket.begin(),
-            secondPacket.end()
-        );
+        buffer.insert(buffer.end(), firstPacket.begin(), firstPacket.end());
+        buffer.insert(buffer.end(),secondPacket.begin(),secondPacket.end());
 
-        const ParseResult firstResult =
-            PacketParser::TryParse(buffer);
+        const ParseResult firstResult = PacketParser::TryParse(buffer);
 
-        if (!Check(
-            firstResult.status == ParseStatus::Complete,
-            "first packet was not parsed"))
+        if (!Check(firstResult.status == ParseStatus::Complete, "first packet was not parsed"))
         {
             return false;
         }
 
-        if (!Check(
-            firstResult.packet.type == PKT_LOGIN &&
-            firstResult.packet.payload == firstBody,
-            "first packet data mismatch"))
+        if (!Check(firstResult.packet.type == PKT_LOGIN && firstResult.packet.payload == firstBody, "first packet data mismatch"))
         {
             return false;
         }
 
-        const ParseResult secondResult =
-            PacketParser::TryParse(buffer);
+        const ParseResult secondResult = PacketParser::TryParse(buffer);
 
         return
             Check(
@@ -244,8 +178,7 @@ namespace
     bool TestTwoByteLengthPrefix()
     {
         const std::string expected(300, 'X');
-        const std::string body =
-            PacketParser::MakeBody({ expected });
+        const std::string body = PacketParser::MakeBody({ expected });
 
         std::size_t offset = 0;
         std::string actual;
@@ -261,16 +194,62 @@ namespace
             );
 
         return
-            Check(
-                parsed,
-                "two-byte length field was not parsed") &&
-            Check(
-                actual == expected,
-                "field longer than 255 bytes was truncated") &&
-            Check(
-                offset == body.size(),
-                "field parsing offset mismatch");
+            Check(parsed,"two-byte length field was not parsed") &&
+            Check(actual == expected,"field longer than 255 bytes was truncated") &&
+            Check(offset == body.size(), "field parsing offset mismatch");
     }
+
+    bool TestNetworkByteOrder()
+    {
+        const std::string packet = PacketParser::MakePacket(0x1234, "");
+
+        if (!Check( packet.size() == sizeof(PacketHeader), "empty packet size mismatch"))
+        {
+            return false;
+        }
+
+        if (!Check(
+            static_cast<unsigned char>(packet[0]) == 0x00 &&
+            static_cast<unsigned char>(packet[1]) == 0x04 &&
+            static_cast<unsigned char>(packet[2]) == 0x12 &&
+            static_cast<unsigned char>(packet[3]) == 0x34,
+            "packet header is not network byte order"))
+        {
+            return false;
+        }
+
+        const std::string body = PacketParser::MakeBody({std::string(300, 'X')});
+
+        if (!Check(body.size() >= sizeof(uint16_t), "encoded body is too small"))
+        {
+            return false;
+        }
+
+        if (!Check(
+            static_cast<unsigned char>(body[0]) == 0x01 &&
+            static_cast<unsigned char>(body[1]) == 0x2C,
+            "field length is not network byte order"))
+        {
+            return false;
+        }
+
+        std::vector<char> receivedPacket{
+            static_cast<char>(0x00),
+            static_cast<char>(0x04),
+            static_cast<char>(0x12),
+            static_cast<char>(0x34)
+        };
+
+        const ParseResult result = PacketParser::TryParse(receivedPacket);
+
+        return
+            Check(result.status == ParseStatus::Complete, "network byte order packet was not parsed") &&
+            Check(result.packet.type == 0x1234, "network byte order packet type mismatch") &&
+            Check(receivedPacket.empty(), "parsed packet remained in buffer");
+    }
+
+
+
 }
 
 int main()
@@ -283,6 +262,10 @@ int main()
 
     const TestCase tests[] =
     {
+        {
+            "network byte order",
+            TestNetworkByteOrder
+        },
         {
             "maximum packet accepted",
             TestMaximumPacketAccepted

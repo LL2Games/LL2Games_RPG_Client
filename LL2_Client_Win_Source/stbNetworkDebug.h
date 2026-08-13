@@ -169,51 +169,8 @@ namespace stb
         NetworkManager::getInstance()->SendPacket(PKT_PLAYER_MOVE, data);
         
         // 디버그 로그 (너무 많이 나올 수 있으니 주석 처리 가능)
-        // std::stringstream ss;
+        // std::stringstream ss;1
         // ss << "[전송] 이동 패킷: (" << x << ", " << y << ")\n";
         // OutputDebugStringA(ss.str().c_str());
     }
-
-    // 맵 입장 응답 핸들러
-    inline void RegisterEnterMapHandler()
-    {
-        NetworkManager::getInstance()->RegisterHandler(PKT_ENTER_MAP,
-            [](const ParsedPacket& pkt)
-            {
-                try
-                {
-                    if (pkt.payload.size() < sizeof(uint16_t))
-                    {
-                        OutputDebugStringA("[맵 입장] 페이로드 크기 부족\n");
-                        return;
-                    }
-
-                    const char* data = pkt.payload.data();
-                    size_t offset = 0;
-
-                    // status
-                    uint16_t len1 = *(uint16_t*)(data + offset);
-                    offset += sizeof(uint16_t);
-                    
-                    if (offset + len1 > pkt.payload.size())
-                    {
-                        OutputDebugStringA("[맵 입장] status 길이 초과\n");
-                        return;
-                    }
-                    
-                    std::string status(data + offset, len1);
-
-                    std::stringstream ss;
-                    ss << "[맵 입장 응답] status: " << status << "\n";
-                    OutputDebugStringA(ss.str().c_str());
-                }
-                catch (...)
-                {
-                    OutputDebugStringA("[맵 입장] 예외 발생\n");
-                }
-            }
-        );
-    }
-
-   
 }

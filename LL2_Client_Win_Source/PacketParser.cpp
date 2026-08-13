@@ -1,4 +1,6 @@
-﻿#include "PacketParser.h"
+﻿#include <WinSock2.h>
+
+#include "PacketParser.h"
 #include "Packet.h"
 #include "StringConvert.h"
 #include <limits>
@@ -17,7 +19,10 @@ std::string PacketParser::MakeBody(const std::vector<std::string>& datas)
 
         const uint16_t dataLength = static_cast<uint16_t>(data.size());
 
-        body.append(reinterpret_cast<const char*>(&dataLength),sizeof(dataLength));
+        const uint16_t networkDataLength = htons(dataLength);
+
+
+        body.append(reinterpret_cast<const char*>(&networkDataLength),sizeof(networkDataLength));
 
         body.append(data);
     }
@@ -26,16 +31,11 @@ std::string PacketParser::MakeBody(const std::vector<std::string>& datas)
     return body;
 }
 
-std::string PacketParser::MakePacket(
-    uint16_t type,
-    const std::string& body)
+std::string PacketParser::MakePacket(uint16_t type, const std::string& body)
 {
     constexpr std::size_t headerSize = sizeof(PacketHeader);
 
-    static_assert(
-        PacketLimits::kMaxPacketSize >= headerSize,
-        "Maximum packet size is smaller than packet header"
-        );
+    static_assert(PacketLimits::kMaxPacketSize >= headerSize, "Maximum packet size is smaller than packet header");
 
     if (body.size() > PacketLimits::kMaxPacketSize - headerSize)
     {
@@ -45,16 +45,13 @@ std::string PacketParser::MakePacket(
     const std::size_t packetLength = headerSize + body.size();
 
     PacketHeader header{};
-    header.type = type;
-    header.length = static_cast<uint16_t>(packetLength);
+    header.type = htons(type);
+    header.length = htons(static_cast<uint16_t>(packetLength));
 
     std::string packet;
     packet.reserve(packetLength);
 
-    packet.append(
-        reinterpret_cast<const char*>(&header),
-        sizeof(header)
-    );
+    packet.append(reinterpret_cast<const char*>(&header), sizeof(header));
 
     packet.append(body);
 
@@ -63,30 +60,14 @@ std::string PacketParser::MakePacket(
 
 std::optional<ParsedPacket> PacketParser::Parse(std::vector<char>& buf)
 {
-    ParsedPacket parsedPacket;
-    if (buf.size() < sizeof(PacketHeader))
+    ParseResult result = PacketParser::TryParse(buf);
+
+    if (result.status != ParseStatus::Complete)
     {
         return std::nullopt;
     }
 
-    PacketHeader* hdr = reinterpret_cast<PacketHeader*>(buf.data());
-    uint16_t pktLen = hdr->length;
-
-    if (buf.size() < pktLen)
-    {
-        return std::nullopt;
-    }
-    uint16_t type = hdr->type;
-
-    const char* payload = reinterpret_cast<const char*>(buf.data() + sizeof(PacketHeader));
-    int payloadLen = pktLen - sizeof(PacketHeader);
-
-    parsedPacket.type = type;
-    parsedPacket.payload = std::string(payload, payloadLen);
-
-    buf.erase(buf.begin(), buf.begin() + pktLen);
-
-    return parsedPacket;
+    return std::move(result.packet);
 }
 
 ParseResult PacketParser::TryParse(std::vector<char>& buf)
@@ -99,7 +80,7 @@ ParseResult PacketParser::TryParse(std::vector<char>& buf)
     PacketHeader header{};
     std::memcpy(&header, buf.data(), sizeof(header));
 
-    const uint16_t packetLength = header.length;
+    const uint16_t packetLength = ntohs(header.length);
 
     if (packetLength < sizeof(PacketHeader))
     {
@@ -117,7 +98,7 @@ ParseResult PacketParser::TryParse(std::vector<char>& buf)
     }
 
     ParsedPacket parsedPacket{};
-    parsedPacket.type = header.type;
+    parsedPacket.type = ntohs(header.type);
 
     const char* payload = buf.data() + sizeof(PacketHeader);
     const std::size_t payloadLength =packetLength - sizeof(PacketHeader);
@@ -151,11 +132,13 @@ bool PacketParser::ParseLengthPrefixedString(
         return false;
     }
 
-    uint16_t valueLength = 0;
+    uint16_t networkValueLength = 0;
 
-    std::memcpy(&valueLength, payload + offset, sizeof(valueLength));
+    std::memcpy(&networkValueLength, payload + offset, sizeof(networkValueLength));
 
-    offset += sizeof(valueLength);
+    offset += sizeof(networkValueLength);
+
+    const uint16_t valueLength = ntohs(networkValueLength);
 
     if (payload_len - offset < valueLength)
     {

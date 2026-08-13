@@ -107,7 +107,8 @@ void CombatPacketHandler::HandleSkillAttackResult(const ParsedPacket& pkt)
         std::string errMsg;
 
         std::string status;
-        int skill_id;
+        int skill_id = 0;
+        int currentMp = 0;
 
 
         if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, status, errMsg))
@@ -122,6 +123,11 @@ void CombatPacketHandler::HandleSkillAttackResult(const ParsedPacket& pkt)
         }
 
         if (!PacketParser::ParseNextIntField(data, payloadSize, offset, skill_id, errMsg))
+        {
+            throw std::runtime_error(errMsg);
+        }
+
+        if (!PacketParser::ParseNextIntField(data, payloadSize, offset, currentMp, errMsg))
         {
             throw std::runtime_error(errMsg);
         }
@@ -142,9 +148,9 @@ void CombatPacketHandler::HandleSkillAttackResult(const ParsedPacket& pkt)
         }
 
         //스킬사용 성공시 현재 Mp를 스킬 mp cost에 맞게 줄임
-        const int curMp = player->GetStat()->GetCurMp();
-        player->GetStat()->SetCurMp(std::max(curMp - skill->mp_cost, 0));
-
+        //const int curMp = player->GetStat()->GetCurMp();
+        //player->GetStat()->SetCurMp(std::max(curMp - skill->mp_cost, 0));
+        player->GetStat()->SetCurMp(currentMp);
         
     }
     catch (std::exception& e)
