@@ -40,9 +40,12 @@
 #define IDC_BUTTON_CHECK_DUP            1009
 #define ID_BUTTON_NEW_CHAR              1010
 #define IDC_BUTTON_NEW_CHAR             1011
-#ifdef IDC_STATIC
-#undef IDC_STATIC
+#define IDC_BUTTON_DEL_CHAR             1012
+
+#ifdef IDC_STATIC                      
+#undef IDC_STATIC                      
 #endif
+
 #define IDC_STATIC                      -1
 
 // Next default values for new objects

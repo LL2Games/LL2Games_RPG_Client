@@ -197,6 +197,7 @@ BEGIN_MESSAGE_MAP(CWorld, CDialogEx)
 	ON_BN_CLICKED(ID_BUTTON_WORLD_ENTER, &CWorld::OnBnClickedButtonEnter)
 	//IDC_COMBO_SELECT_CHANNEL
 	ON_BN_CLICKED(IDC_BUTTON_NEW_CHAR, &CWorld::OnBnClickedButtonNewChar)
+	ON_BN_CLICKED(IDC_BUTTON_DEL_CHAR, &CWorld::OnBnClickedButtonDelChar)
 END_MESSAGE_MAP()
 
 
@@ -628,10 +629,6 @@ void CWorld::OnBnClickedButtonEnter()
 	// 4. 채널 선택 요청 상태로 변경
 	m_pSock->m_status = E_WORLD_CHANNEL_SELECT;
 
-	//test
-	if (0)
-		return;
-
 	// 5. 패킷 생성 및 전송
 	try
 	{
@@ -802,7 +799,20 @@ int CWorld::OnChannelSelect(const char* recvBuff, const size_t recvLen)
 
 void CWorld::OnBnClickedButtonNewChar()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	const int MAX_CHARACTERS = 3;
+
+	//캐릭터 갯수 확인
+	int nCharCount = m_listCharacter.GetItemCount();
+
+	if (nCharCount >= MAX_CHARACTERS)
+	{
+		CString strTmp;
+		strTmp.Format(_T("캐릭터는 최대 %d개까지 생성할 수 있습니다."), MAX_CHARACTERS);
+		AfxMessageBox(strTmp);
+		return;
+	}
+
+	
 	CWorldNewChar dlg(m_pSock, m_account_id);
 	if (dlg.DoModal() != IDOK)
 	{
@@ -815,4 +825,103 @@ void CWorld::OnBnClickedButtonNewChar()
 
 	//캐릭터 생성 이후에 다시 캐릭터 리스트 호출
 	this->CharacterList(); //캐릭터 선택
+}
+
+
+void CWorld::OnBnClickedButtonDelChar()
+{
+	// 삭제 확인
+	int result = AfxMessageBox(
+		_T("정말 캐릭터를 삭제하시겠습니까?"),
+		MB_YESNO | MB_ICONSTOP
+	);
+
+	if (result != IDYES)
+	{
+		return;
+	}
+
+	//1. char_id 선택된 캐릭터 행 가져오기
+	POSITION pos = m_listCharacter.GetFirstSelectedItemPosition();
+
+	if (pos == nullptr)
+	{
+		AfxMessageBox(_T("접속할 캐릭터를 선택해주세요."));
+		return;
+	}
+	const int selectedRow = m_listCharacter.GetNextSelectedItem(pos);
+
+	//리스트 행과 m_characters 벡터의 인덱스가 동일하다는 전제
+	if (selectedRow < 0 || selectedRow >= static_cast<int>(m_characters.size()))
+	{
+		AfxMessageBox(_T("선택한 캐릭터 정보를 찾을 수 없습니다."));
+		return;
+	}
+
+	m_selectedCharacterIndex = selectedRow;
+	const CharacterInfo& selectedCharacter = m_characters[m_selectedCharacterIndex];
+	const long long charId = selectedCharacter.char_id;
+
+	DelCharacter(charId);
+}
+
+int CWorld::DelCharacter(const long long charId)
+{
+	std::vector<std::string> datas;
+	std::string body, pkt;
+
+	datas.push_back(std::to_string(charId));
+
+	body = PacketParser::MakeBody(datas);
+	pkt = PacketParser::MakePacket(PKT_DEL_CHARACTER, body);
+
+	m_pSock->m_status = E_WORLD_DEL_CHARACTER; //OnDelCharacter를 받기 위함
+	m_pSock->m_dlg = this;
+	m_pSock->SendPacket(pkt);
+
+	return 0;
+}
+
+
+void CWorld::OnDelCharacter(const char* recvBuff, const size_t recvLen)
+{
+	size_t offset = 0;
+	std::string errMsg;
+	CString strCharList;
+
+	std::string sBuff;
+	std::vector<char> vBuff;
+	CString wideValue;
+
+	sBuff.append(recvBuff, recvLen);
+	vBuff.insert(vBuff.end(), sBuff.begin(), sBuff.end());
+	auto pkt = PacketParser::Parse(vBuff);
+	if (!pkt.has_value())
+	{
+		return;
+	}
+
+	std::string status;
+
+	if (!PacketParser::ParseLengthPrefixedString(
+		pkt->payload.c_str(),
+		pkt->payload.size(),
+		offset,
+		status,
+		errMsg))
+	{
+		return;
+	}
+
+	if (status == "nok")
+	{
+		AfxMessageBox(_T("캐릭터 삭제에 실패했습니다."));
+	}
+	else
+	{
+		AfxMessageBox(_T("캐릭터 삭제에 성공했습니다."));
+
+		//캐릭터 삭제 이후에 다시 캐릭터 리스트 호출
+		this->CharacterList(); //캐릭터 선택
+	}
 }
