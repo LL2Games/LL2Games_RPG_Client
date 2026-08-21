@@ -15,7 +15,7 @@ public:
 	void Update() override;
 	void Render(HDC hdc) override;
 	void Render(stbD2DRenderer& renderer) override;
-
+	
 
 //인벤토리
 private:
@@ -131,6 +131,9 @@ private:
 	void RenderMySlots(stbD2DRenderer& renderer);
 	//상대 아이템 슬롯 영역
 	void RenderTargetSlots(stbD2DRenderer& renderer);
+	void RenderCharacters(stbD2DRenderer& renderer);
+
+
 	//확정/취소 버튼
 	void RenderButtons(stbD2DRenderer& renderer);
 	void RenderBackground(stbD2DRenderer& renderer);
@@ -179,6 +182,7 @@ public:
 	void StartTrade(const std::string& targetId, const std::string& targetName);
 	void CloseTradeUI();
 	void OnCancelPopUp(); //상대가 교환 취소했다는 팝업
+	void OnTradeFailPopUp(const std::string& errorMessage);
 	void OnSuccessPopUp(const std::vector<TradeSlotInfo>& mySlotInfos, const std::vector<TradeSlotInfo>& targetSlotInfos); //교환 완료 팝업
 	void OnReady(); //상대 교환 준비
 	void OnTargetAddItem(const TradeSlotInfo& tradeSlotInfo); //상대 아이템 추가
@@ -218,6 +222,9 @@ private:
 private:
 	bool         m_cancelPopupActive = false; //상대 교환 취소 팝업용
 	bool         m_successPopupActive = false; //상대 교환 완료 팝업용
+
+	std::wstring m_cancelPopupMessage;
+
 	D2D1_RECT_F m_cancelCheckButtonRect{};   //교환취소 확인버튼
 	D2D1_RECT_F m_successCheckButtonRect{};   //완료 확인버튼
 

@@ -68,7 +68,7 @@ namespace stb
 
 	void BoxCollider2D::Render(stbD2DRenderer& renderer)
 	{
-#ifdef __DEV_COLLIDER
+#ifdef __DEV_COLLIDER 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		if (tr == nullptr)
 			return;
@@ -94,6 +94,7 @@ namespace stb
 
 		renderer.DrawRect(left, top, width, height, D2D1::ColorF::Black);
 #else
+
 		(void)renderer;
 #endif
 	}

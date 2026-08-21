@@ -21,7 +21,7 @@
       "frame_count": 1,
       "delay_ms": 100,
       "event" : {
-        "end" : "MonsterHitEnd"
+        "complete" : "MonsterHitEnd"
       }
     },
     "die": {

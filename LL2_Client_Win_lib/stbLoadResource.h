@@ -79,6 +79,12 @@ namespace stb
 		// Application이 보유한 Direct2D 렌더러 참조
 		stbD2DRenderer& renderer = stb::Application::getInstance()->GetRenderer();
 
+		// 스킬 이펙트 테스트용 직접 로드
+		RESOURCEMANAGER->Load<stb::Texture>(
+			L"skill.1001005.effect.0",
+			L"Resources\\Skill\\1001005\\skill.1001005.effect.0.png"
+		);
+
 		// 앞에서 로드한 Texture 리소스들을 Direct2D에서 그릴 수 있도록 D2D Bitmap으로 변환/초기화
 		RESOURCEMANAGER->LoadAllD2D(renderer);
 	}

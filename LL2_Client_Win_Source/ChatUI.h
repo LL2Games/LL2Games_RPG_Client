@@ -23,6 +23,9 @@ public:
 
     void AddMessage(const std::wstring& nick, const std::wstring& msg);
 
+    void SetComposition(const std::wstring& text);
+    void CommitComposition(const std::wstring& text);
+    void ClearComposition();
 private:
     void RenderBackground(stbD2DRenderer& renderer);
     void RenderLogLines(stbD2DRenderer& renderer);
@@ -35,7 +38,10 @@ private:
 
     bool m_inputActive = false;
     std::wstring m_inputBuffer;                   // 현재 타이핑 중인 문자열
+    std::wstring m_compositionBuffer;
     std::vector<std::wstring> m_logLines;         // 최근 MAX_LOG_LINES 개
     UIRect m_logRect{};
     UIRect m_inputRect{};
+
+    
 };

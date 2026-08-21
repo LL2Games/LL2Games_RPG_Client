@@ -212,7 +212,7 @@ bool stbD2DRenderer::CreateTextFormats()
         DWRITE_FONT_WEIGHT_BOLD,
         DWRITE_FONT_STYLE_NORMAL,
         DWRITE_FONT_STRETCH_NORMAL,
-        12.0f,
+        17.0f,
         L"ko-kr",
         m_NicknameTextFormat.GetAddressOf());
 
@@ -288,7 +288,7 @@ bool stbD2DRenderer::CreateTextFormats()
     m_QuickSlotTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
     m_NicknameTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
-    m_NicknameTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+    m_NicknameTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
     
     m_StatTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     m_StatTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);

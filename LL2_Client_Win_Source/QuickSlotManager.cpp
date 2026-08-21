@@ -5,6 +5,8 @@
 #include "PlayerManager.h"
 #include "stbInput.h"
 #include "QuickSlotPacketHandler.h"
+#include "CombatSystem.h"
+#include "..\\LL2_Client_Win_lib\\\stbPlayer.h"
 
 #define M_INVENTORYMANAGER stb::SingletonBase<InventoryManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
@@ -94,10 +96,11 @@ void QuickSlotManager::UseSlot(int slotIndex)
         if (player == nullptr)
             return;
 
-        // auto dir = player->GetFacing();
+        CombatSystem* combatSystem = player->GetCombatSystem();
+        if (combatSystem == nullptr)
+            return;
 
-        //gunoo22 260729 스킬 사용부분 확인
-         //CombatPacketHandler::SendUseSkill(slot.ref_id, static_cast<int>(dir));
+        combatSystem->TrySkillAttack(slot.ref_id);
         break;
     }
     case QuickSlotType::Item:
@@ -114,7 +117,6 @@ void QuickSlotManager::UseSlot(int slotIndex)
 
         if (itemInfo->itemId != slot.ref_id)
             return;
-        slot.count--;
         itemInfo->useCount = 1;
         ItemPacketHandler::SendUseItem(itemInfo);
         break;

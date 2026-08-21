@@ -3,6 +3,12 @@
   "name": "Blue Slime",
 
   "animations": {
+    "idle": {
+      "path": "Monster/100101/stand",
+      "frame_prefix": "stand.",
+      "frame_count": 1,
+      "delay_ms": 150
+    },
     "move": {
       "path": "Monster/100101/move",
       "frame_prefix": "move.",
@@ -15,7 +21,7 @@
       "frame_count": 1,
       "delay_ms": 100,
       "event": {
-        "end": "MonsterHitEnd"
+        "complete": "MonsterHitEnd"
       }
     },
     "die": {

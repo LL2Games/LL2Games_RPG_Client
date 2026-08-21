@@ -71,6 +71,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI_Info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Skill.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkillEffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Skill_Info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Stat.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StatPacketHandler.h" />
@@ -121,6 +122,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UILayout.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UIManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Util.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VFXDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VFX_Info.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BoxCollider2D.cpp" />
@@ -168,6 +171,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Skill.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillDataManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkillEffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Stat.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StatPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StatUI.cpp" />
@@ -210,5 +214,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)UI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UILayout.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VFXDataManager.cpp" />
   </ItemGroup>
 </Project>

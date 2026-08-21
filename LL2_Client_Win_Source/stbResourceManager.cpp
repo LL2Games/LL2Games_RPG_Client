@@ -210,7 +210,7 @@ void stb::ResourceManager::LoadTradeTextures()
 	Load<Texture>(L"Trade_button_trade_mouseOver", L"Resources\\UI\\ItemTrade\\button_trade_mouseOver.png");
 	Load<Texture>(L"Trade_button_trade_checked", L"Resources\\UI\\ItemTrade\\button_trade.checked.png");
 
-	//Load<Texture>(L"Trade_button_confirm_normal", L"Resources\\UI\\ItemTrade\\itemTrade.AutoBuild.button_confirm.normal.0.png");
+	Load<Texture>(L"Trade_button_confirm_normal", L"Resources\\UI\\ItemTrade\\itemTrade.AutoBuild.button_confirm.normal.0.png");
 	//Load<Texture>(L"Trade_layer_confirm_me", L"Resources\\UI\\ItemTrade\\itemTrade.AutoBuild.layer_confirmMe.png");
 }
 

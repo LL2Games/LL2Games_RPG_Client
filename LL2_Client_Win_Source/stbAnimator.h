@@ -56,6 +56,7 @@ namespace stb
 		void LateUpdate() override;
 		void Render(HDC hdc) override;
 		void Render(stbD2DRenderer& renderer) override;
+		void RenderPreview(stbD2DRenderer& renderer, const std::wstring& animationName, float x, float y, float scale, bool flipX);
 
 		void CreateAnimation(const std::wstring& name
 			, Texture* spriteTexture
@@ -120,7 +121,7 @@ namespace stb
 		Animation* mActiveAnimation;
 		bool mbLoop;
 		bool mbCompleteEventCalled;
-		bool m_flipX;
+		bool m_flipX = false;
 		std::map<std::wstring, Events*> mEvents;
 
 

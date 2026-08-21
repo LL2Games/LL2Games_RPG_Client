@@ -97,8 +97,12 @@ bool Inventory::RemoveItemFromId(int itemId, int count)
 			slotItem.itemCount -= count;
 
 			if (slotItem.itemCount <= 0)
-				m_slots.erase(it);
-
+			{
+				it->second.itemId = 0;
+				it->second.itemCount = 0;
+				it->second.useCount = 0;
+			}
+			
 			return true;
 		}
 	}

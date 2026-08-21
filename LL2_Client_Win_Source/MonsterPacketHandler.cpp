@@ -175,22 +175,7 @@ void MonsterPacketHandler::HandleS2C_MonsterMove(const ParsedPacket& pkt)
 
 void MonsterPacketHandler::HandleS2C_RespawnMonster(const ParsedPacket& pkt)
 {
-	/*
-	payload.push_back(std::to_string(monsters.size()));
-
-	for(const auto& monster : monsters)
-    {
-        payload.push_back(std::to_string(monster->GetInstanceId()));
-        payload.push_back(std::to_string(monster->GetId()));
-        payload.push_back(std::to_string(monster->GetPos().xPos));
-        payload.push_back(std::to_string(monster->GetPos().yPos));
-        payload.push_back(std::to_string(monster->GetDir().xPos));
-        payload.push_back(std::to_string(monster->GetCurrentHP()));
-        payload.push_back(std::to_string(monster->GetMaxHP()));
-        payload.push_back(std::to_string(monster->GetState()));
-    }
 	
-	*/
 	try
 	{
 		size_t offset = 0;
@@ -251,6 +236,17 @@ void MonsterPacketHandler::HandleS2C_RespawnMonster(const ParsedPacket& pkt)
 			{
 				throw std::runtime_error(errMsg);
 			}
+
+			char buf[256];
+			sprintf_s(
+				buf,
+				"[RESPAWN PACKET] instance=%d state=%d hp=%d\n",
+				monsterUpdateInfo.instanceId,
+				state,
+				monsterUpdateInfo.curHp
+			);
+
+			OutputDebugStringA(buf);
 
 			monsterUpdateInfo.state = monster::SetState(state);
 

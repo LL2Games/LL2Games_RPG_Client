@@ -106,7 +106,7 @@ namespace stb
 
 		QuickSlotManager m_quickSlotManager;
 		
-		FacingDirection m_facing = FacingDirection::Right;
+		FacingDirection m_facing = FacingDirection::Left;
 	
 	private:
 		Transform* m_transform;

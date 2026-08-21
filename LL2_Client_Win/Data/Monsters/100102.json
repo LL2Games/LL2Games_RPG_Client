@@ -3,6 +3,12 @@
   "name": "Orange Mushroom",
 
   "animations": {
+     "idle": {
+      "path": "Monster/100102/stand",
+      "frame_prefix": "stand.",
+      "frame_count": 2,
+      "delay_ms": 150
+    },
     "move": {
       "path": "Monster/100102/move",
       "frame_prefix": "move.",
@@ -15,7 +21,7 @@
       "frame_count": 1,
       "delay_ms": 100,
       "event": {
-        "end": "MonsterHitEnd"
+        "complete": "MonsterHitEnd"
       }
     },
     "die": {

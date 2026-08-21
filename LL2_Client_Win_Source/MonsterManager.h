@@ -18,8 +18,10 @@ public:
     void ApplyServerUpdate(const MonsterUpdateInfo& info);
     void ApplyAttackResult(const AttackResult& result);
     void RespawnMonster(const MonsterUpdateInfo& info);
-    //void ApplyMonsterDamage(const MonsterHitInfo& info);
 
+    Monster* FindMonster(int instanceId);
+    //void ApplyMonsterDamage(const MonsterHitInfo& info);
+    void Clear(); 
 
 private:
     std::unordered_map<int, std::unique_ptr<Monster>> m_monsters;

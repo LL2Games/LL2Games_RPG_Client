@@ -4,6 +4,7 @@
 #include "Stat.h"
 #include "stbResourceManager.h"
 #include "StringConvert.h"
+#include <algorithm>
 
 
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
@@ -37,6 +38,7 @@ void LevelUI::Render(HDC /*hdc*/)
 void LevelUI::Render(stbD2DRenderer& renderer)
 {
     RenderBackground(renderer);
+    RenderLevelImg(renderer);
     RenderLevel(renderer);
     RenderNickName(renderer);
 }
@@ -59,9 +61,11 @@ void LevelUI::RenderBackground(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     // 기준 해상도 대비 UI 전체 스케일
-    /*float scaleX = rtSize.width / 1366.0f;
+    /*
+    float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
     float scale = (std::min)(scaleX, scaleY);
+    */
         
     float drawWidth = static_cast<float>(m_background->GetWidth() * 1);
     float drawHeight = static_cast<float>(m_background->GetHeight() * 1);
@@ -105,10 +109,13 @@ void LevelUI::RenderLevelImg(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     // 기준 해상도 대비 UI 전체 스케일
-    /*float scaleX = rtSize.width / 1366.0f;
+    /*
+    float scaleX = rtSize.width / 1366.0f;
     float scaleY = rtSize.height / 768.0f;
+
     float scale = min(scaleX, scaleY);
-    float scale = min(scaleX, scaleY);*/
+    float scale = min(scaleX, scaleY);
+    */
 
     float drawWidth = static_cast<float>(m_levelImg->GetWidth() * 1);
     float drawHeight = static_cast<float>(m_levelImg->GetHeight() * 1);

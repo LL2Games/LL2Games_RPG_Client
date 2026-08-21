@@ -119,6 +119,14 @@ void UIManager::ShowCancelPopUp()
 	m_tradeUI->OnCancelPopUp();
 }
 
+void UIManager::ShowTradeFailPopUp(const std::string& errorMessage)
+{
+	if (m_tradeUI == nullptr)
+		return;
+
+	m_tradeUI->OnTradeFailPopUp(errorMessage);
+}
+
 void UIManager::ShowSuccessPopUp(const std::vector<TradeSlotInfo>& mySlotInfos, const std::vector<TradeSlotInfo>& targetSlotInfos)
 {
 	m_tradeUI->OnSuccessPopUp(mySlotInfos, targetSlotInfos);
@@ -184,6 +192,12 @@ bool UIManager::IsInputFocused() const
 {
 	return m_chatUI && m_chatUI->IsInputActive();
 }
+
+bool UIManager::IsGameplayInputBlocked() const
+{
+	return IsInputFocused() || IsTradeRequestActive() || IsTradeQuantityInputActive();
+}
+
 void UIManager::AppendInputChar(wchar_t ch)
 {
 	if (m_chatUI) m_chatUI->AppendChar(ch);
@@ -264,4 +278,23 @@ void UIManager::FinishStatUpRequest()
 		return;
 
 	m_statUI->FinishStatUpRequest();
+}
+
+
+void UIManager::SetChatComposition(const std::wstring& text)
+{
+	if (m_chatUI)
+		m_chatUI->SetComposition(text);
+}
+
+void UIManager::CommitChatComposition(const std::wstring& text)
+{
+	if (m_chatUI)
+		m_chatUI->CommitComposition(text);
+}
+
+void UIManager::ClearChatComposition()
+{
+	if (m_chatUI)
+		m_chatUI->ClearComposition();
 }

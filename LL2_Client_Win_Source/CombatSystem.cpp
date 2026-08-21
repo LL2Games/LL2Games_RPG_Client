@@ -29,6 +29,8 @@ bool CombatSystem::TrySkillAttack(int skillId)
 
     // 서버에 공격 패킷 보내기 //gunoo22 260729 스킬 사용부분 확인
     CombatPacketHandler::SendUseSkill(skillId, dir);
+    // 로컬 스킬 애니메이션 시작
+    m_player->SetState(PlayerState::Attack);
     return true;
 }
 
