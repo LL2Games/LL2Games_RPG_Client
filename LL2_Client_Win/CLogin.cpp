@@ -88,14 +88,18 @@ BOOL CLogin::OnInitDialog()
 	// 실제 접속에 사용할 서버 IP
 	m_serverHostList =
 	{
-		_T("100.108.54.60"),
-		_T("100.114.42.54")
+		_T("13.124.105.189"),
+		_T("54.253.35.145"),
+		/*_T("100.108.54.60"),
+		_T("100.114.42.54")*/
 	};
 
 	// 사용자에게 표시되는 서버 이름
 	m_comboHost.ResetContent();
-	m_comboHost.AddString(_T("서버1 (100.108.54.60)"));
-	m_comboHost.AddString(_T("서버2 (100.114.42.54)"));
+	m_comboHost.AddString(_T("AWS 서울 서버1"));
+	m_comboHost.AddString(_T("AWS 서울 서버2"));
+	/*m_comboHost.AddString(_T("서버3 (100.108.54.60)"));
+	m_comboHost.AddString(_T("서버4 (100.114.42.54)"));*/
 
 	// 서버1을 기본 선택
 	m_comboHost.SetCurSel(0);
