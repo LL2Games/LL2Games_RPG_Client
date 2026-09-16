@@ -349,3 +349,64 @@ void PlayerDataPacketHandler::HandlePlayerOnDamaged(const ParsedPacket& pkt)
 		OutputDebugStringA("예상치 못한 에러 발생\n");
 	}
 }
+
+
+void PlayerDataPacketHandler::HandlePlayerDead(const ParsedPacket& pkt)
+{
+	try
+	{
+		size_t offset = 0;
+		const char* data = pkt.payload.c_str();
+		size_t payloadSize = pkt.payload.size();
+		std::string errMsg;
+
+		auto playerManager = PlayerManager::getInstance();
+		if (!playerManager)
+		{
+			throw std::runtime_error("playerManager is nullptr");
+		}
+		auto localPlayer = playerManager->GetLocalPlayer();
+		if (!localPlayer)
+		{
+			throw std::runtime_error("localPlayer is nullptr");
+		}
+		
+		std::vector<std::string> inputs;
+
+		/*
+		4개
+	payload.push_back(std::to_string(player->GetId()));
+    payload.push_back(player->GetName());
+    payload.push_back(std::to_string(player->GetPos().xPos));
+    payload.push_back(std::to_string(player->GetPos().yPos));
+		*/
+		while (1)
+		{
+			std::string input;
+			if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, input, errMsg))
+			{
+				break;
+			}
+			inputs.push_back(input);
+		}
+
+		if (inputs.size() == 4) //4개 정상수신
+		{
+			localPlayer->SetState(PlayerState::Dead); //죽음으로 상태변경 -> 내부에서 상태변경에 따른 애니메이션 변경
+		}
+		else
+			throw std::runtime_error("HandlePlayerDead input error");
+
+		OutputDebugStringA("HandlePlayerDead Success\n");
+	}
+	catch (const std::exception& e)
+	{
+		OutputDebugStringA("[HandlePlayerDead] ");
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\n");
+	}
+	catch (...)
+	{
+		OutputDebugStringA("예상치 못한 에러 발생\n");
+	}
+}
