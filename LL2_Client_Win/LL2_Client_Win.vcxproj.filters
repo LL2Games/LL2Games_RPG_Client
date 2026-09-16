@@ -17,6 +17,9 @@
     <Filter Include="UTIL">
       <UniqueIdentifier>{053f49a7-b371-4892-97f2-6a4103a5667e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="REVIVE">
+      <UniqueIdentifier>{64ee74b5-9c37-4e20-833e-ca89568cd631}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="CWorldNewChar.h">
       <Filter>WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="CReviveDlg.h">
+      <Filter>REVIVE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +69,9 @@
     </ClCompile>
     <ClCompile Include="CWorldNewChar.cpp">
       <Filter>WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="CReviveDlg.cpp">
+      <Filter>REVIVE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

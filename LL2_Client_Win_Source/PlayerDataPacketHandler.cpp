@@ -7,6 +7,9 @@
 #include "Stat.h"
 #include "UIManager.h"
 
+#include "stbApplication.h"
+#include "GameUiMessages.h"
+
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 
@@ -392,7 +395,20 @@ void PlayerDataPacketHandler::HandlePlayerDead(const ParsedPacket& pkt)
 
 		if (inputs.size() == 4) //4개 정상수신
 		{
+			//죽음 모달 띄우기 메시지 전송
+			const bool firstDeath = !localPlayer->IsDead();
+
 			localPlayer->SetState(PlayerState::Dead); //죽음으로 상태변경 -> 내부에서 상태변경에 따른 애니메이션 변경
+
+			if (firstDeath)
+			{
+				::PostMessageW(
+					stb::Application::getInstance()->GetHWND(),
+					WM_SHOW_REVIVE,
+					0,
+					0
+				);
+			}
 		}
 		else
 			throw std::runtime_error("HandlePlayerDead input error");

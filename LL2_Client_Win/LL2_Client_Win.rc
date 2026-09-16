@@ -150,6 +150,15 @@ BEGIN
     PUSHBUTTON      "중복확인",IDC_BUTTON_CHECK_DUP,146,11,50,14
 END
 
+IDD_REVIVE DIALOGEX 0, 0, 204, 58
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "부활"
+FONT 11, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,84,41,36,10
+    LTEXT           "캐릭터가 사망했습니다. 부활 지점에서 부활하시겠습니까?",IDC_REVIVE_MESSAGE,7,14,190,19
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -197,6 +206,14 @@ BEGIN
         RIGHTMARGIN, 200
         TOPMARGIN, 7
         BOTTOMMARGIN, 77
+    END
+
+    IDD_REVIVE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 197
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 51
     END
 END
 #endif    // APSTUDIO_INVOKED
