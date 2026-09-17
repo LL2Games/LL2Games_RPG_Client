@@ -243,6 +243,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillEffectManager.cpp">
       <Filter>Game\Skill</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -547,6 +548,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillEffectManager.h">
       <Filter>Game\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">

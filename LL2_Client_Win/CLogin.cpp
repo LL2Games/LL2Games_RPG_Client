@@ -89,6 +89,7 @@ BOOL CLogin::OnInitDialog()
 	m_serverHostList =
 	{
 		_T("13.124.105.189"),
+		_T("54.253.35.145"),
 		_T("100.108.54.60"),
 		_T("100.114.42.54")
 		
@@ -100,12 +101,13 @@ BOOL CLogin::OnInitDialog()
 	m_comboHost.SetItemData(server1ComboIndex, 0);
 
 	const int server2ComboIndex = m_comboHost.AddString(_T("서버2"));
-	m_comboHost.SetItemData(server2ComboIndex, 1);
+	m_comboHost.SetItemData (server2ComboIndex, 1);
 
 	const int awsComboIndex = m_comboHost.AddString(_T("AWS 서울 서버"));
 	m_comboHost.SetItemData(awsComboIndex, 2);
 
-
+	const int awsComboIndex2 = m_comboHost.AddString(_T("AWS 서울 서버2"));
+	m_comboHost.SetItemData(awsComboIndex2, 2);
 	// 서버1을 기본 선택
 	constexpr int awsServerIndex = 0;
 

@@ -69,6 +69,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI_Info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Skill.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillDataManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillEffectManager.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Skill.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillDataManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillEffectManager.cpp" />
