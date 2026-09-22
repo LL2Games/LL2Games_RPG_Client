@@ -27,6 +27,13 @@
 #include "MySocket.h"
 #include "..\\LL2_Client_Win_Source\\\UIManager.h"
 
+#include "CReviveDlg.h"
+#include <memory>
+
+#include "..\\LL2_Client_Win_Source\\GameUiMessages.h"
+#include "..\\LL2_Client_Win_Source\\PlayerManager.h"
+#include "..\\LL2_Client_Win_lib\\stbPlayer.h"
+
 #define APP stb::SingletonBase<stb::Application>::getInstance()
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
 
@@ -36,6 +43,11 @@ Gdiplus::GdiplusStartupInput gdiplus;
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
+namespace
+{
+    std::unique_ptr<CReviveDlg> g_reviveDlg;
+}
+
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
@@ -170,6 +182,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 break;
             }
+
+            // 부활창의 Enter, Tab 등 다이얼로그 키 처리
+            if (g_reviveDlg &&
+                ::IsWindow(g_reviveDlg->GetSafeHwnd()) &&
+                g_reviveDlg->IsWindowVisible() &&
+                g_reviveDlg->IsDialogMessage(&msg))
+            {
+                continue;
+            }
+
             if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
             {
                 TranslateMessage(&msg);
@@ -318,6 +340,57 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+
+    case WM_SHOW_REVIVE:
+{
+    auto* player = PlayerManager::getInstance()->GetLocalPlayer();
+
+    // 메시지가 처리되는 시점에도 사망 상태인지 확인
+    if (player == nullptr || !player->IsDead())
+        return 0;
+
+    if (!g_reviveDlg)
+    {
+        g_reviveDlg = std::make_unique<CReviveDlg>();
+    }
+
+    // 최초 한 번만 실제 Windows 창 생성
+    if (!::IsWindow(g_reviveDlg->GetSafeHwnd()))
+    {
+        if (!g_reviveDlg->Create(
+            IDD_REVIVE,
+            CWnd::FromHandle(hWnd)))
+        {
+            OutputDebugStringW(L"[Revive] 다이얼로그 생성 실패\n");
+            g_reviveDlg.reset();
+            return 0;
+        }
+    }
+
+    // 중복 사망 메시지로 대기 중 UI가 초기화되지 않게 함
+    if (!g_reviveDlg->IsWindowVisible())
+    {
+        g_reviveDlg->ResetMessage();
+        g_reviveDlg->CenterWindow(CWnd::FromHandle(hWnd));
+        g_reviveDlg->ShowWindow(SW_SHOW);
+    }
+
+    return 0;
+
+}
+    case WM_REVIVE_SUCCESS:
+    {
+        OutputDebugStringW(L"[Revive] 서버 부활 성공 응답\n");
+
+        if (g_reviveDlg &&
+            ::IsWindow(g_reviveDlg->GetSafeHwnd()))
+        {
+            g_reviveDlg->OnRevive();
+        }
+
+        return 0;
+    }
+
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
@@ -525,6 +598,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
     case WM_DESTROY:
+        if (g_reviveDlg)
+        {
+            if (::IsWindow(g_reviveDlg->GetSafeHwnd()))
+            {
+                g_reviveDlg->DestroyWindow();
+            }
+
+            g_reviveDlg.reset();
+        }
+
         stb::NetworkManager::getInstance()->Disconnect();
         PostQuitMessage(0);
         break;

@@ -104,6 +104,12 @@
       "frame_prefix": "stabO1_",
       "frame_count": 3,
       "delay_ms": 10
+    },
+    "dead": {
+      "path": "Character/Warrior/onehand_sword/dead",
+      "frame_prefix": "dead_",
+      "frame_count": 1,
+      "delay_ms": 1.0
     }
   }
 }

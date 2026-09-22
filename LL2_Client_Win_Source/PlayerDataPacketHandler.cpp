@@ -7,6 +7,10 @@
 #include "Stat.h"
 #include "UIManager.h"
 
+#include "stbApplication.h"
+#include "GameUiMessages.h"
+#include "stbNetworkManager.h"
+
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 
@@ -341,6 +345,137 @@ void PlayerDataPacketHandler::HandlePlayerOnDamaged(const ParsedPacket& pkt)
 	catch (const std::exception& e)
 	{
 		OutputDebugStringA("[HandlePlayerOnDamaged] ");
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\n");
+	}
+	catch (...)
+	{
+		OutputDebugStringA("예상치 못한 에러 발생\n");
+	}
+}
+
+
+void PlayerDataPacketHandler::HandlePlayerDead(const ParsedPacket& pkt)
+{
+	try
+	{
+		size_t offset = 0;
+		const char* data = pkt.payload.c_str();
+		size_t payloadSize = pkt.payload.size();
+		std::string errMsg;
+
+		auto playerManager = PlayerManager::getInstance();
+		if (!playerManager)
+		{
+			throw std::runtime_error("playerManager is nullptr");
+		}
+		auto localPlayer = playerManager->GetLocalPlayer();
+		if (!localPlayer)
+		{
+			throw std::runtime_error("localPlayer is nullptr");
+		}
+		
+		std::vector<std::string> inputs;
+
+		/*
+		4개
+	payload.push_back(std::to_string(player->GetId()));
+    payload.push_back(player->GetName());
+    payload.push_back(std::to_string(player->GetPos().xPos));
+    payload.push_back(std::to_string(player->GetPos().yPos));
+		*/
+		while (1)
+		{
+			std::string input;
+			if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, input, errMsg))
+			{
+				break;
+			}
+			inputs.push_back(input);
+		}
+
+		if (inputs.size() == 4) //4개 정상수신
+		{
+			//죽음 모달 띄우기 메시지 전송
+			const bool firstDeath = !localPlayer->IsDead();
+
+			localPlayer->SetState(PlayerState::Dead); //죽음으로 상태변경 -> 내부에서 상태변경에 따른 애니메이션 변경
+
+			if (firstDeath)
+			{
+				::PostMessageW(
+					stb::Application::getInstance()->GetHWND(),
+					WM_SHOW_REVIVE,
+					0,
+					0
+				);
+			}
+		}
+		else
+			throw std::runtime_error("HandlePlayerDead input error");
+
+		OutputDebugStringA("HandlePlayerDead Success\n");
+	}
+	catch (const std::exception& e)
+	{
+		OutputDebugStringA("[HandlePlayerDead] ");
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\n");
+	}
+	catch (...)
+	{
+		OutputDebugStringA("예상치 못한 에러 발생\n");
+	}
+}
+
+void PlayerDataPacketHandler::SendPlayerRevive()
+{
+	std::vector<std::string> data;
+
+	stb::NetworkManager::getInstance()->SendPacket(PKT_PLAYER_REVIVE, data);
+	OutputDebugStringA("[PKT_PLAYER_REVIVE 전송 완료]\n\n");
+}
+
+void PlayerDataPacketHandler::HandlePlayerRevive(const ParsedPacket& pkt)
+{
+	try
+	{
+		size_t offset = 0;
+		const char* data = pkt.payload.c_str();
+		size_t payloadSize = pkt.payload.size();
+		std::string errMsg;
+
+		auto playerManager = PlayerManager::getInstance();
+		if (!playerManager)
+		{
+			throw std::runtime_error("playerManager is nullptr");
+		}
+		auto localPlayer = playerManager->GetLocalPlayer();
+		if (!localPlayer)
+		{
+			throw std::runtime_error("localPlayer is nullptr");
+		}
+
+		std::string input;
+		if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, input, errMsg))
+		{
+		}
+
+		if (input == "nok")
+			throw std::runtime_error("HandlePlayerRevive input error");
+
+
+		// 1. 플레이어 상태 갱신
+		localPlayer->SetState(PlayerState::Idle);
+
+		// 2. UI에게 부활 성공 알림
+		::PostMessageW(stb::Application::getInstance()->GetHWND(), WM_REVIVE_SUCCESS, 0, 0);
+
+		OutputDebugStringA("HandlePlayerRevive Success\n");
+	}
+	catch (const std::exception& e)
+	{
+		OutputDebugStringA("[HandlePlayerRevive] ");
 		OutputDebugStringA(e.what());
 		OutputDebugStringA("\n");
 	}
