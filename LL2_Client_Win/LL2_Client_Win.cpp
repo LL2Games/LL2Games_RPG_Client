@@ -376,7 +376,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
 
     return 0;
+
 }
+    case WM_REVIVE_SUCCESS:
+    {
+        OutputDebugStringW(L"[Revive] 서버 부활 성공 응답\n");
+
+        if (g_reviveDlg &&
+            ::IsWindow(g_reviveDlg->GetSafeHwnd()))
+        {
+            g_reviveDlg->OnRevive();
+        }
+
+        return 0;
+    }
+
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
@@ -584,6 +598,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
     case WM_DESTROY:
+        if (g_reviveDlg)
+        {
+            if (::IsWindow(g_reviveDlg->GetSafeHwnd()))
+            {
+                g_reviveDlg->DestroyWindow();
+            }
+
+            g_reviveDlg.reset();
+        }
+
         stb::NetworkManager::getInstance()->Disconnect();
         PostQuitMessage(0);
         break;
