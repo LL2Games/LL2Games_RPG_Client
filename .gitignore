@@ -1,6 +1,11 @@
 #backup
 bak/
 
+# Isolated Woodland resource validation build intermediates.
+**/x64/WoodlandValidation/
+.woodland-runtime/
+.woodland-original-runtime/
+
 #test
 *test/
 

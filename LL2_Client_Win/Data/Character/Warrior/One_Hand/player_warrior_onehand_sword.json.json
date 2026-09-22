@@ -2,18 +2,16 @@
   "key": "player_warrior_onehand_sword",
   "job": "warrior",
   "weapon": "onehand_sword",
-
   "render": {
-    "width": 64,
-    "height": 64,
-     "origin": {
-        "x": 32,
-        "y": 55
-      }
+    "width": 96,
+    "height": 80,
+    "origin": {
+      "x": 48,
+      "y": 69
+    }
   },
-
   "animations": {
-     "stand": {
+    "stand": {
       "path": "Character/Warrior/onehand_sword/stand",
       "frame_prefix": "stand1_",
       "frame_count": 4,
@@ -28,14 +26,9 @@
     "walk": {
       "path": "Character/Warrior/onehand_sword/walk",
       "frame_prefix": "walk1_",
-      "frame_count": 4,
-      "delay_ms": 0.2,
-      "frame_offsets": [
-        { "x": 0, "y": 0 },
-        { "x": -6, "y": 0 },
-        { "x": 1, "y": 0 },
-        { "x": 0, "y": 0 }
-      ]
+      "frame_count": 8,
+      "delay_ms": 0.1,
+      "frame_offsets": []
     },
     "jump": {
       "path": "Character/Warrior/onehand_sword/jump",
@@ -43,25 +36,25 @@
       "frame_count": 2,
       "delay_ms": 0.1
     },
-    "prone":{
+    "prone": {
       "path": "Character/Warrior/onehand_sword/prone",
       "frame_prefix": "prone_",
       "frame_count": 2,
       "delay_ms": 10
     },
-    "proneStab":{
+    "proneStab": {
       "path": "Character/Warrior/onehand_sword/proneStab",
       "frame_prefix": "proneStab_",
       "frame_count": 3,
       "delay_ms": 10
     },
-    "rope":{
+    "rope": {
       "path": "Character/Warrior/onehand_sword/rope",
       "frame_prefix": "rope_",
       "frame_count": 3,
       "delay_ms": 10
     },
-     "ladder":{
+    "ladder": {
       "path": "Character/Warrior/onehand_sword/ladder",
       "frame_prefix": "ladder_",
       "frame_count": 3,
@@ -77,11 +70,7 @@
         "complete": "PlayerAttackEnd",
         "end": ""
       },
-      "frame_offsets": [
-        { "x": 0, "y": 0 },
-        { "x": -38, "y": 0 },
-        { "x": 2, "y": 0 }
-      ]
+      "frame_offsets": []
     },
     "slash": {
       "path": "Character/Warrior/onehand_sword/slash",
@@ -93,11 +82,7 @@
         "complete": "PlayerAttackEnd",
         "end": ""
       },
-      "frame_offsets": [
-        { "x": 0, "y": 0 },
-        { "x": -38, "y": 0 },
-        { "x": 2, "y": 0 }
-      ]
+      "frame_offsets": []
     },
     "stabO1": {
       "path": "Character/Warrior/onehand_sword/stabO1",

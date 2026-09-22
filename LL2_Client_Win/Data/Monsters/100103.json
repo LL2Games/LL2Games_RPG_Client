@@ -1,0 +1,63 @@
+{
+  "monster_id": 100103,
+  "name": "Mushroom Sentry",
+  "animations": {
+    "idle": {
+      "path": "Monster/100103/stand",
+      "frame_prefix": "stand.",
+      "frame_count": 8,
+      "delay_ms": 200
+    },
+    "move": {
+      "path": "Monster/100103/move",
+      "frame_prefix": "move.",
+      "frame_count": 4,
+      "delay_ms": 200
+    },
+    "hit": {
+      "path": "Monster/100103/hit",
+      "frame_prefix": "hit1.",
+      "frame_count": 3,
+      "delay_ms": 200,
+      "event": {
+        "complete": "MonsterHitEnd"
+      }
+    },
+    "die": {
+      "path": "Monster/100103/die",
+      "frame_prefix": "die1.",
+      "frame_count": 4,
+      "delay_ms": 200,
+      "event": {
+        "complete": "MonsterDieEnd"
+      }
+    }
+  },
+  "render": {
+    "width": 96,
+    "height": 96,
+    "origin": {
+      "x": 48,
+      "y": 30
+    }
+  },
+  "collider": {
+    "type": "Rect2D",
+    "offset": {
+      "x": 0,
+      "y": 28
+    },
+    "half": {
+      "w": 30,
+      "h": 30
+    }
+  },
+  "ui": {
+    "hp_bar_offset": {
+      "x": 0,
+      "y": -45
+    }
+  },
+  "moveSpeed": 10,
+  "isRanged": false
+}

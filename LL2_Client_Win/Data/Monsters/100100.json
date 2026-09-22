@@ -1,36 +1,35 @@
 {
   "monster_id": 100100,
-  "name": "Green Slime",
-
+  "name": "Moss Golem",
   "animations": {
     "idle": {
       "path": "Monster/100100/stand",
       "frame_prefix": "stand.",
-      "frame_count": 1,
-      "delay_ms": 150
+      "frame_count": 8,
+      "delay_ms": 200
     },
     "move": {
       "path": "Monster/100100/move",
       "frame_prefix": "move.",
-      "frame_count": 5,
-      "delay_ms": 120
+      "frame_count": 4,
+      "delay_ms": 200
     },
     "hit": {
       "path": "Monster/100100/hit",
       "frame_prefix": "hit1.",
-      "frame_count": 1,
-      "delay_ms": 100,
-      "event" : {
-        "complete" : "MonsterHitEnd"
+      "frame_count": 3,
+      "delay_ms": 200,
+      "event": {
+        "complete": "MonsterHitEnd"
       }
     },
     "die": {
       "path": "Monster/100100/die",
       "frame_prefix": "die1.",
-      "frame_count": 8,
-      "delay_ms": 120,
-      "event" : {
-        "complete" : "MonsterDieEnd"
+      "frame_count": 4,
+      "delay_ms": 200,
+      "event": {
+        "complete": "MonsterDieEnd"
       }
     },
     "projectile": {
@@ -38,47 +37,50 @@
       "frame_prefix": "projectile1.",
       "frame_count": 3,
       "delay_ms": 120,
-      "event" : {
-        "complete" : "MonsterDieEnd"
+      "event": {
+        "complete": "MonsterDieEnd"
       }
     }
   },
-
   "render": {
-      "width": 64,
-      "height": 64,
-      "origin": {
-        "x": 16,
-        "y": 0
-      }
+    "width": 96,
+    "height": 96,
+    "origin": {
+      "x": 48,
+      "y": 64
     }
-  ,
-
-  "collider" :{
-        "type"      :   "Rect2D",
-        "offset"    :   {"x" : 0, "y" : 12},
-        "half"      :   {"w" :18, "h": 12}
+  },
+  "collider": {
+    "type": "Rect2D",
+    "offset": {
+      "x": 0,
+      "y": 12
     },
-
+    "half": {
+      "w": 18,
+      "h": 12
+    }
+  },
   "ui": {
-      "hp_bar_offset": {
-        "x": 0,
-        "y": -45
-      }
-    },
-
-  "moveSpeed": 10,
-
-  "isRanged" : true,
-  "projectile" :{
-        "id" : 1,
-        "damage" : 3,
-        "speed" : 30,
-        "range" : 100,
-        "collider" : {
-            "type" : "Circle2D",
-            "offset" : {"x" : -8, "y" : 7},
-            "radius": 6
-        }
+    "hp_bar_offset": {
+      "x": 0,
+      "y": -45
     }
+  },
+  "moveSpeed": 10,
+  "isRanged": true,
+  "projectile": {
+    "id": 1,
+    "damage": 3,
+    "speed": 30,
+    "range": 100,
+    "collider": {
+      "type": "Circle2D",
+      "offset": {
+        "x": -8,
+        "y": 7
+      },
+      "radius": 6
+    }
+  }
 }

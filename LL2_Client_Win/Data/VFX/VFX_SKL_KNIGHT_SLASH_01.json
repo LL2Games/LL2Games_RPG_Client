@@ -56,15 +56,9 @@
     "loop": false,
     "frame_time": 0.05,
   
-    "origin": {
-      "x": 0,
-      "y": 0
-    },
+    "origin": { "x": 48, "y": 48 },
   
-    "offset": {
-      "x": -45,
-      "y": -55
-    },
+    "offset": { "x": 0, "y": 0 },
   
     "frames": [
       "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.0",
