@@ -22,6 +22,9 @@ namespace stb
 	 void SetWorldSize(const Vector2& size){ mWorldSize = size;}
 	 void SetLookOffset(const Vector2& offset){mLookOffset = offset;}
 	 const Vector2& GetDistance() const { return mDistance;}
+
+	 const Vector2& GetWorldSize() const { return mWorldSize;}
+	 const Vector2& GetResolution() const { return mResolution; }
 	private:
 		class GameObject* mTarget;
 

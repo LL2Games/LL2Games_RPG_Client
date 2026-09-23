@@ -18,6 +18,8 @@ public:
 	void RenderHpText(stbD2DRenderer& renderer);
 	void RenderMpText(stbD2DRenderer& renderer);
 
+	UIRect CalculateBackgroundRect(stbD2DRenderer& renderer) const;
+
 private:	
 	stb::Texture* m_background = nullptr;
 	stb::Texture* m_hpLayer = nullptr;
