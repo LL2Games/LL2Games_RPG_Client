@@ -532,6 +532,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StatUI.h">
       <Filter>Game\UI\StatUI</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameUiMessages.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">

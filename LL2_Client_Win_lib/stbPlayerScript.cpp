@@ -16,6 +16,12 @@
 
 #include <cmath>
 
+#include "stbCamera.h"
+#include "stbRender.h"
+#include "stbApplication.h"
+#include "HealthBarUI.h"
+#include <algorithm>
+
 
 #define M_INPUT stb::SingletonBase<stb::Input>::getInstance()
 #define M_TIME  stb::SingletonBase<stb::Time>::getInstance()
@@ -26,6 +32,72 @@
 
 namespace stb
 {
+	Vector2 ClampPlayerPosition(Vector2 pos)
+    {
+        const auto* camera = render::mainCamera;
+        if (camera == nullptr)
+            return pos;
+
+        const Vector2 worldSize = camera->GetWorldSize();
+        const Vector2 resolution = camera->GetResolution();
+
+        if (worldSize.x <= 0.0f || worldSize.y <= 0.0f ||
+            resolution.y <= 0.0f)
+        {
+            return pos;
+        }
+
+        auto& renderer =
+            SingletonBase<Application>::getInstance()->GetRenderer();
+
+        float healthBarTop = renderer.GetRenderTargetSize().height;
+
+        if (auto* healthBar = M_UIMANAGER->GetHealthBarUI())
+        {
+            healthBarTop =
+                healthBar->CalculateBackgroundRect(renderer).y;
+        }
+
+        // 캐릭터 기준점에서 몸체 가장자리까지의 여백.
+        // 아래 값은 초기 조정값이며 실제 스프라이트에 맞춰 조정합니다.
+        constexpr float leftExtent   = 25.0f;
+        constexpr float rightExtent  = 25.0f;
+        constexpr float topExtent    = 60.0f;
+        constexpr float bottomExtent = 10.0f;
+        constexpr float uiGap        = 8.0f;
+
+        // 카메라가 맵 가장 아래까지 이동했을 때의 스크롤 값.
+        const float maxScrollY = (std::max)(
+            0.0f, worldSize.y - resolution.y
+        );
+
+        // 체력창 위쪽 선을 맵 하단의 월드 좌표로 변환.
+        const float bottomBoundary = (std::min)(
+            worldSize.y,
+            maxScrollY + healthBarTop - uiGap
+        );
+
+        // 작은 맵에서도 clamp의 최소값 <= 최대값을 보장.
+        const float minX = (std::min)(
+            leftExtent, worldSize.x * 0.5f
+        );
+        const float minY = (std::min)(
+            topExtent, worldSize.y * 0.5f
+        );
+
+        const float maxX = (std::max)(
+            minX, worldSize.x - rightExtent
+        );
+        const float maxY = (std::max)(
+            minY, bottomBoundary - bottomExtent
+        );
+
+        pos.x = std::clamp(pos.x, minX, maxX);
+        pos.y = std::clamp(pos.y, minY, maxY);
+
+        return pos;
+    }
+
 	PlayerScript::PlayerScript()
 		: mNetworkSendTimer(0.0f)
 		, mHead(nullptr)
@@ -52,6 +124,14 @@ namespace stb
 	void PlayerScript::Update()
 	{
 		if (m_player == nullptr) return;
+
+		// 사망 중 이동·공격 및 Idle 상태 전환 차단
+		if (m_player->IsDead())
+		{
+			mNetworkSendTimer = 0.0f;
+			mAttackTimer = 0.0f;
+			return;
+		}
 
 		if (M_UIMANAGER->IsInputFocused())
 			return;
@@ -126,7 +206,8 @@ namespace stb
 			return;
 		}
 
-		Vector2 pos = tr->GetPosition();
+		const Vector2 previousPos = tr->GetPosition();
+		Vector2 pos = previousPos;
 		bool moved = false;
 
 		const float moveSpeed = m_player->GetPlayerMoveSpeed();
@@ -180,13 +261,14 @@ namespace stb
 					m_animator->SetFlipX(false);
 				}
 
-				moved = true;
+				pos = ClampPlayerPosition(pos);
 
+				// 키 입력 여부가 아닌 실제 위치 변화로 이동 상태 결정
+				moved = pos.x != previousPos.x || pos.y != previousPos.y;
 				tr->SetPosition(pos);
-
 				if (m_player->GetPlayerLocation() != nullptr)
 				{
-					m_player->GetPlayerLocation()->pos = pos;
+				    m_player->GetPlayerLocation()->pos = pos;
 				}
 			}
 		}

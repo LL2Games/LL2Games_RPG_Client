@@ -61,22 +61,14 @@ void HealthBarUI::RenderBackGround(stbD2DRenderer& renderer)
     D2D1_SIZE_F rtSize = renderer.GetRenderTargetSize();
 
     // 기준 해상도 대비 UI 전체 스케일
-    float scaleX = rtSize.width / 1366.0f;
-    float scaleY = rtSize.height / 768.0f;
-    float scale = std::min(scaleX, scaleY);
+    //float scaleX = rtSize.width / 1366.0f;
+    //float scaleY = rtSize.height / 768.0f;
+    //float scale = std::min(scaleX, scaleY);
 
-    float drawWidth = bitmap->GetSize().width * scale;
-    float drawHeight = bitmap->GetSize().height * scale;
+    //float drawWidth = bitmap->GetSize().width * scale;
+    //float drawHeight = bitmap->GetSize().height * scale;
 
-    m_UIRect = UILayout::CalcRect(
-        rtSize.width,
-        rtSize.height,
-        drawWidth,
-        drawHeight,
-        UIAnchor::CenterBottom,
-        10.0f,
-        15.0f
-    );
+    m_UIRect = CalculateBackgroundRect(renderer);
 
     renderer.DrawBitmap(
         bitmap,
@@ -438,4 +430,35 @@ void HealthBarUI::RenderMpText(stbD2DRenderer& renderer)
 
         drawX += static_cast<float>(tex->GetWidth());
     }
+}
+
+UIRect HealthBarUI::CalculateBackgroundRect(stbD2DRenderer& renderer) const
+{
+    const auto rtSize = renderer.GetRenderTargetSize();
+
+    // 리소스가 준비되지 않았다면 화면 하단을 임시 경계로 사용
+    UIRect fallback{};
+    fallback.y = rtSize.height;
+
+    if (m_background == nullptr)
+        return fallback;
+
+    auto* bitmap = m_background->GetD2DBitmap();
+    if (bitmap == nullptr)
+        return fallback;
+
+    const float scale = (std::min)(
+        rtSize.width / 1366.0f,
+        rtSize.height / 768.0f
+    );
+
+    return UILayout::CalcRect(
+        rtSize.width,
+        rtSize.height,
+        bitmap->GetSize().width * scale,
+        bitmap->GetSize().height * scale,
+        UIAnchor::CenterBottom,
+        10.0f,
+        15.0f
+    );
 }

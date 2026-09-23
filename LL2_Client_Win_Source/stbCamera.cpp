@@ -23,12 +23,19 @@ namespace stb
 
 	void Camera::Initialize()
 	{
-		mResolution.x = static_cast<float>(M_APP->GetWidth());
-		mResolution.y = static_cast<float>(M_APP->GetHeight());
+		const auto size = M_APP->GetRenderer().GetRenderTargetSize();
+    	mResolution = Vector2(size.width, size.height);
 	}
 
 	void Camera::Update()
 	{
+		const auto size = M_APP->GetRenderer().GetRenderTargetSize();
+
+		if (size.width <= 0.0f || size.height <= 0.0f)
+		    return;
+			
+		mResolution = Vector2(size.width, size.height);
+
         if (mTarget != nullptr)
         {
             Transform* transform = mTarget->GetComponent<Transform>();

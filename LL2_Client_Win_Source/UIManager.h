@@ -68,6 +68,7 @@ public:
 	InventoryUI* GetInventoryUI() { return m_inventoryUI; }
 	QuickSlotUI* GetQuickSlotUI() { return m_quickslotUI; }
 	ExpBarUI* GetExpBarUI() { return m_expBarUI; }
+	HealthBarUI* GetHealthBarUI() const { return m_healthBarUI; }
 private:
 	std::vector<UI*> mUIs;
 	InventoryUI* m_inventoryUI = nullptr;

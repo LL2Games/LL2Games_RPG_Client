@@ -46,6 +46,20 @@ bool PacketManager::RegisterAllHandlers()
 			PlayerDataPacketHandler::HandlePlayerOnDamaged(pkt);
 		});
 
+	// 플레이어 사망 핸들러 등록
+	networkManager->RegisterHandler(PKT_PLAYER_DEAD,
+		[](const ParsedPacket& pkt)
+		{
+			PlayerDataPacketHandler::HandlePlayerDead(pkt);
+		});
+
+	// 플레이어 부활 핸들러 등록
+	networkManager->RegisterHandler(PKT_PLAYER_REVIVE,
+		[](const ParsedPacket& pkt)
+		{
+			PlayerDataPacketHandler::HandlePlayerRevive(pkt);
+		});
+
 	// 플레이어 인벤토리 핸들러 등록
 	networkManager->RegisterHandler(PKT_INVENTORY_META_INFO,
 		[](const ParsedPacket& pkt)
