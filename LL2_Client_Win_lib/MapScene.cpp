@@ -51,6 +51,7 @@ void MapScene::OnEnter()
 void MapScene::OnExit()
 {
 	OnMapExit();
+	M_MONSTERMANAGER->ClearMonsters();
 	Scene::OnExit();
 }
 

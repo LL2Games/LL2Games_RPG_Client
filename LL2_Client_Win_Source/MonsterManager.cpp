@@ -31,7 +31,7 @@ void MonsterManager::SpawnMonster(const MonsterSpawnInfo& info)
 {
     auto it = m_monsters.find(info.instanceId);
 
-    if (it != m_monsters.end())
+    if (it != m_monsters.end() && it->second->GetMonsterId() == info.monsterId)
     {
         it->second->ResetFromSpawnInfo(info);
         return;
@@ -45,7 +45,13 @@ void MonsterManager::SpawnMonster(const MonsterSpawnInfo& info)
 
     OutputDebugStringA(DebugMsg.c_str());
 
-    m_monsters.emplace(info.instanceId, std::move(monster));
+    // Instance IDs are local to a map; a different type needs fresh visual data.
+    m_monsters[info.instanceId] = std::move(monster);
+}
+
+void MonsterManager::ClearMonsters()
+{
+    m_monsters.clear();
 }
 
 void MonsterManager::RemoveMonster(int /*instanceId*/)
@@ -88,7 +94,7 @@ void MonsterManager::RespawnMonster(const MonsterUpdateInfo& info)
 {
     auto it = m_monsters.find(info.instanceId);
 
-    if (it != m_monsters.end())
+    if (it != m_monsters.end() && it->second->GetMonsterId() == info.monsterId)
     {
         // 이미 있으면 재활성화(부활) 처리
         it->second->RespawnFromServer(info);
