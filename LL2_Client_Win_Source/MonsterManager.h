@@ -15,6 +15,7 @@ public:
 
     void SpawnMonster(const MonsterSpawnInfo& info);
     void RemoveMonster(int instanceId);
+    void ClearMonsters();
     void ApplyServerUpdate(const MonsterUpdateInfo& info);
     void ApplyAttackResult(const AttackResult& result);
     void RespawnMonster(const MonsterUpdateInfo& info);

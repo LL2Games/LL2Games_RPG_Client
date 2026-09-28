@@ -60,6 +60,7 @@ void MapScene::OnExit()
     M_MONSTERMANAGER->Clear();
     M_PROJECTILEMANAGER->Clear();
 	OnMapExit();
+	M_MONSTERMANAGER->ClearMonsters();
 	Scene::OnExit();
 }
 
