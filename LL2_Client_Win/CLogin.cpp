@@ -97,8 +97,10 @@ BOOL CLogin::OnInitDialog()
 
 	// 사용자에게 표시되는 서버 이름
 	m_comboHost.ResetContent();
-	const int server1ComboIndex = m_comboHost.AddString(_T("서버1"));
-	m_comboHost.SetItemData(server1ComboIndex, 0);
+	m_comboHost.AddString(_T("AWS 서울 서버1"));
+	m_comboHost.AddString(_T("AWS 서울 서버2"));
+	m_comboHost.AddString(_T("서버3 (100.108.54.60)"));
+	m_comboHost.AddString(_T("서버4 (100.114.42.54)"));
 
 	const int server2ComboIndex = m_comboHost.AddString(_T("서버2"));
 	m_comboHost.SetItemData (server2ComboIndex, 1);
