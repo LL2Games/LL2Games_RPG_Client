@@ -539,6 +539,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StatUI.h">
       <Filter>Game\UI\StatUI</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameUiMessages.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VFX_Info.h">
       <Filter>Game\Skill</Filter>
     </ClInclude>

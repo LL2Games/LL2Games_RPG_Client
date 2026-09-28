@@ -29,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DropItemPacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EquipeTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpBarUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameUiMessages.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HealthBarUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Inventory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InventoryManager.h" />

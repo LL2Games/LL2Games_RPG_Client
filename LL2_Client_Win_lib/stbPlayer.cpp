@@ -138,6 +138,7 @@ namespace stb
 				m_animator->CreateAnimation(L"walk", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 3, 0.3f);
 				m_animator->CreateAnimation(L"swingO3", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 3, 0.2f);
 				m_animator->CreateAnimation(L"slash", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 3, 0.2f);
+				m_animator->CreateAnimation(L"dead", knightTex, Vector2(0.0f, 0.0f), Vector2(67.0f, 81.0f), Vector2::Zero, 1, 1.0f);
 			}
 		}
 		m_playerState = PlayerState::None;
@@ -174,6 +175,10 @@ namespace stb
 		case PlayerState::Skill_Slash:
 			m_currentAnimation = L"slash";
 			break;
+
+		case PlayerState::Dead:
+    		m_currentAnimation = L"dead";
+    		break;
 		}
 
 		stb::Animator* animator = GetComponent<stb::Animator>();

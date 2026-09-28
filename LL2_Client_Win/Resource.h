@@ -20,6 +20,7 @@
 #define IDD_WORLD                       129
 #define IDD_DIALOG2                     130
 #define IDD_WORLD_NEW_CHAR              130
+#define IDD_REVIVE                      131
 #define IDC_EDIT1                       1000
 #define IDC_EDIT_CHARLIST               1000
 #define IDC_EDIT_WORLD_CHARID           1001
@@ -41,21 +42,19 @@
 #define ID_BUTTON_NEW_CHAR              1010
 #define IDC_BUTTON_NEW_CHAR             1011
 #define IDC_BUTTON_DEL_CHAR             1012
-
-#ifdef IDC_STATIC                      
-#undef IDC_STATIC                      
-#endif
-
+#define IDC_REVIVE_MESSAGE              1012
+#ifndef IDC_STATIC
 #define IDC_STATIC                      -1
+#endif
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1012
+#define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

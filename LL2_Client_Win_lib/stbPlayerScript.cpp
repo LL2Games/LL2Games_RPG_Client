@@ -58,7 +58,15 @@ namespace stb
 	{
 		if (m_player == nullptr) return;
 
-		if (M_UIMANAGER->IsGameplayInputBlocked())
+		// 사망 중 이동·공격 및 Idle 상태 전환 차단
+		if (m_player->IsDead())
+		{
+			mNetworkSendTimer = 0.0f;
+			mAttackTimer = 0.0f;
+			return;
+		}
+
+		if (M_UIMANAGER->IsInputFocused() || M_UIMANAGER->IsGameplayInputBlocked())
 			return;
 
 		HandleCombatInput();
