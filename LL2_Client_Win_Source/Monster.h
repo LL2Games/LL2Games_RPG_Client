@@ -36,6 +36,7 @@ public:
     int GetInstanceId() const { return m_instanceId; }
     int GetMoveSpeed() const { return m_moveSpeed; }
     bool IsDead() { return m_isDead; }
+    bool IsDying() const { return m_state == MonsterState::E_Die; }
 
 private:
     int m_instanceId = 0;   // 서버 개체 ID

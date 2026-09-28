@@ -8,6 +8,7 @@
 #include "ItemDataManager.h"
 #include "QuickSlotManager.h"
 #include "PlayerManager.h"
+#include "InventoryManager.h"
 #include <algorithm>
 
 #define M_REMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
@@ -16,6 +17,7 @@
 #define M_ITEMDATAMANAGER stb::SingletonBase<ItemDataManager>::getInstance()
 #define M_QUICKSLOTMANAGER stb::SingletonBase<QuickSlotManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
+#define M_INVENTORYMANAGER stb::SingletonBase<InventoryManager>::getInstance()
 
 void QuickSlotUI::Init()
 {
@@ -177,7 +179,21 @@ void QuickSlotUI::RenderItemSlot(stbD2DRenderer& renderer, const QuickSlotData& 
     );
 
    
-    std::wstring countText = std::to_wstring(slot.count);
+    int itemCount = 0;
+
+    Inventory* inventory = M_INVENTORYMANAGER->GetInventory(static_cast<int>(slot.inventory_type));
+
+    if (inventory != nullptr)
+    {
+        InventoryItemInfo* item = inventory->FindSlot(slot.inventory_slotPos);
+
+        if (item != nullptr && item->itemId == slot.ref_id)
+        {
+            itemCount = item->itemCount;
+        }
+    }
+
+    std::wstring countText = std::to_wstring(itemCount);
 
     D2D1_RECT_F textRect = D2D1::RectF(
         (FLOAT)rect.x,

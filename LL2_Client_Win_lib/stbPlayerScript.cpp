@@ -1,10 +1,11 @@
-﻿#include "stbPlayerScript.h"
+﻿#include "..\\LL2_Client_Win_lib\\stbPlayer.h"
+
+#include "stbPlayerScript.h"
 #include "stbInput.h"
 #include "stbTransform.h"
 #include "stbTime.h"
 #include "stbGameObject.h"
 #include "stbNetworkDebug.h"
-#include "..\\LL2_Client_Win_lib\\stbPlayer.h"
 #include "PlayerManager.h"
 #include "QuickSlotManager.h"
 #include "UIManager.h"
@@ -13,6 +14,8 @@
 #include "stbSceneManager.h"
 #include "stbPlayScene.h"
 #include "MovePacketHandler.h"
+#include "SkillDataManager.h"
+#include "SkillEffectManager.h"
 
 #include <cmath>
 
@@ -23,6 +26,8 @@
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
 #define M_PLAYERANIMMANAGER stb::SingletonBase<PlayerAnimationManager>::getInstance()
 #define M_SCENEMANAGER stb::SingletonBase<stb::SceneManager>::getInstance()
+#define M_SKILLDATAMANAGER stb::SingletonBase<SkillDataManager>::getInstance()
+#define M_SKILLEFFECTMANAGER stb::SingletonBase<SkillEffectManager>::getInstance()
 
 namespace stb
 {
@@ -61,7 +66,7 @@ namespace stb
 			return;
 		}
 
-		if (M_UIMANAGER->IsInputFocused())
+		if (M_UIMANAGER->IsInputFocused() || M_UIMANAGER->IsGameplayInputBlocked())
 			return;
 
 		HandleCombatInput();
@@ -101,7 +106,7 @@ namespace stb
 		if (player == nullptr)
 			return;
 
-		mAttackTimer += M_TIME->GetDeltaTime();
+		mAttackTimer += M_TIME->GetDeltaTime(); 
 
 		if (mAttackTimer < mAttackDuration)
 			return;
@@ -122,7 +127,7 @@ namespace stb
 
 	void PlayerScript::Idle(bool changeState)
 	{
-		if (M_UIMANAGER->IsInputFocused())
+		if (M_UIMANAGER->IsGameplayInputBlocked())
 		{
 			return;
 		}
@@ -279,6 +284,23 @@ namespace stb
 				player->SetState(PlayerState::Skill_Slash);
 				mAttackTimer = 0.0f;
 
+				// 스킬 데이터 조회
+				const SkillData* skillData = M_SKILLDATAMANAGER->FindItemData(static_cast<int>(skillCode));
+
+				if (skillData != nullptr)
+				{
+					OutputDebugStringA(("[Skill VFX] " + skillData->skillVfx_name + "\n").c_str());
+					Transform* tr = GetOwner()->GetComponent<Transform>();
+
+					if (tr != nullptr)
+					{
+						Vector2 playerPos = tr->GetPosition();
+						bool flipX = player->GetFacing() == FacingDirection::Right;
+						M_SKILLEFFECTMANAGER->PlayCharge(skillData->skillVfx_name, playerPos, flipX);
+						M_SKILLEFFECTMANAGER->PlayEffect(skillData->skillVfx_name, playerPos, flipX);
+					}
+				}
+
 				OutputDebugStringA("Player Skill Attack Start\n");
 			}
 		}
@@ -328,7 +350,7 @@ namespace stb
 	void PlayerScript::HandleInput()
 	{
 		//채팅 입력중 -> 단축키 차단
-		if (M_UIMANAGER->IsInputFocused())
+		if (M_UIMANAGER->IsGameplayInputBlocked())
 			return;
 
 		KeyBindInfo bindInfo;
@@ -342,7 +364,7 @@ namespace stb
 	void PlayerScript::HandleCombatInput()
 	{
 		//채팅 입력중 -> 이동/공격 차단
-		if (M_UIMANAGER->IsInputFocused())
+		if (M_UIMANAGER->IsGameplayInputBlocked())
 			return;
 
 		if (M_INPUT->GetActionDown(eActionCode::Attack))

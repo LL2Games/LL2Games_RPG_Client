@@ -7,7 +7,9 @@ namespace stb
 {
 	int ASCII[(UINT)eKeyCode::EnumsEnd] =
 	{
-		'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+		VK_F1, VK_F2, VK_F3, VK_F4,
+		VK_F5, VK_F6, VK_F7, VK_F8,
+		VK_F9, VK_F10, VK_F11, VK_F12,
 		'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
 		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
 		'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
@@ -112,42 +114,53 @@ namespace stb
 
 	void Input::CreateDefaultBindingQuickSlot()
 	{
-		m_keyBindings[eKeyCode::LShift] = { eBindType::QuickSlot, 0 };
-		m_keyBindings[eKeyCode::Insert] = { eBindType::QuickSlot, 1 };
-		m_keyBindings[eKeyCode::Home]	= { eBindType::QuickSlot, 2 };
-		m_keyBindings[eKeyCode::PageUp] = { eBindType::QuickSlot, 3 };
+		int slot = 0;
 
-		m_keyBindings[eKeyCode::Num1] = { eBindType::QuickSlot, 4 };
-		m_keyBindings[eKeyCode::Num2] = { eBindType::QuickSlot, 5 };
-		m_keyBindings[eKeyCode::Num3] = { eBindType::QuickSlot, 6 };
-		m_keyBindings[eKeyCode::Num4] = { eBindType::QuickSlot, 7 };
-		m_keyBindings[eKeyCode::Num5] = { eBindType::QuickSlot, 8 };
-		m_keyBindings[eKeyCode::Num6] = { eBindType::QuickSlot, 9 };
-		m_keyBindings[eKeyCode::Num7] = { eBindType::QuickSlot, 10 };
-		m_keyBindings[eKeyCode::Num8] = { eBindType::QuickSlot, 11 };
-		m_keyBindings[eKeyCode::Num9] = { eBindType::QuickSlot, 12 };
-		m_keyBindings[eKeyCode::Num0] = { eBindType::QuickSlot, 13 };
+		m_keyBindings[eKeyCode::LShift] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Insert] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Home] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::PageUp] = { eBindType::QuickSlot, slot++ };
 
-		//m_keyBindings[eKeyCode::I] = { eBindType::QuickSlot, 14 };
-		m_keyBindings[eKeyCode::O] = { eBindType::QuickSlot, 15 };
+		m_keyBindings[eKeyCode::Num1] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num2] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num3] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num4] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num5] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num6] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num7] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num8] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num9] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Num0] = { eBindType::QuickSlot, slot++ };
 
-		m_keyBindings[eKeyCode::LCONTROL] = { eBindType::QuickSlot, 16 };
-		m_keyBindings[eKeyCode::Delete] = { eBindType::QuickSlot, 17 };
-		m_keyBindings[eKeyCode::End] = { eBindType::QuickSlot, 18 };
-		m_keyBindings[eKeyCode::PageDown] = { eBindType::QuickSlot, 19 };
+		// I는 Inventory라 제외
+		m_keyBindings[eKeyCode::O] = { eBindType::QuickSlot, slot++ };
 
-		//m_keyBindings[eKeyCode::Q] = { eBindType::QuickSlot, 20 };
-		m_keyBindings[eKeyCode::W] = { eBindType::QuickSlot, 21 };
-		m_keyBindings[eKeyCode::E] = { eBindType::QuickSlot, 22 };
-		m_keyBindings[eKeyCode::R] = { eBindType::QuickSlot, 23 };
-		//m_keyBindings[eKeyCode::T] = { eBindType::QuickSlot, 24 };
-		//m_keyBindings[eKeyCode::A] = { eBindType::QuickSlot, 25 };
-		m_keyBindings[eKeyCode::S] = { eBindType::QuickSlot, 26 };
-		m_keyBindings[eKeyCode::D] = { eBindType::QuickSlot, 27 };
-		m_keyBindings[eKeyCode::F] = { eBindType::QuickSlot, 28 };
-		m_keyBindings[eKeyCode::G] = { eBindType::QuickSlot, 29 };
-		//m_keyBindings[eKeyCode::K] = { eBindType::QuickSlot, 30 };
-		m_keyBindings[eKeyCode::L] = { eBindType::QuickSlot, 31 };
+		m_keyBindings[eKeyCode::LCONTROL] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::Delete] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::End] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::PageDown] = { eBindType::QuickSlot, slot++ };
+
+		// Q는 Skill이라 제외
+		m_keyBindings[eKeyCode::W] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::E] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::R] = { eBindType::QuickSlot, slot++ };
+
+		// T는 Trade라 제외
+		// A는 Attack이라 제외
+
+		m_keyBindings[eKeyCode::S] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::D] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::F] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::G] = { eBindType::QuickSlot, slot++ };
+
+		// K는 SkillWindow라 제외
+		m_keyBindings[eKeyCode::L] = { eBindType::QuickSlot, slot++ };
+
+		m_keyBindings[eKeyCode::F1] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::F2] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::F3] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::F4] = { eBindType::QuickSlot, slot++ };
+		m_keyBindings[eKeyCode::F5] = { eBindType::QuickSlot, slot++ };
 	}
 
 	bool Input::GetPressedBind(KeyBindInfo& outBindInfo)
@@ -328,19 +341,45 @@ namespace stb
 		case eKeyCode::Num9: return L"9";
 		case eKeyCode::Num0: return L"0";
 
+		case eKeyCode::F1: return L"F1";
+		case eKeyCode::F2: return L"F2";
+		case eKeyCode::F3: return L"F3";
+		case eKeyCode::F4: return L"F4";
+		case eKeyCode::F5: return L"F5";
+		case eKeyCode::F6: return L"F6";
+		case eKeyCode::F7: return L"F7";
+		case eKeyCode::F8: return L"F8";
+		case eKeyCode::F9: return L"F9";
+		case eKeyCode::F10: return L"F10";
+		case eKeyCode::F11: return L"F11";
+		case eKeyCode::F12: return L"F12";
+
 		case eKeyCode::Q: return L"Q";
 		case eKeyCode::W: return L"W";
 		case eKeyCode::E: return L"E";
 		case eKeyCode::R: return L"R";
 		case eKeyCode::T: return L"T";
+		case eKeyCode::Y: return L"Y";
+		case eKeyCode::U: return L"U";
+		case eKeyCode::I: return L"I";
+		case eKeyCode::O: return L"O";
+		case eKeyCode::P: return L"P";
 		case eKeyCode::A: return L"A";
 		case eKeyCode::S: return L"S";
 		case eKeyCode::D: return L"D";
 		case eKeyCode::F: return L"F";
-		case eKeyCode::G: return L"F";
+		case eKeyCode::G: return L"G";
+		case eKeyCode::H: return L"H";
+		case eKeyCode::J: return L"J";
 		case eKeyCode::K: return L"F";
 		case eKeyCode::L: return L"F";
-
+		case eKeyCode::Z: return L"Z";
+		case eKeyCode::X: return L"X";
+		case eKeyCode::C: return L"C";
+		case eKeyCode::V: return L"V";
+		case eKeyCode::B: return L"B";
+		case eKeyCode::N: return L"N";
+		case eKeyCode::M: return L"M";
 		case eKeyCode::LShift:		return L"Shift";
 		case eKeyCode::Insert:		return L"Ins";
 		case eKeyCode::Home:		return L"Hm";

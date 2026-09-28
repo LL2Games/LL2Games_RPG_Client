@@ -40,6 +40,7 @@ namespace stb
 		void Render(HDC hdc);
 		void Render(stbD2DRenderer& renderer);
 		void Render(stbD2DRenderer& renderer, bool flipX);
+		void RenderPreview(stbD2DRenderer& renderer, float x, float y, float scale,bool flipX);
 
 		void CreateAnimation(const std::wstring& name
 			, Texture* spriteTexture

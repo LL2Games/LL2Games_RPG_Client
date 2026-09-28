@@ -54,6 +54,22 @@ void CMySocket::OnReceive(int nErrorCode)
             return;
         }
 
+        // 반드시 기존 switch(m_status)보다 먼저 처리
+        if (parseResult.packet.type == PKT_SERVER_SHUTDOWN_NOTIFY)
+        {
+            AfxMessageBox(_T("서버가 종료되어 연결이 종료되었습니다."), MB_OK | MB_ICONINFORMATION);
+
+            Disconnect();
+
+            if (m_dlg != nullptr &&
+                ::IsWindow(m_dlg->GetSafeHwnd()))
+            {
+                m_dlg->EndDialog(IDCANCEL);
+            }
+
+            return;
+        }
+
         std::string completePacket;
 
         try

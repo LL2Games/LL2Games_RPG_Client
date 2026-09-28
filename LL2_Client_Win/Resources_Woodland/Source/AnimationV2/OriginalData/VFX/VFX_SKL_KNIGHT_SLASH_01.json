@@ -1,0 +1,78 @@
+{
+  "key": "VFX_SKL_KNIGHT_SLASH_01",
+
+  "charge": {
+    "loop": false,
+    "frame_time": 0.05,
+
+    "origin": {
+      "x": 0,
+      "y": 0
+    },
+
+    "offset": {
+      "x": -70,
+      "y": -65
+    },
+
+    "attach_offset": {
+      "x": 0,
+      "y": -35
+    },
+
+    "frames": [
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.0",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.1",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.2",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.3",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.4"
+    ]
+  },
+
+  "effect": {
+    "loop": false,
+    "frame_time": 0.05,
+
+    "origin": {
+      "x": 290,
+      "y": 45
+    },
+
+    "offset": {
+      "x": -10,
+      "y": -80
+    },
+
+    "frames": [
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.5",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.6",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.7",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.8",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.9",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.effect.10"
+    ]
+  },
+  "hit": {
+    "loop": false,
+    "frame_time": 0.05,
+  
+    "origin": {
+      "x": 0,
+      "y": 0
+    },
+  
+    "offset": {
+      "x": -45,
+      "y": -55
+    },
+  
+    "frames": [
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.0",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.1",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.2",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.3",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.4",
+      "Character/Warrior/onehand_sword/Skill/slashBlast/skill.1001005.hit.0.5"
+    ]
+  }
+}

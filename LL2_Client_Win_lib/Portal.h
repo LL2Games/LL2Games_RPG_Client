@@ -27,7 +27,7 @@ private:
     stb::BoxCollider2D* m_collider = nullptr;
     bool m_transitioning = false;
 
-    stb::math::Vector2 m_triggerHalfSize = stb::math::Vector2(60.0f, 100.0f);
+    stb::math::Vector2 m_triggerHalfSize = stb::math::Vector2(50.0f, 80.0f);
 
     stb::Texture* m_texture = nullptr;
 

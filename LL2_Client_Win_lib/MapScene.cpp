@@ -7,6 +7,7 @@
 #include "StringConvert.h"
 #include "stbResourceManager.h"
 #include "ProjectileManager.h"
+#include "SkillEffectManager.h"
 
 #define M_TIME SingletonBase<Time>::getInstance()
 #define M_MONSTERMANAGER SingletonBase<MonsterManager>::getInstance()
@@ -14,6 +15,7 @@
 #define M_MAPDATAMANAGER stb::SingletonBase<MapDataManager>::getInstance()
 #define M_RESOURCEMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
 #define M_PROJECTILEMANAGER stb::SingletonBase<ProjectileManager>::getInstance()
+#define M_SKILLEFFECTMANAGER stb::SingletonBase<SkillEffectManager>::getInstance()
 
 void MapScene::Initialize()
 {
@@ -29,6 +31,7 @@ void MapScene::Update()
 	Scene::Update();
 	M_MONSTERMANAGER->Update(M_TIME->GetDeltaTime());
     M_PROJECTILEMANAGER->Update(M_TIME->GetDeltaTime());
+    M_SKILLEFFECTMANAGER->Update();
 }
 
 void MapScene::Render(stbD2DRenderer& renderer)
@@ -38,6 +41,9 @@ void MapScene::Render(stbD2DRenderer& renderer)
 
 	M_MONSTERMANAGER->Render(renderer);
     M_PROJECTILEMANAGER->Render(renderer);
+    M_SKILLEFFECTMANAGER->Render(renderer);
+
+   
 }
 
 void MapScene::OnEnter()
@@ -50,6 +56,9 @@ void MapScene::OnEnter()
 
 void MapScene::OnExit()
 {
+    M_SKILLEFFECTMANAGER->Clear();
+    M_MONSTERMANAGER->Clear();
+    M_PROJECTILEMANAGER->Clear();
 	OnMapExit();
 	Scene::OnExit();
 }

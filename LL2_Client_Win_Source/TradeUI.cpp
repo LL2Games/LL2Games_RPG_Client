@@ -7,10 +7,16 @@
 #include "StringConvert.h"
 #include "stbD2DRenderer.h"
 #include "stbNetworkConfig.h"
-#include <string>
 #include "Util.h"
 #include "ItemDataManager.h"
 #include "UIManager.h"
+#include "PlayerManager.h"
+#include "stbOtherPlayerManager.h"
+#include "stbPlayer.h"
+#include "stbOtherPlayer.h"
+#include "stbAnimator.h"
+
+#include <string>
 
 #define M_APP stb::SingletonBase<stb::Application>::getInstance()
 #define M_INPUT stb::SingletonBase<stb::Input>::getInstance()
@@ -18,6 +24,9 @@
 #define M_REMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
 #define M_ITEMDATAMANAGER stb::SingletonBase<ItemDataManager>::getInstance()
 #define M_UIMANAGER stb::SingletonBase<UIManager>::getInstance()
+
+#define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
+#define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
 
 void TradeUI::Init()
 {
@@ -393,6 +402,7 @@ void TradeUI::Render(stbD2DRenderer& renderer)
 	// 1. 배경 출력
     RenderBackground(renderer);
 
+    RenderCharacters(renderer);
     //교환 대기 레이어
     /*if (m_ConfirmLayerMe)
         RenderConfirmLayerMe(renderer);
@@ -518,6 +528,54 @@ void TradeUI::RenderConfirmLayerTarget(stbD2DRenderer& renderer)
     }
 }
 
+void TradeUI::RenderCharacters(stbD2DRenderer& renderer)
+{
+    // =========================
+    // 내 캐릭터
+    // =========================
+
+    stb::Player* myPlayer =  M_PLAYERMANAGER->GetLocalPlayer();
+
+    if (myPlayer != nullptr)
+    {
+        stb::Animator* animator = myPlayer->GetComponent<stb::Animator>();
+
+        if (animator != nullptr)
+        {
+            const float myX = static_cast<float>(m_posX) + 330.0f;
+            const float myY = static_cast<float>(m_posY) + 135.0f;
+
+            animator->RenderPreview(renderer, L"stand", myX, myY, 1.0f, false);
+        }
+    }
+
+    // =========================
+    // 상대 캐릭터
+    // =========================
+
+    auto& players = M_OTHERPLAYERMANAGER->GetPlayers();
+
+    auto it = players.find(m_targetId);
+
+    if (it == players.end())
+        return;
+
+    stb::OtherPlayer* targetPlayer = it->second;
+
+    if (targetPlayer == nullptr)
+        return;
+
+    stb::Animator* targetAnimator = targetPlayer->GetComponent<stb::Animator>();
+
+    if (targetAnimator == nullptr)
+        return;
+
+    const float targetX = static_cast<float>(m_posX) + 115.0f;
+    const float targetY = static_cast<float>(m_posY) + 135.0f;
+
+    targetAnimator->RenderPreview(renderer, L"stand", targetX, targetY,1.0f,false);
+}
+
 void TradeUI::RenderButton(stbD2DRenderer& renderer)
 {
 #if 0 //등록버튼
@@ -611,7 +669,7 @@ void TradeUI::RenderNickname(stbD2DRenderer& renderer)
 
     ID2D1SolidColorBrush* brush = nullptr;
     hr = rt->CreateSolidColorBrush(
-        D2D1::ColorF(D2D1::ColorF::White),
+        D2D1::ColorF(D2D1::ColorF::Black),
         &brush
     );
 
@@ -623,20 +681,37 @@ void TradeUI::RenderNickname(stbD2DRenderer& renderer)
 
     // 왼쪽 타겟 닉네임 영역
     D2D1_RECT_F targetNickRect = D2D1::RectF(
-        m_posX + 62.0f,
-        m_posY + 100.0f,
-        m_posX + 157.0f,
-        m_posY + 117.0f
+        m_posX + 70.0f,
+        m_posY + 157.0f,
+        m_posX + 171.0f,
+        m_posY + 167.0f
     );
 
     // 오른쪽 내 닉네임 영역
     D2D1_RECT_F myNickRect = D2D1::RectF(
-        m_posX + 266.0f,
-        m_posY + 102.0f,
-        m_posX + 362.0f,
-        m_posY + 112.0f
+        m_posX + 270.0f,
+        m_posY + 157.0f,
+        m_posX + 371.0f,
+        m_posY + 167.0f
     );
 
+    renderer.DrawTextString
+    (
+        m_targetName,
+        targetNickRect,
+        D2D1::ColorF::Black,
+        TextStyle::NickName
+    );
+
+    renderer.DrawTextString
+    (
+        m_myName,
+        myNickRect,
+        D2D1::ColorF::Black,
+        TextStyle::NickName
+    );
+
+/*
     rt->DrawTextW(
         m_targetName.c_str(),
         static_cast<UINT32>(m_targetName.length()),
@@ -652,6 +727,7 @@ void TradeUI::RenderNickname(stbD2DRenderer& renderer)
         myNickRect,
         brush
     );
+    */
 
     brush->Release();
     textFormat->Release();
@@ -676,17 +752,17 @@ void TradeUI::RenderCancelPopUp(stbD2DRenderer& renderer)
         D2D1::ColorF(D2D1::ColorF::Yellow), 2.f);
 
     // 메시지
-    std::wstring message = L"'" + m_targetName + L"'님이 교환신청을 취소 하셨습니다.";
+    const std::wstring& message = m_cancelPopupMessage;
 
     D2D1_RECT_F msgRect = D2D1::RectF(
         px + 20.f,
         py + 30.f,
         px + popupW - 20.f,
-        py + 70.f
+        py + 90
     );
 
     renderer.DrawTextString(message, msgRect,
-        D2D1::ColorF(D2D1::ColorF::White));
+        D2D1::ColorF(D2D1::ColorF::White), TextStyle::Trade);
 
     // 버튼 위치 저장
     const float btnW = 100.f;
@@ -1628,10 +1704,29 @@ void TradeUI::CloseTradeUI()
 
 void TradeUI::OnCancelPopUp()
 {
-    if (mActive)
-    {
-        m_cancelPopupActive = true; 
-    }
+    if (!mActive)
+        return;
+
+    m_cancelPopupMessage =
+        L"'" + m_targetName +
+        L"'님이 교환 신청을 취소했습니다.";
+
+    m_cancelPopupActive = true;
+}
+
+void TradeUI::OnTradeFailPopUp(const std::string& errorMessage)
+{
+    if (!mActive)
+        return;
+
+    // 서버의 내부 오류 문구는 디버그 출력에만 사용한다.
+    OutputDebugStringA(errorMessage.c_str());
+
+    m_cancelPopupMessage =
+        L"교환 처리에 실패했습니다.\n"
+        L"인벤토리를 확인한 후 다시 시도해 주세요.";
+
+    m_cancelPopupActive = true;
 }
 
 void TradeUI::OnSuccessPopUp(const std::vector<TradeSlotInfo>& mySlotInfos, const std::vector<TradeSlotInfo>& targetSlotInfos)
@@ -1676,8 +1771,10 @@ void TradeUI::CloseCancelPopup()
     m_ConfirmLayerMe = false;
     m_ConfirmLayerTarget = false;
     m_targetName.clear();
+    m_cancelPopupMessage.clear();
     ClearTradeSlots();
     m_cancelCheckButtonRect = D2D1::RectF(0, 0, 0, 0);
+
 }
 
 void TradeUI::CloseSuccessPopup()

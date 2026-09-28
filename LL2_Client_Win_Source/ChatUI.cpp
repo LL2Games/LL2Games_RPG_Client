@@ -15,7 +15,11 @@ void ChatUI::ToggleInputFocus()
 {
     m_inputActive = !m_inputActive;
     if (!m_inputActive)
+    {
         m_inputBuffer.clear();  // 닫을 때 입력 버퍼 초기화
+        m_compositionBuffer.clear();
+    }
+        
 }
 
 void ChatUI::AppendChar(wchar_t ch)
@@ -92,7 +96,7 @@ void ChatUI::Render(stbD2DRenderer& renderer)
             D2D1::ColorF(D2D1::ColorF::Yellow), 1.5f);
 
         // 입력 텍스트 + 커서
-        std::wstring display = m_inputBuffer + L"_";
+        std::wstring display = m_inputBuffer + m_compositionBuffer + L"_";
         D2D1_RECT_F rect = D2D1::RectF(inputX + 4, inputY + 2,
             inputX + boxW, inputY + inputH);
         renderer.DrawTextString(display, rect,
@@ -117,4 +121,33 @@ void ChatUI::Update()
         return;
 
     //TODO
+}
+
+void ChatUI::SetComposition(const std::wstring& text)
+{
+    if (!m_inputActive)
+        return;
+
+    m_compositionBuffer = text;
+}
+
+void ChatUI::CommitComposition(const std::wstring& text)
+{
+    if (!m_inputActive)
+        return;
+
+    for (const wchar_t ch : text)
+    {
+        if (m_inputBuffer.size() >= 100)
+            break;
+
+        m_inputBuffer += ch;
+    }
+
+    m_compositionBuffer.clear();
+}
+
+void ChatUI::ClearComposition()
+{
+    m_compositionBuffer.clear();
 }

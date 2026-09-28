@@ -79,6 +79,7 @@ namespace stb
 		// Application이 보유한 Direct2D 렌더러 참조
 		stbD2DRenderer& renderer = stb::Application::getInstance()->GetRenderer();
 
+
 		// 앞에서 로드한 Texture 리소스들을 Direct2D에서 그릴 수 있도록 D2D Bitmap으로 변환/초기화
 		RESOURCEMANAGER->LoadAllD2D(renderer);
 	}

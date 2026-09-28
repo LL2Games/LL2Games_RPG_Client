@@ -1,0 +1,178 @@
+{
+  "mapId": 100000003,
+  "name": "잎새마을",
+  "background": "Background/village/leafhaven.png",
+  "worldSize": {
+    "x": 1536,
+    "y": 1024
+  },
+  "safeZone": true,
+  "groundY": 630,
+  "spawnPosition": {
+    "x": 1280,
+    "y": 590
+  },
+  "portals": [
+    {
+      "id": "to_map_100000000",
+      "texture": "ForestPortal",
+      "position": {
+        "x": 1460,
+        "y": 550
+      },
+      "renderSize": {
+        "x": 100,
+        "y": 160
+      },
+      "halfSize": {
+        "x": 60,
+        "y": 100
+      },
+      "destinationMapId": 100000000,
+      "spawnPosition": {
+        "x": 200,
+        "y": 760
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "id": 200100,
+      "key": "innkeeper",
+      "name": "로제",
+      "role": "여관주인",
+      "texture": "VillageNPC_innkeeper",
+      "sprite": "NPC/innkeeper/idle_0.png",
+      "position": {
+        "x": 210,
+        "y": 630
+      },
+      "renderSize": {
+        "x": 96,
+        "y": 96
+      },
+      "origin": {
+        "x": 48,
+        "y": 92
+      },
+      "dialogue": [
+        "먼 길 오느라 지쳤지요? 따뜻한 차 한 잔 마시고 가세요."
+      ]
+    },
+    {
+      "id": 200101,
+      "key": "herbalist",
+      "name": "리프",
+      "role": "약초상",
+      "texture": "VillageNPC_herbalist",
+      "sprite": "NPC/herbalist/idle_0.png",
+      "position": {
+        "x": 505,
+        "y": 630
+      },
+      "renderSize": {
+        "x": 96,
+        "y": 96
+      },
+      "origin": {
+        "x": 48,
+        "y": 92
+      },
+      "dialogue": [
+        "아침 이슬을 머금은 약초가 가장 좋아요. 숲에서는 발밑도 살펴보세요."
+      ]
+    },
+    {
+      "id": 200102,
+      "key": "elder",
+      "name": "오르",
+      "role": "촌장",
+      "texture": "VillageNPC_elder",
+      "sprite": "NPC/elder/idle_0.png",
+      "position": {
+        "x": 785,
+        "y": 630
+      },
+      "renderSize": {
+        "x": 96,
+        "y": 96
+      },
+      "origin": {
+        "x": 48,
+        "y": 92
+      },
+      "dialogue": [
+        "잎새마을에 온 것을 환영하네. 저 오래된 나무가 우릴 지켜 주고 있지."
+      ]
+    },
+    {
+      "id": 200103,
+      "key": "blacksmith",
+      "name": "브람",
+      "role": "대장장이",
+      "texture": "VillageNPC_blacksmith",
+      "sprite": "NPC/blacksmith/idle_0.png",
+      "position": {
+        "x": 1140,
+        "y": 630
+      },
+      "renderSize": {
+        "x": 96,
+        "y": 96
+      },
+      "origin": {
+        "x": 48,
+        "y": 92
+      },
+      "dialogue": [
+        "튼튼한 장비는 모험의 시작이지. 오늘도 대장간의 불은 꺼지지 않는다네!"
+      ]
+    },
+    {
+      "id": 200104,
+      "key": "ranger",
+      "name": "세린",
+      "role": "숲지기",
+      "texture": "VillageNPC_ranger",
+      "sprite": "NPC/ranger/idle_0.png",
+      "position": {
+        "x": 1380,
+        "y": 630
+      },
+      "renderSize": {
+        "x": 96,
+        "y": 96
+      },
+      "origin": {
+        "x": 48,
+        "y": 92
+      },
+      "dialogue": [
+        "마을 밖은 깊은 숲이야. 준비가 됐다면 동쪽 길로 나가면 돼."
+      ]
+    },
+    {
+      "id": 200105,
+      "key": "merchant",
+      "name": "토비",
+      "role": "잡화상",
+      "texture": "VillageNPC_merchant",
+      "sprite": "NPC/merchant/idle_0.png",
+      "position": {
+        "x": 940,
+        "y": 630
+      },
+      "renderSize": {
+        "x": 96,
+        "y": 96
+      },
+      "origin": {
+        "x": 48,
+        "y": 92
+      },
+      "dialogue": [
+        "여행에 필요한 물건들을 모으고 있어요. 새로운 이야기도 언제나 환영이죠!"
+      ]
+    }
+  ]
+}

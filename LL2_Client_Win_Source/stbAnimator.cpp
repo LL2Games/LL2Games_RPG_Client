@@ -18,6 +18,7 @@ namespace stb
 		, mActiveAnimation(nullptr)
 		, mbLoop(false)
 		, mbCompleteEventCalled(false)
+		,m_flipX(false)
 	{
 
 	}
@@ -70,6 +71,19 @@ namespace stb
 			mActiveAnimation->Render(renderer, m_flipX);
 		}
 			
+	}
+
+	void Animator::RenderPreview(stbD2DRenderer& renderer, const std::wstring& animationName, float x, float y, float scale, bool flipX)
+	{
+		Animation* animation = FindAnimation(animationName);
+
+		if (animation == nullptr)
+		{
+			OutputDebugStringW((L"[Animator::RenderPreview] animation not found : "+ animationName + L"\n").c_str());
+			return;
+		}
+
+		animation->RenderPreview(renderer, x, y, scale, flipX);
 	}
 
 	void Animator::CreateAnimation(const std::wstring& name
@@ -243,6 +257,10 @@ namespace stb
 
 	void Animator::PlayAnimation(const std::wstring& name, bool loop)
 	{
+		std::wstring msg =
+			L"[Animator::PlayAnimation] request = " + name + L"\n";
+		OutputDebugStringW(msg.c_str());
+
 		Animation* animation = FindAnimation(name);
 
 		if (animation == nullptr)
@@ -261,6 +279,12 @@ namespace stb
 		mActiveAnimation->Reset();
 		mbLoop = loop;
 		mbCompleteEventCalled = false;
+
+		std::wstring success =
+			L"[Animator] ActiveAnimation = " +
+			mActiveAnimation->GetName() + L"\n";
+
+		OutputDebugStringW(success.c_str());
 
 		InvokeStartEvent(name);
 	}

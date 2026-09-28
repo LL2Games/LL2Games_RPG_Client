@@ -110,7 +110,9 @@ void Portal::SetDestination(const std::wstring& sceneName, const math::Vector2& 
 
 void Portal::SetTriggerHalfSize(const stb::math::Vector2& halfSize)
 {
-    m_triggerHalfSize = halfSize;
+    stb::math::Vector2 portalColliderSize = { halfSize.x * 0.5f,  halfSize.y * 0.5f };
+
+    m_triggerHalfSize = portalColliderSize;
 
     if (m_collider != nullptr)
     {

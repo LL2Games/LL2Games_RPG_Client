@@ -26,15 +26,23 @@ void Monster::InitFromSpawn(const MonsterSpawnInfo& info)
 	m_monsterId = info.monsterId;
 
 	ResetFromSpawnInfo(info);
+
 	SetAnimation();
 	SetCollider();
-	SetState(MonsterState::E_Move);
 	BindAnimationEvents();
+
+	// 최초 애니메이션을 무조건 재생시키기 위해
+	m_state = MonsterState::E_NONE;
+
+	SetState(info.state);
 }
 
 void Monster::Update(float deltaTime)
 {
 	GameObject::Update();
+
+	if (m_state == MonsterState::E_Die)
+		return;
 
 	stb::math::Vector2 diff = m_targetPos - m_pos;
 	float dist = diff.length();
@@ -74,15 +82,18 @@ void Monster::SetState(MonsterState state)
 
 	m_state = state;
 
+	bool isLoop = true;
+
 	switch (state)
 	{
 		case MonsterState::E_Idle : 
 			m_currentAnimation = L"idle";
 			M_LOGGER("MonsterState[idle]");
 			break;
+		case MonsterState::E_Patrol:
+		case MonsterState::E_Chase:
 		case MonsterState::E_Move:
 			m_currentAnimation = L"move";
-			M_LOGGER("MonsterState[move]");
 			break;
 		case MonsterState::E_Hit:
 			m_currentAnimation = L"hit";
@@ -92,6 +103,8 @@ void Monster::SetState(MonsterState state)
 			m_currentAnimation = L"die";
 			M_LOGGER("MonsterState[die]");
 			break;
+		default:
+			return;
 	}
 
 	stb::Animator* animator = GetComponent<stb::Animator>();
@@ -99,8 +112,11 @@ void Monster::SetState(MonsterState state)
 	{
 		m_debugMsg ="current State : " + std::to_string(static_cast<int>(m_state)) + "\n";
 		OutputDebugStringA(m_debugMsg.c_str());
-		bool isLoop = false;
-		if (m_currentAnimation != L"die") isLoop = true;
+	
+		if (state == MonsterState::E_Hit || state == MonsterState::E_Die)
+		{
+			isLoop = false;
+		}
 		animator->PlayAnimation(m_currentAnimation, isLoop);
 		OutputDebugStringA("Monster PlayAnimation \n");
 	}
@@ -183,7 +199,7 @@ void Monster::BindAnimationEvents()
 	m_animator->RegisterEvent(L"MonsterHitEnd", [this]()
 		{
 			OutputDebugStringA("MonsterHitEnd event called\n");
-			if (m_state != MonsterState::E_Die)
+			if (m_state == MonsterState::E_Hit)
 			{
 				SetState(MonsterState::E_Idle);
 			}
@@ -210,32 +226,21 @@ void Monster::OnMove(float /*x*/, float /*y*/, int /*dir*/)
 // 몬스터패킷 핸들러에서 바로 호출하는 함수
 void Monster::ApplyServerUpdate(const MonsterUpdateInfo& info)
 {
-	bool wasDead = (m_state == MonsterState::E_Die && m_isDeathAnimationFinished);
 	m_targetPos = info.pos;
-
 	m_dir = info.dir;
-	//m_moveSpeed = info.moveSpeed;
+
 	m_curHp = info.curHp;
 	m_maxHp = info.maxHp;
 
-	M_LOGGER("MonsterId:%d", info.monsterId);
-	M_LOGGER("dir:%d", m_dir);
-	M_LOGGER("targetPos.x:%f", m_targetPos.x);
-	M_LOGGER("targetPos.y:%f", m_targetPos.y);
-	if (wasDead && info.curHp > 0 && info.state != MonsterState::E_Die)
-	{
-		m_isDeathAnimationFinished = false;
-		m_isDead = false;
-		// 위치도 바로 스폰 위치로 맞추는 게 좋음
-		m_transform->SetPosition(info.pos);
-		m_targetPos = info.pos;
-
-		// 이전 상태가 Die라서 SetState가 꼬이지 않게 강제 초기화
-		m_state = MonsterState::E_NONE;
-		SetState(MonsterState::E_Idle);
-
+	// 죽음 애니메이션은 Respawn 패킷이 올 때까지 유지
+	if (m_state == MonsterState::E_Die)
 		return;
-	}
+
+	// 피격 애니메이션은 끝날 때까지 유지
+	// MonsterHitEnd에서 Idle로 변경한다.
+	if (m_state == MonsterState::E_Hit)
+		return;
+
 	SetState(info.state);
 }
 
@@ -247,7 +252,7 @@ void Monster::ApplyAttackResult(const AttackResult& result)
 	if (result.isDead)
 	{
 		SetState(MonsterState::E_Die);
-		// 죽었을 때 처리 해야함
+		// 죽었을 때 처리 해야함SetState
 		return;
 	}
 
@@ -256,6 +261,8 @@ void Monster::ApplyAttackResult(const AttackResult& result)
 
 void Monster::RespawnFromServer(const MonsterUpdateInfo& info)
 {
+	OutputDebugStringA("[RESPAWN] RespawnFromServer called\n");
+
 	m_isDeathAnimationFinished = false;
 	m_isDead = false;
 
@@ -265,6 +272,14 @@ void Monster::RespawnFromServer(const MonsterUpdateInfo& info)
 	m_pos= info.pos;
 	m_targetPos = m_pos;
 
+	if (m_transform != nullptr)
+		m_transform->SetPosition(info.pos);
+
+	// Animator까지 확실하게 다시 시작
+	m_state = MonsterState::E_NONE;
+
+	OutputDebugStringA("[RESPAWN] SetState Idle\n");
+
 	SetState(MonsterState::E_Idle);
 }
 
@@ -272,18 +287,16 @@ void Monster::ResetFromSpawnInfo(const MonsterSpawnInfo& info)
 {
 	
 	m_pos = info.pos;
-	std::string DebugMsg = "Monster Pos X : " + std::to_string(m_pos.x) + "\n" +
-		"Monster Pos Y : " + std::to_string(m_pos.y) + "\n";
 
-	OutputDebugStringA(DebugMsg.c_str());
 	m_dir = info.dir;
 	m_moveSpeed = info.moveSpeed;
 	m_curHp = info.curHp;
 	m_maxHp = info.maxHp;
-	m_state = info.state;
 
-	m_state = MonsterState::E_Idle; // 있으면 추천
 	m_isDead = false;
+	m_isDeathAnimationFinished = false;
+
+	m_targetPos = info.pos;
 
 	if (m_transform != nullptr)
 		m_transform->SetPosition(m_pos);
