@@ -6,6 +6,7 @@
 #include "ItemDataManager.h"
 #include "SkillDataManager.h"
 #include "MonsterDataManager.h"
+#include "VFXDataManager.h"
 #include "..\\LL2_Client_Win_lib\\MapDataManager.h"
 
 
@@ -18,6 +19,7 @@
 #define M_SKILLDATAMANAGER stb::SingletonBase<SkillDataManager>::getInstance()
 #define M_MONSTERDATAMANAGER stb::SingletonBase<MonsterDataManager>::getInstance()
 #define M_MAPDATAMANAGER stb::SingletonBase<MapDataManager>::getInstance()
+#define M_VFXDATAMANAGER stb::SingletonBase<VFXDataManager>::getInstance()
 
 namespace stb
 {
@@ -66,6 +68,12 @@ namespace stb
 		if (!M_SKILLDATAMANAGER->Init())
 		{
 			MessageBox(hWnd, L"fail: M_SKILLDATAMANAGER init", L"Error", MB_ICONERROR);
+			return false;
+		}
+
+		if (!M_VFXDATAMANAGER->Init())
+		{
+			MessageBox(hWnd, L"fail: M_VFXDATAMANAGER init", L"Error", MB_ICONERROR);
 			return false;
 		}
 

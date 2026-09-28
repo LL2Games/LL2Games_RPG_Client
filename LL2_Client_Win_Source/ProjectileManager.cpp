@@ -63,3 +63,10 @@ void ProjectileManager::RemoveProjectile(int instanceId)
         m_projectiles.erase(it);
     }
 }
+
+void ProjectileManager::Clear()
+{
+    m_projectiles.clear();
+
+    OutputDebugStringA("[MonsterManager] Clear\n");
+}

@@ -117,8 +117,28 @@ void TradePacketHandler::HandleTradeReady(const ParsedPacket& pkt)
 	if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, targetId, errMsg))
 		return;
 
-	if (targetId == "wait" || targetId == "nok")
+	if (targetId == "wait")
 		return;
+
+	if(targetId == "nok")
+	{
+		std::string serverError;
+
+		if (!PacketParser::ParseLengthPrefixedString(
+			data,
+			payloadSize,
+			offset,
+			serverError,
+			errMsg))
+		{
+			serverError = "교환 처리에 실패했습니다.";
+		}
+
+		OutputDebugStringA(serverError.c_str());
+
+		UIManager::getInstance()->ShowTradeFailPopUp(serverError);
+		return;
+	}
 
 	//TODO: UIManager에 교환 신청 팝업 표시
 	UIManager::getInstance()->TradeReadyTarget();
@@ -193,9 +213,14 @@ void TradePacketHandler::HandleTradeCancel(const ParsedPacket& pkt)
 
 	if (status == "nok")
 	{
+		std::string serverError;
+
 		if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, errMsg, errMsg))
-			return;
-		OutputDebugStringA(errMsg.c_str());
+		{
+			serverError = "Trade transaction failed";
+		}
+
+		UIManager::getInstance()->ShowTradeFailPopUp(serverError);
 		return;
 	}
 

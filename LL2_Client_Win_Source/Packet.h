@@ -96,6 +96,9 @@ enum PACKET_TYPE : uint16_t {
     PKT_STAT_UP             = 0x1001,
     PKT_QUICKSLOT_LIST      = 0x1002,
     PKT_QUICKSLOT_SET       = 0x1003,
+
+    // 0x1100 ~ : 종료
+    PKT_SERVER_SHUTDOWN_NOTIFY = 0x1100,
 };
 
 struct ParsedPacket

@@ -237,6 +237,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)StatUI.cpp">
       <Filter>Game\UI\StatUI</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)VFXDataManager.cpp">
+      <Filter>Game\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkillEffectManager.cpp">
+      <Filter>Game\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -532,6 +539,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)StatUI.h">
       <Filter>Game\UI\StatUI</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)VFX_Info.h">
+      <Filter>Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)VFXDataManager.h">
+      <Filter>Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkillEffectManager.h">
+      <Filter>Game\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">

@@ -13,6 +13,7 @@
 #include "DropItemPacketHandler.h"
 #include "OtherPlayerPacketHandler.h"
 #include "PortalPacketHandler.h"
+#include "ServerShutdownHandler.h"
 
 bool PacketManager::RegisterAllHandlers()
 {
@@ -247,8 +248,16 @@ bool PacketManager::RegisterAllHandlers()
 		[](const ParsedPacket& pkt)
 		{
 			PortalPacketHandler::HandleMoveMap(pkt);
-		}
-	);
+		});
+
+	// 서버 종료 핸들러 등록
+	networkManager->RegisterHandler(
+		PKT_SERVER_SHUTDOWN_NOTIFY,
+		[](const ParsedPacket& pkt)
+		{
+			ServerShutdownHandler::HandleServerShutdown(pkt);
+		});
+
 	
 	return true;
 }

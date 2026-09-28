@@ -7,11 +7,16 @@
 #include "stbOtherPlayerManager.h"
 #include "playerInfo.h"
 #include "SkillDataManager.h"
+#include "Monster.h"
+#include "stbTransform.h"
+#include "SkillEffectManager.h"
 
 #define M_SKILLDATA_MANAGER stb::SingletonBase<SkillDataManager>::getInstance()
+#define M_SKILLEFFECTMANAGER stb::SingletonBase<SkillEffectManager>::getInstance()
 #define M_MONSTERMANAGER stb::SingletonBase<MonsterManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 #define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
+
 
 void CombatPacketHandler::HandlerMosterDamage(const ParsedPacket& /*pkt*/)
 {
@@ -80,9 +85,24 @@ void CombatPacketHandler::HandleAttackResult(const ParsedPacket& pkt)
 
 
             M_MONSTERMANAGER->ApplyAttackResult(attackResult);
-            M_PLAYERMANAGER->PlayAttackAnimation(attackResult.playerId, attackResult.skillId);
+
+            Monster* monster = M_MONSTERMANAGER->FindMonster(attackResult.monster_instance_id);
+            if (monster != nullptr)
+            {
+                stb::Transform* tr = monster->GetComponent<stb::Transform>();
+                if (tr != nullptr)
+                {
+                    const SkillData* skillData = M_SKILLDATA_MANAGER->FindItemData(attackResult.skillId);
+
+                    if (skillData != nullptr)
+                    {
+                        M_SKILLEFFECTMANAGER->PlayHit(skillData->skillVfx_name,tr->GetPosition());
+                    }
+                }
+            }
 
         }
+        M_PLAYERMANAGER->PlayAttackAnimation(attackResult.playerId, attackResult.skillId);
     }
     catch (std::exception& e)
     {

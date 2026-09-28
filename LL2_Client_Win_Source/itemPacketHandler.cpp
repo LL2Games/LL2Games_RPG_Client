@@ -222,7 +222,7 @@ void ItemPacketHandler::HandlePickUpItem(const ParsedPacket& pkt)
 
             if (!inventory->SetSlot(pickUpItemData.slotPos, pickUpItemData.itemId, pickUpItemData.itemCount))
             {
-                
+                throw std::runtime_error("inventory SetSlot failed");
             }
         }
 

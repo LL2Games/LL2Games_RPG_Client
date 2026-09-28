@@ -94,7 +94,7 @@ namespace stb
 		renderer.DrawTextString(
 			name,
 			shadowRect,
-			D2D1::ColorF(D2D1::ColorF::Black),
+			D2D1::ColorF(D2D1::ColorF::White),
 			TextStyle::NickName
 		);
 
@@ -102,7 +102,7 @@ namespace stb
 		renderer.DrawTextString(
 			name,
 			nameRect,
-			D2D1::ColorF(D2D1::ColorF::White),
+			D2D1::ColorF(D2D1::ColorF::Black),
 			TextStyle::NickName
 		);
 	}

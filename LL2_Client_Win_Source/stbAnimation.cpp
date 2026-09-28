@@ -308,6 +308,55 @@ namespace stb
 
 	}
 
+	void Animation::RenderPreview(stbD2DRenderer& renderer, float x, float y, float scale,bool flipX)
+	{
+		if (mAnimationSheet.empty())
+			return;
+
+		Sprite sprite = mAnimationSheet[mIndex];
+
+		Texture* renderTexture = sprite.texture != nullptr? sprite.texture : mTexture;
+
+		if (renderTexture == nullptr)
+			return;
+
+		ID2D1Bitmap* bitmap = renderTexture->GetD2DBitmap();
+
+		if (bitmap == nullptr)
+			return;
+
+		float originX = sprite.origin.x;
+		float offsetX = sprite.offset.x;
+
+		if (flipX)
+		{
+			originX = sprite.size.x - sprite.origin.x;
+			offsetX = -sprite.offset.x;
+		}
+
+		// x, y는 UI상의 캐릭터 기준점
+		float destX = x - originX * scale + offsetX * scale;
+
+		float destY = y - sprite.origin.y * scale + sprite.offset.y * scale;
+
+		float destW = sprite.size.x * scale;
+		float destH = sprite.size.y * scale;
+
+		renderer.DrawSprite2(
+			bitmap,
+			destX,
+			destY,
+			destW,
+			destH,
+			sprite.leftTop.x,
+			sprite.leftTop.y,
+			sprite.size.x,
+			sprite.size.y,
+			flipX
+		);
+	}
+
+
     void Animation::CreateAnimation(const std::wstring& /*name*/
         , Texture* spriteTexture
         , Vector2 leftTop

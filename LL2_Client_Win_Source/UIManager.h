@@ -48,12 +48,18 @@ public:
 	//채팅
 	void ToggleChatInput();
 	bool IsInputFocused() const;
+	bool IsGameplayInputBlocked() const;
 	void AppendInputChar(wchar_t ch);
 	void HandleBackspace();
 	void AppendChatMessage(const std::wstring& nick, const std::wstring& msg);
 	void SubmitChatInput();
 
+	void SetChatComposition(const std::wstring& text);
+	void CommitChatComposition(const std::wstring& text);
+	void ClearChatComposition();
+
 	bool IsTradeRequestActive() const;
+	void ShowTradeFailPopUp(const std::string& errorMessage);
 
 	bool ConsumeTradeQuantityEnter();
 	bool IsTradeQuantityInputActive() const;

@@ -221,6 +221,7 @@ void TradeRequestUI::Render(stbD2DRenderer& renderer)
 void TradeRequestUI::CloseWindow()
 {
     mActive = false;
+    m_done = false;
     m_inputBuffer.clear();  // 닫을 때 입력 버퍼 초기화
 }
 
@@ -256,8 +257,22 @@ void TradeRequestUI::OnKeyDown(WPARAM key)
 {
     if (!mActive) return;
 
+    if (key == VK_ESCAPE)
+    {
+        // 상대방에게 받은 거래 요청 팝업은
+        // 수락/거절 버튼으로만 처리한다.
+        if (!m_requestPopupActive)
+        {
+            CloseWindow();
+        }
+
+        return;
+    }
+
     if (key == VK_RETURN && !m_inputBuffer.empty())
+    {
         m_done = true;
+    }
 }
 
 void TradeRequestUI::Backspace()

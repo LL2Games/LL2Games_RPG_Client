@@ -1,5 +1,15 @@
 # Asset Credits and Licenses
 
+## Active Woodland visual theme (2026-09-21)
+
+The Woodland launcher prepares a separate `.woodland-runtime/Resources/` folder
+using the generated `Resources_Woodland/` PNGs. Existing C++ loaders are unchanged.
+Original assets listed below are preserved and BGM is unchanged. See
+[Woodland provenance and usage](Resources_Woodland/README.md) and
+[generation prompts](Resources_Woodland/PROMPTS.md). Generated maps used existing
+map images as layout references; this is not a clearance of those references or
+a blanket release license for all files in the repository.
+
 This document lists the sources, licenses, and modification details for assets used in this project.
 
 ## Background

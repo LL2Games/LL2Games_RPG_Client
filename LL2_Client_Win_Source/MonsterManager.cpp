@@ -61,11 +61,19 @@ void MonsterManager::ApplyServerUpdate(const MonsterUpdateInfo& info)
         return;
 
     Monster* monster = it->second.get();
+
     if (monster == nullptr)
         return;
 
-    // 이미 사망 애니메이션까지 끝난 몬스터면 이후 이동 갱신은 무시
-    if (monster->IsDead() && info.state != MonsterState::E_Die)
+    // 죽는 중에는 일반 이동/상태 패킷만 차단
+    if (monster->IsDying())
+    {
+        if (info.state != MonsterState::E_Die)
+            return;
+    }
+
+    // 완전히 죽은 객체의 일반 업데이트 차단
+    if (monster->IsDead())
         return;
 
     monster->ApplyServerUpdate(info);
@@ -113,4 +121,20 @@ void MonsterManager::RespawnMonster(const MonsterUpdateInfo& info)
     OutputDebugStringA("Monster Respawn (created)\n");
 }
 
+Monster* MonsterManager::FindMonster(int instanceId)
+{
+    auto it = m_monsters.find(instanceId);
+
+    if (it == m_monsters.end())
+        return nullptr;
+
+    return it->second.get();
+}
+
+void MonsterManager::Clear()
+{
+    m_monsters.clear();
+
+    OutputDebugStringA("[MonsterManager] Clear\n");
+}
 

@@ -9,11 +9,13 @@
 #include "Portal.h"
 #include "stbOtherPlayerManager.h"
 
+
 std::string PortalPacketHandler::s_pendingPortalId{};
 
 #define M_SCENEMANAGER stb::SingletonBase<stb::SceneManager>::getInstance()
 #define M_PLAYERMANAGER stb::SingletonBase<PlayerManager>::getInstance()
 #define M_OTHERPLAYERMANAGER stb::SingletonBase<stb::OtherPlayerManager>::getInstance()
+
 
 void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 {

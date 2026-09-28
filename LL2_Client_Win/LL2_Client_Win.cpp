@@ -4,6 +4,10 @@
 #include "framework.h"
 #include "LL2_Client_Win.h"
 #include <Windows.h>
+#include <imm.h>
+
+#pragma comment(lib, "imm32.lib")
+
 #include <cwchar>
 #include <cstdio>
 #include <fstream>
@@ -57,6 +61,32 @@ std::string g_channel_port;
 std::string g_account_id;
 //로그인 캐릭터 아이디
 std::string g_char_id;
+
+
+static std::wstring GetImeString(HIMC imeContext,const DWORD type)
+{
+    const LONG byteLength = ImmGetCompositionStringW(
+        imeContext,
+        type,
+        nullptr,
+        0
+    );
+
+    if (byteLength <= 0)
+        return {};
+
+    std::wstring result(static_cast<size_t>(byteLength) / sizeof(wchar_t),L'\0');
+
+    ImmGetCompositionStringW(
+        imeContext,
+        type,
+        result.data(),
+        byteLength
+    );
+
+    return result;
+}
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
@@ -406,9 +436,70 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             
     }
     break;
+    case WM_IME_STARTCOMPOSITION:
+    {
+        if (M_UIMANAGER->IsInputFocused())
+        {
+            M_UIMANAGER->ClearChatComposition();
+            return 0;
+        }
+
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+
+    case WM_IME_COMPOSITION:
+    {
+        if (!M_UIMANAGER->IsInputFocused())
+        {
+            return DefWindowProc(hWnd, message, wParam, lParam);
+        }
+
+        HIMC imeContext = ImmGetContext(hWnd);
+
+        if (imeContext == nullptr)
+            return 0;
+
+        // 확정된 한글
+        if (lParam & GCS_RESULTSTR)
+        {
+            const std::wstring result =
+                GetImeString(imeContext, GCS_RESULTSTR);
+
+            M_UIMANAGER->CommitChatComposition(result);
+        }
+
+        // 아직 조합 중인 한글
+        if (lParam & GCS_COMPSTR)
+        {
+            const std::wstring composition =
+                GetImeString(imeContext, GCS_COMPSTR);
+
+            M_UIMANAGER->SetChatComposition(composition);
+        }
+        else if (lParam & GCS_RESULTSTR)
+        {
+            M_UIMANAGER->ClearChatComposition();
+        }
+
+        ImmReleaseContext(hWnd, imeContext);
+
+        // DefWindowProc를 호출하지 않아 기본 흰색 조합창을 방지
+        return 0;
+    }
+
+    case WM_IME_ENDCOMPOSITION:
+    {
+        if (M_UIMANAGER->IsInputFocused())
+        {
+            M_UIMANAGER->ClearChatComposition();
+            return 0;
+        }
+
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+
     case WM_CHAR:
     {
-
 #if 1
         wchar_t ch = static_cast<wchar_t>(wParam);
 
@@ -418,48 +509,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         }
 
-        // Enter는 ChatScene::Update 또는 Trade OnKeyDown에서 처리
-        if (ch == VK_RETURN)
-            break;
 
-        if (ch == VK_BACK)
+        if (M_UIMANAGER->IsTradeRequestActive())
         {
-            if (M_UIMANAGER->IsInputFocused())
+            M_UIMANAGER->AppendInputChar_Trade(ch);
+            break;
+        }
+
+        if (M_UIMANAGER->IsInputFocused())
+        {
+            if (ch == VK_BACK)
             {
                 M_UIMANAGER->HandleBackspace();
             }
-            else
+            else if (ch == VK_RETURN)
             {
-                M_UIMANAGER->AppendInputChar_Trade(ch);
+                // ChatScene::Update에서 처리
             }
-
-            break;
-        }
-
-        if (ch == 0x1B)
-        {
-            if (M_UIMANAGER->IsInputFocused())
+            else if (ch == 0x1B)
             {
                 M_UIMANAGER->ToggleChatInput();
             }
-            else
-            {
-                M_UIMANAGER->CloseReqTradeUI();
-            }
-
-            break;
-        }
-
-        if (ch >= 0x20)
-        {
-            if (M_UIMANAGER->IsInputFocused())
+            else if (ch >= 0x20)
             {
                 M_UIMANAGER->AppendInputChar(ch);
             }
-            else
-            {
-                M_UIMANAGER->AppendInputChar_Trade(ch);
-            }
+
+            break;
         }
 
 #else
@@ -513,15 +589,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
     case WM_KEYDOWN:
     {
-//         if (M_UIMANAGER->IsTradeQuantityInputActive())
-//         {
-//             M_UIMANAGER->KeyDownTradeQuantity(wParam);
-//             break;
-//         }
+        if (M_UIMANAGER->IsTradeQuantityInputActive())
+        {
+            M_UIMANAGER->KeyDownTradeQuantity(wParam);
+            break;
+        }
 
-//         M_UIMANAGER->KeyDownTrade(wParam); //교환신청
-        if (!M_UIMANAGER->IsInputFocused()) //채팅중이 아닐경우에만
-            M_UIMANAGER->KeyDownTrade(wParam); //교환신청
+        if (M_UIMANAGER->IsTradeRequestActive())
+        {
+            M_UIMANAGER->KeyDownTrade(wParam);
+            break;
+        }
     }
     break;
     case WM_DESTROY:
