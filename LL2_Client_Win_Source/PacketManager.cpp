@@ -2,6 +2,7 @@
 #include "Packet.h"
 #include "stbNetworkManager.h"
 #include "MovePacketHandler.h"
+#include "MovementPacketHandler.h"
 #include "ChannelInitPacketHandler.h"
 #include "InventoryPacketHandler.h"
 #include "PlayerDataPacketHandler.h"
@@ -18,6 +19,8 @@
 bool PacketManager::RegisterAllHandlers()
 {
 	auto networkManager = stb::NetworkManager::getInstance();
+	networkManager->RegisterHandler(PKT_MOVEMENT_INPUT, MovementPacketHandler::HandleInputResponse);
+	networkManager->RegisterHandler(PKT_MOVEMENT_SNAPSHOT, MovementPacketHandler::Execute);
 
 	// 플레이어 접속 핸들러 등록
 	networkManager->RegisterHandler(PKT_CHANNEL_AUTH,
@@ -86,7 +89,7 @@ bool PacketManager::RegisterAllHandlers()
 	networkManager->RegisterHandler(PKT_PLAYER_MOVE,
 		[](const ParsedPacket& pkt)
 		{
-			MovePacketHandler::Execute(pkt);
+			MovementPacketHandler::HandleInputResponse(pkt);
 		});
 
 	// 플레이어 아이템 사용 핸들러 등록

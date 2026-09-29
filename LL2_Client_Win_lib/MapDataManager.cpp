@@ -65,6 +65,16 @@ bool MapDataManager::LoadJsonFile(const std::string& path, MapData& mapData)
     }
     if (j.is_null()) return false;
 
+    try
+    {
+        mapData.physics = movement::ParseMapGeometry(j.at("physics"));
+    }
+    catch (const std::exception& error)
+    {
+        OutputDebugStringA(("[Map physics] " + path + ": " + error.what() + "\n").c_str());
+        return false;
+    }
+
     mapData.mapId = j.at("mapId").get<int>();
     mapData.name = j.at("name").get<std::string>();
     mapData.background = j.at("background").get<std::string>();
@@ -76,6 +86,7 @@ bool MapDataManager::LoadJsonFile(const std::string& path, MapData& mapData)
             PortalData portalData;
 
             portalData.id = portalJson.value("id", "");
+            portalData.interactionRange = portalJson.value("interactionRange", 120.0f);
             portalData.texture = portalJson.value("texture", "");
             const auto& position = portalJson.at("position");
             portalData.position.x = position.value("x", 0.0f);

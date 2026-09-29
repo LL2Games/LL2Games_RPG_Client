@@ -111,6 +111,11 @@ namespace stb
 
 	public:
 		void SetFlipX(bool flipX) { m_flipX = flipX; }
+		void SetPaused(bool paused) { m_paused = paused; }
+		bool IsPlaying(const std::wstring& name) const
+		{
+			return mActiveAnimation && mActiveAnimation->GetName() == name;
+		}
 	private: 
 		void InvokeEvent(const std::wstring& eventName);
 	private:
@@ -122,6 +127,7 @@ namespace stb
 		bool mbLoop;
 		bool mbCompleteEventCalled;
 		bool m_flipX = false;
+		bool m_paused = false;
 		std::map<std::wstring, Events*> mEvents;
 
 

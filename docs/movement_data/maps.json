@@ -1,0 +1,74 @@
+{
+  "description": "2026-09-29 local server working tree export; not automatically synchronized",
+  "maps": [
+    {
+      "mapId": 100000000,
+      "source": "SERVER/src/CHANNEL/data/Maps/100000000.json",
+      "sourceSha256": "4b4bc94d4e34d636f85fce364836bf522bc5f75ee82ddd8455f6bae0e08576ea",
+      "physics": {
+        "minX": 0, "maxX": 1600, "killY": 1200, "safeFeet": {"x": 100, "y": 700},
+        "platforms": [
+          {"id": 1, "left": 0, "right": 1600, "y": 700},
+          {"id": 2, "left": 300, "right": 650, "y": 500},
+          {"id": 3, "left": 850, "right": 1200, "y": 350}
+        ],
+        "climbables": [
+          {"id": 1, "kind": "ladder", "x": 450, "top": 500, "bottom": 700, "grabRange": 16, "topPlatformId": 2},
+          {"id": 2, "kind": "rope", "x": 1000, "top": 350, "bottom": 700, "grabRange": 16, "topPlatformId": 3}
+        ]
+      },
+      "portals": [
+        {"id": "to_town_pending", "position": {"x": 100.0, "y": 60.0}, "interactionRange": 120.0,
+         "destinationMapId": 100000001, "spawnPosition": {"x": 100.0, "y": 500.0}},
+        {"id": "to_map_100000001", "position": {"x": 1400.0, "y": 770.0}, "interactionRange": 120.0,
+         "destinationMapId": 100000001, "spawnPosition": {"x": 120.0, "y": 730.0}}
+      ]
+    },
+    {
+      "mapId": 100000001,
+      "source": "SERVER/src/CHANNEL/data/Maps/100000001.json",
+      "sourceSha256": "dd2027c5cd3e8e5b868de5c7be4a1fc1bb20399768648c06cd57fc4d559bca23",
+      "physics": {
+        "minX": 0, "maxX": 1600, "killY": 1200, "safeFeet": {"x": 100, "y": 700},
+        "platforms": [
+          {"id": 1, "left": 0, "right": 1600, "y": 700},
+          {"id": 2, "left": 300, "right": 650, "y": 500},
+          {"id": 3, "left": 850, "right": 1200, "y": 350}
+        ],
+        "climbables": [
+          {"id": 1, "kind": "ladder", "x": 450, "top": 500, "bottom": 700, "grabRange": 16, "topPlatformId": 2},
+          {"id": 2, "kind": "rope", "x": 1000, "top": 350, "bottom": 700, "grabRange": 16, "topPlatformId": 3}
+        ]
+      },
+      "portals": [
+        {"id": "to_map_100000000", "position": {"x": 120.0, "y": 720.0}, "interactionRange": 120.0,
+         "destinationMapId": 100000000, "spawnPosition": {"x": 1400.0, "y": 800.0}},
+        {"id": "to_map_100000002", "position": {"x": 1400.0, "y": 700.0}, "interactionRange": 120.0,
+         "destinationMapId": 100000002, "spawnPosition": {"x": 100.0, "y": 850.0}}
+      ]
+    },
+    {
+      "mapId": 100000002,
+      "source": "SERVER/src/CHANNEL/data/Maps/100000002.json",
+      "sourceSha256": "987f31cb0ba9eed8732b4ed05d82a812ff554a3c1c4fd1bfb66cd2712064d86e",
+      "physics": {
+        "minX": 0, "maxX": 1600, "killY": 1200, "safeFeet": {"x": 100, "y": 700},
+        "platforms": [
+          {"id": 1, "left": 0, "right": 1600, "y": 700},
+          {"id": 2, "left": 300, "right": 650, "y": 500},
+          {"id": 3, "left": 850, "right": 1200, "y": 350}
+        ],
+        "climbables": [
+          {"id": 1, "kind": "ladder", "x": 450, "top": 500, "bottom": 700, "grabRange": 16, "topPlatformId": 2},
+          {"id": 2, "kind": "rope", "x": 1000, "top": 350, "bottom": 700, "grabRange": 16, "topPlatformId": 3}
+        ]
+      },
+      "portals": [
+        {"id": "to_map_100000001", "position": {"x": 100.0, "y": 790.0}, "interactionRange": 120.0,
+         "destinationMapId": 100000001, "spawnPosition": {"x": 1400.0, "y": 740.0}},
+        {"id": "to_map_100000003", "position": {"x": 1400.0, "y": 700.0}, "interactionRange": 120.0,
+         "destinationMapId": 100000002, "spawnPosition": {"x": 1000.0, "y": 520.0}}
+      ]
+    }
+  ]
+}

@@ -3,59 +3,99 @@
   "name": "Forest Ground 2",
   "background": "Map/Forest/ground_2.png",
   "miniMap": "Map/Forest/ground_2_minimap.png",
-
   "portals": [
     {
       "id": "to_map_100000000",
       "texture": "ForestPortal",
-
       "position": {
         "x": 120.0,
-        "y": 700.0
+        "y": 720.0
       },
-
       "renderSize": {
         "x": 100.0,
         "y": 100.0
       },
-
       "halfSize": {
         "x": 60.0,
         "y": 100.0
       },
-
       "destinationMapId": 100000000,
-
       "spawnPosition": {
         "x": 1400.0,
-        "y": 760.0
-      }
+        "y": 800.0
+      },
+      "interactionRange": 120.0
     },
     {
       "id": "to_map_100000002",
       "texture": "ForestPortal",
-
       "position": {
         "x": 1400.0,
         "y": 700.0
       },
-
       "renderSize": {
         "x": 100.0,
         "y": 100.0
       },
-
       "halfSize": {
         "x": 60.0,
         "y": 100.0
       },
-
       "destinationMapId": 100000002,
-
       "spawnPosition": {
-        "x": 1000.0,
-        "y": 800.0
-      }
+        "x": 100.0,
+        "y": 850.0
+      },
+      "interactionRange": 120.0
     }
-  ]
+  ],
+  "physics": {
+    "minX": 0,
+    "maxX": 1600,
+    "killY": 1200,
+    "safeFeet": {
+      "x": 100,
+      "y": 700
+    },
+    "platforms": [
+      {
+        "id": 1,
+        "left": 0,
+        "right": 1600,
+        "y": 700
+      },
+      {
+        "id": 2,
+        "left": 300,
+        "right": 650,
+        "y": 500
+      },
+      {
+        "id": 3,
+        "left": 850,
+        "right": 1200,
+        "y": 350
+      }
+    ],
+    "climbables": [
+      {
+        "id": 1,
+        "kind": "ladder",
+        "x": 450,
+        "top": 500,
+        "bottom": 700,
+        "grabRange": 16,
+        "topPlatformId": 2
+      },
+      {
+        "id": 2,
+        "kind": "rope",
+        "x": 1000,
+        "top": 350,
+        "bottom": 700,
+        "grabRange": 16,
+        "topPlatformId": 3
+      }
+    ]
+  }
 }

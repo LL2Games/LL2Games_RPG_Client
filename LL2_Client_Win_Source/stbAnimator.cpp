@@ -34,7 +34,7 @@ namespace stb
 
 	void Animator::Update()
 	{
-		if (mActiveAnimation == nullptr)
+		if (mActiveAnimation == nullptr || m_paused)
 			return;
 
 		mActiveAnimation->Update();
@@ -276,6 +276,7 @@ namespace stb
 		}
 
 		mActiveAnimation = animation;
+		m_paused = false;
 		mActiveAnimation->Reset();
 		mbLoop = loop;
 		mbCompleteEventCalled = false;
