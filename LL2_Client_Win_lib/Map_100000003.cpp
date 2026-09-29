@@ -1,4 +1,4 @@
-﻿#include "Map_100000000.h"
+﻿#include "Map_100000003.h"
 #include "stbObject.h"
 #include "stbCamera.h"
 #include "stbRender.h"
@@ -13,17 +13,17 @@ using namespace stb;
 #define M_RESOURCEMANAGER SingletonBase<ResourceManager>::getInstance()
 #define M_PLAYERMANAGER SingletonBase<PlayerManager>::getInstance()
 
-void stb::Map_100000000::LoadMapResources()
+void stb::Map_100000003::LoadMapResources()
 {
-	m_background = M_RESOURCEMANAGER->Find<Texture>(L"Village_leafhaven");
+	m_background = M_RESOURCEMANAGER->Find<Texture>(L"Forest_ground_3");
 	m_BGM = M_RESOURCEMANAGER->Find<AudioClip>(L"BGM_Forest_ground_1");
 }
 
-void stb::Map_100000000::CreateColliders()
+void stb::Map_100000003::CreateColliders()
 {
 }
 
-void stb::Map_100000000::OnMapEnter()
+void stb::Map_100000003::OnMapEnter()
 {
     if (m_BGM)
         m_BGM->Play();
@@ -39,13 +39,13 @@ void stb::Map_100000000::OnMapEnter()
     }
 }
 
-void stb::Map_100000000::OnMapExit()
+void stb::Map_100000003::OnMapExit()
 {
     if (m_BGM)
         m_BGM->Stop();
 }
 
-void stb::Map_100000000::RenderBackground(stbD2DRenderer& renderer)
+void stb::Map_100000003::RenderBackground(stbD2DRenderer& renderer)
 {
     if (m_background == nullptr || m_background->GetD2DBitmap() == nullptr)
     {

@@ -1,43 +1,17 @@
 {
   "mapId": 100000000,
-  "name": "Forest Ground 1",
-  "background": "Map/Forest/ground_1.png",
-  "miniMap": "Map/Forest/ground_1_minimap.png",
+  "name": "잎새마을",
+  "background": "Map/village/leafhaven_map.png",
+  "miniMap": "Map/village/leafhaven_map.png",
 
   "portals": [
-    {
-      "id": "to_town_pending",
-      "texture": "ForestPortal",
-
-      "position": {
-        "x": 100.0,
-        "y": 60.0
-      },
-
-      "renderSize": {
-        "x": 100.0,
-        "y": 160.0
-      },
-
-      "halfSize": {
-        "x": 60.0,
-        "y": 100.0
-      },
-
-      "destinationMapId": 0,
-
-      "spawnPosition": {
-        "x": 100.0,
-        "y": 500.0
-      }
-    },
     {
       "id": "to_map_100000001",
       "texture": "ForestPortal",
 
       "position": {
-        "x": 1400.0,
-        "y": 760.0
+        "x": 1450.0,
+        "y": 550.0
       },
 
       "renderSize": {
@@ -53,8 +27,8 @@
       "destinationMapId": 100000001,
 
       "spawnPosition": {
-        "x": 1400.0,
-        "y": 760.0
+        "x": 120.0,
+        "y": 820.0
       }
     }
   ]

@@ -1,22 +1,22 @@
 {
   "mapId": 100000001,
-  "name": "Forest Ground 2",
-  "background": "Map/Forest/ground_2.png",
-  "miniMap": "Map/Forest/ground_2_minimap.png",
+  "name": "Forest Ground 1",
+  "background": "Map/Forest/ground_1.png",
+  "miniMap": "Map/Forest/ground_1_minimap.png",
 
   "portals": [
     {
-      "id": "to_map_100000000",
+      "id": "to_town_pending",
       "texture": "ForestPortal",
 
       "position": {
         "x": 120.0,
-        "y": 700.0
+        "y": 740.0
       },
 
       "renderSize": {
         "x": 100.0,
-        "y": 100.0
+        "y": 160.0
       },
 
       "halfSize": {
@@ -27,8 +27,8 @@
       "destinationMapId": 100000000,
 
       "spawnPosition": {
-        "x": 1400.0,
-        "y": 760.0
+        "x": 1450.0,
+        "y": 630.0
       }
     },
     {
@@ -37,12 +37,12 @@
 
       "position": {
         "x": 1400.0,
-        "y": 700.0
+        "y": 740.0
       },
 
       "renderSize": {
         "x": 100.0,
-        "y": 100.0
+        "y": 160.0
       },
 
       "halfSize": {
@@ -53,8 +53,8 @@
       "destinationMapId": 100000002,
 
       "spawnPosition": {
-        "x": 1000.0,
-        "y": 800.0
+        "x": 100.0,
+        "y": 730.0
       }
     }
   ]

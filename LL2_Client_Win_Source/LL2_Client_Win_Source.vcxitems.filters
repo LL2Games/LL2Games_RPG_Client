@@ -244,6 +244,10 @@
       <Filter>Game\Skill</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPC.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCDataManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCInteraction.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCPacketHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -550,6 +554,11 @@
       <Filter>Game\Skill</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPC.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCInteraction.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPC_info.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">

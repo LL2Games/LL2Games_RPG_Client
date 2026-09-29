@@ -1,0 +1,23 @@
+{
+  "npcId": 200103,
+  "name": "브람",
+  "role": "대장장이",
+  "render": {
+    "width": 96,
+    "height": 96,
+    "origin": { "x": 48, "y": 92 }
+  },
+  "animations": {
+    "idle": {
+      "loop": true,
+      "frames": [
+        { "image": "Resources_Woodland/NPC/blacksmith/idle_0.png", "durationMs": 600 },
+        { "image": "Resources_Woodland/NPC/blacksmith/idle_1.png", "durationMs": 180 },
+        { "image": "Resources_Woodland/NPC/blacksmith/idle_2.png", "durationMs": 220 },
+        { "image": "Resources_Woodland/NPC/blacksmith/idle_3.png", "durationMs": 100 },
+        { "image": "Resources_Woodland/NPC/blacksmith/idle_4.png", "durationMs": 120 },
+        { "image": "Resources_Woodland/NPC/blacksmith/idle_5.png", "durationMs": 350 }
+      ]
+    }
+  }
+}

@@ -14,6 +14,7 @@
 #include "OtherPlayerPacketHandler.h"
 #include "PortalPacketHandler.h"
 #include "ServerShutdownHandler.h"
+#include "NPCPacketHandler.h"
 
 bool PacketManager::RegisterAllHandlers()
 {
@@ -136,6 +137,14 @@ bool PacketManager::RegisterAllHandlers()
 		[](const ParsedPacket& pkt)
 		{
 			CombatPacketHandler::HandleOtherPlayerAttack(pkt);
+		});
+
+	// NPC 스냅샷 핸들러 등록
+	networkManager->RegisterHandler(
+		PKT_NPC_SNAPSHOT,
+		[](const ParsedPacket& packet)
+		{
+			NPCPacketHandler::HandleNPCSnapshot(packet);
 		});
 
 	// 몬스터 스냅샷 핸들러 등록
@@ -271,6 +280,8 @@ bool PacketManager::RegisterAllHandlers()
 		{
 			ServerShutdownHandler::HandleServerShutdown(pkt);
 		});
+
+
 
 	
 	return true;

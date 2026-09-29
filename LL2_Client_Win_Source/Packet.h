@@ -52,7 +52,7 @@ enum PACKET_TYPE : uint16_t {
 
     // 0x0020 ~ 0x003F : 플레이어
     PKT_PLAYER_MOVE         = 0x0020,
-    PKT_PLAYER_SKILL_ATTACK       = 0x0021,
+    PKT_PLAYER_SKILL_ATTACK = 0x0021,
     PKT_PLAYER_ONDAMAGED    = 0x0022,
     PKT_PLAYER_USE_ITEM     = 0x0023,
     PKT_PLAYER_INFO         = 0x0024,
@@ -66,7 +66,7 @@ enum PACKET_TYPE : uint16_t {
 
     
     PKT_OTHERPLAYER_ENTER   = 0x0030,
-    PKT_OTHERPLAYER_SNAPSHOT = 0x0031,
+    PKT_OTHERPLAYER_SNAPSHOT= 0x0031,
     PKT_OTHER_PLAYER_ATTACK = 0x0032,
     PKT_OTHERPLAYER_LEAVE   = 0x0033,
 
@@ -76,6 +76,9 @@ enum PACKET_TYPE : uint16_t {
     PKT_MONSTER_SNAPSHOT    = 0x0042,
     PKT_MONSTER_RESPAWN     = 0x0043,
     PKT_PROJECTILE_MOVE     = 0x0044,
+
+    PKT_NPC_SNAPSHOT        = 0x0050,
+    PKT_NPC_INTERACT        = 0x0051,
 
     // 0x0060 ~ 0x007F : 드롭
     PKT_DROPITEMS           = 0x0060,
@@ -87,13 +90,13 @@ enum PACKET_TYPE : uint16_t {
     PKT_INVENTORY_ITEM_MOVE = 0x0082,
 
     // 0x0100 ~ 0x010F : 교환
-    PKT_TRADE_REQUEST = 0x0100,  // 교환 신청
-    PKT_TRADE_ACCEPT = 0x0101,  // 교환 수락
-    PKT_TRADE_START = 0x0102,  // 교환 실행
-    PKT_TRADE_READY = 0x0103,  // 교환 준비(교환하기 버튼 누름)
-    PKT_TRADE_CONFIRM = 0x0104,  // 교환 성사 
-    PKT_TRADE_CANCEL = 0x0105,  // 교환 취소
-    PKT_TRADE_ADD_ITEM = 0x0106, //아이템 올리기
+    PKT_TRADE_REQUEST       = 0x0100,  // 교환 신청
+    PKT_TRADE_ACCEPT        = 0x0101,  // 교환 수락
+    PKT_TRADE_START         = 0x0102,  // 교환 실행
+    PKT_TRADE_READY         = 0x0103,  // 교환 준비(교환하기 버튼 누름)
+    PKT_TRADE_CONFIRM       = 0x0104,  // 교환 성사 
+    PKT_TRADE_CANCEL        = 0x0105,  // 교환 취소
+    PKT_TRADE_ADD_ITEM      = 0x0106, //아이템 올리기
 
     // 0x1000 ~ : 테스트 / UI / 특수
     PKT_STAT_VIEW           = 0x1000,
