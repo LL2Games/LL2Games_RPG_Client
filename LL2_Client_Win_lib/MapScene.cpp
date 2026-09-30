@@ -37,9 +37,11 @@ void MapScene::Update()
 void MapScene::Render(stbD2DRenderer& renderer)
 {
 	RenderBackground(renderer);
+	M_MONSTERMANAGER->RenderBossWarnings(renderer);
 	Scene::Render(renderer);
 
 	M_MONSTERMANAGER->Render(renderer);
+	M_MONSTERMANAGER->RenderBossRootBursts(renderer);
     M_PROJECTILEMANAGER->Render(renderer);
     M_SKILLEFFECTMANAGER->Render(renderer);
 

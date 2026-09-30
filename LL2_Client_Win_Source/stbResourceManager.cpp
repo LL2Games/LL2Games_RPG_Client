@@ -226,6 +226,7 @@ void stb::ResourceManager::LoadMapTextures()
 	Load<Texture>(L"Forest_ground_2", L"Resources_Woodland\\Background\\forest\\forest_ground_2.png");
 	Load<Texture>(L"Forest_ground_3", L"Resources_Woodland\\Background\\forest\\forest_ground_3.png");
 	Load<Texture>(L"Village_leafhaven", L"Resources_Woodland\\Background\\village\\leafhaven_map.png");
+	Load<Texture>(L"Boss_room_1", L"Resources_Woodland\\Background\\boss\\boss_room_1.png");
 }
 
 void stb::ResourceManager::LoadQuickSlotTextures()

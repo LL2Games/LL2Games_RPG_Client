@@ -182,6 +182,12 @@ bool PacketManager::RegisterAllHandlers()
 			MonsterPacketHandler::HandleS2C_ProjectileMove(pkt);
 		});
 
+	networkManager->RegisterHandler(PKT_BOSS_PATTERN_START,
+		[](const ParsedPacket& pkt)
+		{
+			MonsterPacketHandler::HandleS2C_BossPatternStart(pkt);
+		});
+
 	// 퀵슬롯 리스트 핸들러 등록
 	networkManager->RegisterHandler(PKT_QUICKSLOT_LIST,
 		[](const ParsedPacket& pkt)

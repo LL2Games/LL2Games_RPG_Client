@@ -351,3 +351,66 @@ void MonsterPacketHandler::HandleS2C_ProjectileMove(const ParsedPacket& pkt)
 	}
 
 }
+
+void MonsterPacketHandler::HandleS2C_BossPatternStart(const ParsedPacket& pkt)
+{
+	try
+	{
+		size_t offset = 0;
+		const char* data = pkt.payload.c_str();
+		const size_t payloadSize = pkt.payload.size();
+		std::string errMsg;
+
+		int instanceId = 0;
+		int patternId = 0;
+		float centerX = 0.0f;
+		float centerY = 0.0f;
+		float radius = 0.0f;
+		int telegraphMs = 0;
+
+		if (!PacketParser::ParseNextIntField(data, payloadSize, offset, instanceId, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+		if (!PacketParser::ParseNextIntField(data, payloadSize, offset, patternId, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+		if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, centerX, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+		if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, centerY, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+		if (!PacketParser::ParseNextFloatField(data, payloadSize, offset, radius, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+		if (!PacketParser::ParseNextIntField(data, payloadSize, offset, telegraphMs, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+
+		std::string log = "[BossPatternStart] instanceId=" + std::to_string(instanceId) +
+			" patternId=" + std::to_string(patternId) +
+			" center=(" + std::to_string(centerX) +
+			", " + std::to_string(centerY) + ")" +
+			" radius=" + std::to_string(radius) +
+			" telegraphMs=" + std::to_string(telegraphMs) + "\n";
+
+		OutputDebugStringA(log.c_str());
+
+		M_MONSTERMANAGER->StartBossPattern(
+			instanceId, patternId,
+			stb::math::Vector2(centerX, centerY),
+			radius, telegraphMs);
+	}
+	catch (const std::exception& e)
+	{
+		OutputDebugStringA("[BossPatternStart] parse failed: ");
+		OutputDebugStringA(e.what());
+		OutputDebugStringA("\n");
+	}
+}

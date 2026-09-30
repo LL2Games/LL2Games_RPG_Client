@@ -11,6 +11,8 @@ enum class MonsterState
 	E_Move,
 	E_Die,
 	E_Hit,
+	E_RangeAttack,
+	E_Dead,
 	E_NONE,
 };
 
@@ -88,6 +90,8 @@ namespace monster
 		case 3: return MonsterState::E_Move;
 		case 4: return MonsterState::E_Die;
 		case 5: return MonsterState::E_Hit;
+		case 6: return MonsterState::E_RangeAttack;
+		case 7: return MonsterState::E_Dead;
 		default: return MonsterState::E_NONE;
 		}
 	}

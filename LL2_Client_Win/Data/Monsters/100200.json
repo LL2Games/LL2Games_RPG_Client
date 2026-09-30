@@ -1,0 +1,72 @@
+{
+  "monster_id": 100200,
+  "name": "타락한 숲의 수호자",
+  "animations": {
+    "idle": {
+      "path": "Monster/100200/stand",
+      "frame_prefix": "stand.",
+      "frame_count": 4,
+      "delay_ms": 250
+    },
+    "move": {
+      "path": "Monster/100200/move",
+      "frame_prefix": "move.",
+      "frame_count": 4,
+      "delay_ms": 220
+    },
+    "attack": {
+      "path": "Monster/100200/attack",
+      "frame_prefix": "attack.",
+      "frame_count": 4,
+      "delay_ms": 180,
+      "event": {
+        "complete": "MonsterAttackEnd"
+      }
+    },
+    "hit": {
+      "path": "Monster/100200/hit",
+      "frame_prefix": "hit1.",
+      "frame_count": 4,
+      "delay_ms": 150,
+      "event": {
+        "complete": "MonsterHitEnd"
+      }
+    },
+    "die": {
+      "path": "Monster/100200/die",
+      "frame_prefix": "die1.",
+      "frame_count": 4,
+      "delay_ms": 260,
+      "event": {
+        "complete": "MonsterDieEnd"
+      }
+    }
+  },
+  "render": {
+    "width": 256,
+    "height": 256,
+    "origin": {
+      "x": 128,
+      "y": 248
+    }
+  },
+  "collider": {
+    "type": "Rect2D",
+    "offset": {
+      "x": 0,
+      "y": -82
+    },
+    "half": {
+      "w": 62,
+      "h": 82
+    }
+  },
+  "ui": {
+    "hp_bar_offset": {
+      "x": 0,
+      "y": -238
+    }
+  },
+  "moveSpeed": 20,
+  "isRanged": false
+}
