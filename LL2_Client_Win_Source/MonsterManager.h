@@ -23,6 +23,7 @@ public:
     Monster* FindMonster(int instanceId);
     //void ApplyMonsterDamage(const MonsterHitInfo& info);
     void Clear(); 
+    void ResetMovementConnections();
 
 private:
     std::unordered_map<int, std::unique_ptr<Monster>> m_monsters;

@@ -89,6 +89,20 @@ enum class JobType
 
 namespace PlayerTypeUtil
 {
+    // Server movement/life enum is not the client's animation enum.
+    inline PlayerState ServerLifeToState(int state)
+    {
+        switch (state)
+        {
+        case 0: return PlayerState::Idle;
+        case 1: return PlayerState::Walk;
+        case 2: return PlayerState::Jump;
+        case 3: return PlayerState::Attack;
+        case 4: return PlayerState::Alert;
+        case 5: return PlayerState::Dead;
+        default: return PlayerState::Idle;
+        }
+    }
 	inline JobType StringToJobType(const std::string& str)
 	{
 		if (str == "warrior")

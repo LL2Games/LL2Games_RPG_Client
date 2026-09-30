@@ -8,6 +8,8 @@
 #include "stbPlayer.h"
 #include "stbNetworkManager.h"
 #include "PortalPacketHandler.h"
+#include "UIManager.h"
+#include "stbApplication.h"
 #include <cmath>
 
 using namespace stb;
@@ -29,44 +31,18 @@ void Portal::Initialize()
 void Portal::Update()
 {
     GameObject::Update();
-
-    if (m_transitioning || m_destinationScene.empty())
-        return;
-
-    Player* player = M_PLAYERMANAGER->GetLocalPlayer();
-
-    if (player == nullptr || m_collider == nullptr)
-        return;
-
-    Transform* portalTransform = GetComponent<Transform>();
-    Transform* playerTransform = player->GetComponent<Transform>();
-    BoxCollider2D* playerCollider = player->GetComponent<BoxCollider2D>();
-
-    if (portalTransform == nullptr || playerTransform == nullptr || playerCollider == nullptr)
-    {
-        return;
-    }
-
-    math::Vector2 portalCenter = portalTransform->GetPosition() + m_collider->GetOffset();
-
-    math::Vector2 playerCenter = playerTransform->GetPosition() + playerCollider->GetOffset();
-
-    math::Vector2 portalHalfSize = m_collider->GetSize();
-
-    math::Vector2 playerHalfSize = playerCollider->GetSize();
-
-    bool isOverlapping = std::abs(playerCenter.x - portalCenter.x) <= playerHalfSize.x + portalHalfSize.x &&
-        std::abs(playerCenter.y - portalCenter.y) <= playerHalfSize.y + portalHalfSize.y;
-
-    if (!isOverlapping)
-        return;
-
-    if (!M_INPUT->GetActionDown(eActionCode::MoveUp))
-        return;
-
+    if (m_transitioning || m_destinationScene.empty()) return;
+    auto* player = M_PLAYERMANAGER->GetLocalPlayer();
+    if (!player || player->IsDead() || !player->GetMovementScript()->CanUsePortal() ||
+        UIManager::getInstance()->IsInputFocused() || UIManager::getInstance()->IsGameplayInputBlocked() ||
+        GetForegroundWindow() != GetAncestor(stb::Application::getInstance()->GetHWND(), GA_ROOT)) return;
+    auto* tr = GetComponent<Transform>();
+    auto* playerTransform = player->GetComponent<Transform>();
+    if (!tr || !playerTransform || !M_INPUT->GetActionDown(eActionCode::Interact)) return;
+    auto delta = playerTransform->GetPosition() - tr->GetPosition();
+    if (delta.x * delta.x + delta.y * delta.y > m_interactionRange * m_interactionRange) return;
     m_transitioning = true;
     PortalPacketHandler::SendPortalEnter(m_portalId);
-  
 }
 
 void Portal::Render(stbD2DRenderer& renderer)

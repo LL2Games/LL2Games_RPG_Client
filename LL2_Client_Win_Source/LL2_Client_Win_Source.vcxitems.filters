@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)MySocket.cpp" />
@@ -714,5 +714,16 @@
     <Filter Include="PacketHandler\Stat">
       <UniqueIdentifier>{425ca5cd-c3de-4dd9-839b-fe02ea6b07e3}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementProtocol.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementVisual.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementDebug.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementPacketHandler.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovementProtocol.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovementPacketHandler.cpp" />
   </ItemGroup>
 </Project>

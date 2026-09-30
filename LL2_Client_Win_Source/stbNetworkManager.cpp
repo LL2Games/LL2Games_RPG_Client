@@ -1,4 +1,5 @@
-﻿#include "stbNetworkManager.h"
+﻿#include "MovementPacketHandler.h"
+#include "stbNetworkManager.h"
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <sstream>
@@ -88,6 +89,7 @@ namespace stb
         {
             m_socket.Close();
             m_bConnected = false;
+            MovementPacketHandler::ResetConnection();
         }
     }
 

@@ -71,7 +71,7 @@ bool CombatSystem::CanUseSkill(int skillId)
         return false;
     }
         
-    if (m_player->IsDead())
+    if (m_player->IsDead() || !m_player->GetMovementScript()->CanAttack())
     {
         m_debugMsg = "player is Dead \n";
         OutputDebugStringA(m_debugMsg.c_str());
@@ -123,6 +123,8 @@ bool CombatSystem::CanUseSkill(int skillId)
 bool CombatSystem::CanBasicAttack()
 {
     if (m_player == nullptr)
+        return false;
+    if (!m_player->GetMovementScript()->CanAttack())
         return false;
 
     PlayerState state = m_player->GetState();

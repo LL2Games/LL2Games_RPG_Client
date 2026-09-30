@@ -371,6 +371,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
 
+    case WM_ACTIVATEAPP:
+        if (!wParam)
+        {
+            if (auto* player = PlayerManager::getInstance()->GetLocalPlayer())
+                player->GetMovementScript()->StopMovementInput();
+        }
+        break;
+
     case WM_SHOW_REVIVE:
 {
     auto* player = PlayerManager::getInstance()->GetLocalPlayer();

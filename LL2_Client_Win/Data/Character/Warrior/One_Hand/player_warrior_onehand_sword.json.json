@@ -52,13 +52,13 @@
       "path": "Character/Warrior/onehand_sword/rope",
       "frame_prefix": "rope_",
       "frame_count": 3,
-      "delay_ms": 10
+      "delay_ms": 0.12
     },
     "ladder": {
       "path": "Character/Warrior/onehand_sword/ladder",
       "frame_prefix": "ladder_",
       "frame_count": 3,
-      "delay_ms": 10
+      "delay_ms": 0.12
     },
     "swingO3": {
       "path": "Character/Warrior/onehand_sword/swingO3",
@@ -95,6 +95,18 @@
       "frame_prefix": "dead_",
       "frame_count": 1,
       "delay_ms": 1.0
+    },
+    "fall": {
+      "path": "Character/Warrior/onehand_sword/jump",
+      "frame_prefix": "jump_",
+      "frame_count": 2,
+      "delay_ms": 0.1
+    },
+    "land": {
+      "path": "Character/Warrior/onehand_sword/stand",
+      "frame_prefix": "stand1_",
+      "frame_count": 1,
+      "delay_ms": 0.1
     }
   }
 }

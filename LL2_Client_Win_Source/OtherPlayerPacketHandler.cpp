@@ -1,5 +1,6 @@
 ﻿#include "OtherPlayerPacketHandler.h"
 #include "PacketParser.h"
+#include "MovementPacketHandler.h"
 #include "stbOtherPlayerManager.h"
 
 #define OTHERPLAYERMANAGER stb::singletonBase<stb::OtherPlayerManager>::getInstance()
@@ -62,7 +63,7 @@ void OtherPlayerPacketHandler::HandleOtherPlayerEnter(const ParsedPacket& pkt)
             throw std::runtime_error(errMsg);
         }
 
-        otherPlayerInfo.state = PlayerTypeUtil::IntToState(state);
+        otherPlayerInfo.state = PlayerTypeUtil::ServerLifeToState(state);
 
         std::string msg =
             "[OtherEnter] charId=" + std::to_string(otherPlayerInfo.char_id) +
@@ -116,6 +117,7 @@ void OtherPlayerPacketHandler::HandleOtherPlayerLeave(const ParsedPacket& pkt)
             throw std::runtime_error("OtherPlayerManager is not available");
         }
 
+        MovementPacketHandler::Forget(movement::Kind::Player, playerId);
         otherPlayerManager->RemovePlayer(std::to_string(playerId));
 
         const std::string message = "[OtherLeave] playerId=" +std::to_string(playerId) + "\n";
@@ -184,7 +186,7 @@ void OtherPlayerPacketHandler::HandleOtherPlayerSnapShot(const ParsedPacket& pkt
                 throw std::runtime_error(errMsg);
             }
 
-            otherPlayerInfo.state = PlayerTypeUtil::IntToState(state);
+            otherPlayerInfo.state = PlayerTypeUtil::ServerLifeToState(state);
 
             std::string msg =
                 "[SnapShot] charId=" + std::to_string(otherPlayerInfo.char_id) +

@@ -9,6 +9,8 @@
 #include "stbCircleCollider2D.h"
 #include "MonsterScript.h"
 #include "CombatSystem_Info.h"
+#include "MovementStream.h"
+#include "MovementVisual.h"
 
 class stbD2DRenderer;
 
@@ -30,6 +32,10 @@ public:
 
     void ResetFromSpawnInfo(const MonsterSpawnInfo& info);
     void ApplyServerUpdate(const MonsterUpdateInfo& info);
+    void ApplyMovementSnapshot(const movement::Snapshot& snapshot);
+    bool HasMovementSnapshot() const { return m_movement.HasSnapshot(); }
+    void ResetMovementConnection() { m_movement.Reset(); m_movementVisual.Reset(); }
+    float GetFootOffset() const;
     void ApplyAttackResult(const AttackResult& result);
     void RespawnFromServer(const MonsterUpdateInfo& info);
 public:
@@ -45,6 +51,8 @@ private:
 
     stb::math::Vector2 m_pos{};
     stb::math::Vector2 m_targetPos{};     // 서버 이동 패킷 받은 위치
+    movement::Stream m_movement;
+    movement::Visual m_movementVisual;
     int m_dir = 1;
 
     int m_curHp = 0;

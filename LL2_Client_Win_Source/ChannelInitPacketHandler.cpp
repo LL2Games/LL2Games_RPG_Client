@@ -2,6 +2,7 @@
 #include "stbNetworkManager.h"
 #include "stbNetworkConfig.h"
 #include "Packet.h"
+#include "MovementPacketHandler.h"
 #include <sstream>
 #include <algorithm>
 // 태스트를 위해서 임시로 추가
@@ -54,6 +55,7 @@ void ChannelInitPacketHandler::Execute(const ParsedPacket& pkt)
             return;
         }
 
+        MovementPacketHandler::ResetConnection();
         stb::NetworkConfig::SetCharacterName(name); 
         // 채널 인증 성공 후 맵 입장 패킷 전송
         OutputDebugStringA("채널 인증 완료! 맵 입장 패킷 전송...\n");

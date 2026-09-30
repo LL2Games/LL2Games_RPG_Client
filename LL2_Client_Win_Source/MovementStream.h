@@ -12,14 +12,23 @@ namespace movement
         bool Push(const Snapshot& value)
         {
             if (hasSnapshot && (!IsNewer(value, latest) ||
-                (waitNewEpoch && value.epoch <= latest.epoch))) return false;
+                (waitNewEpoch && value.epoch <= latest.epoch && !(allowDead && IsDead(value))) ||
+                (IsDead(latest) && !IsDead(value) && value.epoch <= latest.epoch))) return false;
             const bool snap = !hasSnapshot || value.epoch != latest.epoch || IsDead(value) != IsDead(latest);
+            const Snapshot previous = latest;
             latest = value;
             hasSnapshot = true;
             waitNewEpoch = false;
             elapsed = 0;
             if (snap) displayed = value;
             source = displayed;
+            if (!snap)
+            {
+                // Advance discrete states even when packets arrive just before the blend finishes.
+                source.mode = previous.mode;
+                source.climbableId = previous.climbableId;
+                source.velocity = previous.velocity;
+            }
             return true;
         }
         bool Update(float dt, Snapshot& out)
@@ -29,8 +38,8 @@ namespace movement
             const float alpha = elapsed / 0.05f;
             displayed = latest;
             displayed.position = {
-                source.position.x + (latest.position.x - source.position.x) * alpha,
-                source.position.y + (latest.position.y - source.position.y) * alpha};
+                static_cast<float>(double(source.position.x) + (double(latest.position.x) - source.position.x) * alpha),
+                static_cast<float>(double(source.position.y) + (double(latest.position.y) - source.position.y) * alpha)};
             if (alpha < 1.0f && !IsDead(latest))
             {
                 displayed.mode = source.mode;
@@ -40,7 +49,10 @@ namespace movement
             out = displayed;
             return true;
         }
-        void Suspend() { waitNewEpoch = true; displayed = source = latest; elapsed = 0; }
+        void Suspend(bool acceptDeath = false)
+        {
+            waitNewEpoch = true; allowDead = acceptDeath; displayed = source = latest; elapsed = 0;
+        }
         void CancelSuspend() { waitNewEpoch = false; displayed = source = latest; elapsed = 0; }
         void Reset() { *this = Stream{}; }
         bool Ready() const { return hasSnapshot && !waitNewEpoch; }
@@ -52,6 +64,7 @@ namespace movement
         float elapsed = 0;
         bool hasSnapshot = false;
         bool waitNewEpoch = false;
+        bool allowDead = false;
     };
 
     class InputSchedule

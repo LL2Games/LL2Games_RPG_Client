@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -218,5 +218,16 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)UILayout.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UIManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VFXDataManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementProtocol.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementVisual.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementDebug.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovementPacketHandler.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovementProtocol.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovementPacketHandler.cpp" />
   </ItemGroup>
 </Project>

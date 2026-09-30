@@ -83,6 +83,12 @@ void MovementPacketHandler::Pump()
     }
     auto* player = PlayerManager::getInstance()->GetLocalPlayer();
     if (reset && player) player->GetMovementScript()->ResetMovementConnection();
+    if (reset)
+    {
+        for (auto& entry : stb::OtherPlayerManager::getInstance()->GetPlayers())
+            if (entry.second) entry.second->ResetMovementConnection();
+        MonsterManager::getInstance()->ResetMovementConnections();
+    }
     for (const auto& entry : batch)
     {
         const auto& pending = entry.second;

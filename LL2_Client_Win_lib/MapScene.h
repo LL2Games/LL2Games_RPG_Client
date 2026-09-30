@@ -27,6 +27,7 @@ protected:
 
 private:
     void CreatePortals();
+    void RenderMovementGeometry(stbD2DRenderer& renderer);
     std::unordered_map<std::string, Portal*> m_portals;
 };
 

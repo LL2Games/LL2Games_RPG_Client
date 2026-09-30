@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "PacketParser.h"
+int RunMovementTests();
 
 namespace
 {
@@ -292,7 +293,7 @@ int main()
         },
     };
 
-    int failureCount = 0;
+    int failureCount = RunMovementTests();
 
     for (const TestCase& test : tests)
     {

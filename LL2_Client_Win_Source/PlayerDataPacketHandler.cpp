@@ -5,6 +5,9 @@
 #include "PlayerManager.h"
 #include "ExpBarUI.h"
 #include "Stat.h"
+#include "stbPlayer.h"
+#include "stbTransform.h"
+#include <cmath>
 #include "UIManager.h"
 
 #include "stbApplication.h"
@@ -357,75 +360,22 @@ void PlayerDataPacketHandler::HandlePlayerOnDamaged(const ParsedPacket& pkt)
 
 void PlayerDataPacketHandler::HandlePlayerDead(const ParsedPacket& pkt)
 {
-	try
-	{
-		size_t offset = 0;
-		const char* data = pkt.payload.c_str();
-		size_t payloadSize = pkt.payload.size();
-		std::string errMsg;
-
-		auto playerManager = PlayerManager::getInstance();
-		if (!playerManager)
-		{
-			throw std::runtime_error("playerManager is nullptr");
-		}
-		auto localPlayer = playerManager->GetLocalPlayer();
-		if (!localPlayer)
-		{
-			throw std::runtime_error("localPlayer is nullptr");
-		}
-		
-		std::vector<std::string> inputs;
-
-		/*
-		4개
-	payload.push_back(std::to_string(player->GetId()));
-    payload.push_back(player->GetName());
-    payload.push_back(std::to_string(player->GetPos().xPos));
-    payload.push_back(std::to_string(player->GetPos().yPos));
-		*/
-		while (1)
-		{
-			std::string input;
-			if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, input, errMsg))
-			{
-				break;
-			}
-			inputs.push_back(input);
-		}
-
-		if (inputs.size() == 4) //4개 정상수신
-		{
-			//죽음 모달 띄우기 메시지 전송
-			const bool firstDeath = !localPlayer->IsDead();
-
-			localPlayer->SetState(PlayerState::Dead); //죽음으로 상태변경 -> 내부에서 상태변경에 따른 애니메이션 변경
-
-			if (firstDeath)
-			{
-				::PostMessageW(
-					stb::Application::getInstance()->GetHWND(),
-					WM_SHOW_REVIVE,
-					0,
-					0
-				);
-			}
-		}
-		else
-			throw std::runtime_error("HandlePlayerDead input error");
-
-		OutputDebugStringA("HandlePlayerDead Success\n");
-	}
-	catch (const std::exception& e)
-	{
-		OutputDebugStringA("[HandlePlayerDead] ");
-		OutputDebugStringA(e.what());
-		OutputDebugStringA("\n");
-	}
-	catch (...)
-	{
-		OutputDebugStringA("예상치 못한 에러 발생\n");
-	}
+    size_t offset = 0;
+    std::string error, name;
+    int id = 0;
+    float x = 0, y = 0;
+    const char* data = pkt.payload.data();
+    const size_t size = pkt.payload.size();
+    if (!PacketParser::ParseNextIntField(data, size, offset, id, error) ||
+        !PacketParser::ParseLengthPrefixedString(data, size, offset, name, error) ||
+        !PacketParser::ParseNextFloatField(data, size, offset, x, error) ||
+        !PacketParser::ParseNextFloatField(data, size, offset, y, error) ||
+        offset != size || !std::isfinite(x) || !std::isfinite(y)) return;
+    auto* player = M_PLAYERMANAGER->GetLocalPlayer();
+    if (!player || player->GetPlayerIdentity()->charId != id) return;
+    player->GetMovementScript()->OnServerDeath();
+    if (auto* transform = player->GetComponent<stb::Transform>()) transform->SetPosition({x, y});
+    player->GetPlayerLocation()->pos = {x, y};
 }
 
 void PlayerDataPacketHandler::SendPlayerRevive()
@@ -438,49 +388,14 @@ void PlayerDataPacketHandler::SendPlayerRevive()
 
 void PlayerDataPacketHandler::HandlePlayerRevive(const ParsedPacket& pkt)
 {
-	try
-	{
-		size_t offset = 0;
-		const char* data = pkt.payload.c_str();
-		size_t payloadSize = pkt.payload.size();
-		std::string errMsg;
-
-		auto playerManager = PlayerManager::getInstance();
-		if (!playerManager)
-		{
-			throw std::runtime_error("playerManager is nullptr");
-		}
-		auto localPlayer = playerManager->GetLocalPlayer();
-		if (!localPlayer)
-		{
-			throw std::runtime_error("localPlayer is nullptr");
-		}
-
-		std::string input;
-		if (!PacketParser::ParseLengthPrefixedString(data, payloadSize, offset, input, errMsg))
-		{
-		}
-
-		if (input == "nok")
-			throw std::runtime_error("HandlePlayerRevive input error");
-
-
-		// 1. 플레이어 상태 갱신
-		localPlayer->SetState(PlayerState::Idle);
-
-		// 2. UI에게 부활 성공 알림
-		::PostMessageW(stb::Application::getInstance()->GetHWND(), WM_REVIVE_SUCCESS, 0, 0);
-
-		OutputDebugStringA("HandlePlayerRevive Success\n");
-	}
-	catch (const std::exception& e)
-	{
-		OutputDebugStringA("[HandlePlayerRevive] ");
-		OutputDebugStringA(e.what());
-		OutputDebugStringA("\n");
-	}
-	catch (...)
-	{
-		OutputDebugStringA("예상치 못한 에러 발생\n");
-	}
+    size_t offset = 0;
+    std::string status, error;
+    if (!PacketParser::ParseLengthPrefixedString(pkt.payload.data(), pkt.payload.size(), offset, status, error)) return;
+    if (status != "ok")
+    {
+        OutputDebugStringA("[Revive] rejected\n");
+        return;
+    }
+    // A live new-epoch snapshot can precede this response. Never reset movement here.
+    OutputDebugStringA("[Revive] accepted; position/life comes from movement snapshot\n");
 }
