@@ -1,4 +1,5 @@
-﻿#include "stbPlayer.h"
+﻿#include "MovementDebug.h"
+#include "stbPlayer.h"
 #include "InventoryManager.h"
 #include "stbPlayerScript.h"
 #include "..\\LL2_Client_Win_Source\\\PlayerAnimationManager.h"
@@ -59,6 +60,7 @@ namespace stb
 	void Player::Render(stbD2DRenderer& renderer)
 	{
 		GameObject::Render(renderer);
+        if (m_transform) movement::DrawOriginAndFeet(renderer, m_transform->GetPosition(), movement::PlayerFootOffset);
 
 		if (m_transform == nullptr ||
 			m_playerProfile.name.empty())
@@ -157,6 +159,7 @@ namespace stb
 			return;
 
 		m_playerState = state;
+        if (m_animator) m_animator->SetPaused(false);
 
 		switch (state)
 		{

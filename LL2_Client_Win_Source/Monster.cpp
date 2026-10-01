@@ -1,6 +1,8 @@
-﻿#include "Monster.h"
+﻿#include "MovementDebug.h"
+#include "Monster.h"
 #include "stbResourceManager.h"
 #include "MonsterDataManager.h"
+#include "MapDataManager.h"
 #include "stbTexture.h"
 #include "Util.h"
 #include "stbLogger.h"
@@ -39,30 +41,72 @@ void Monster::InitFromSpawn(const MonsterSpawnInfo& info)
 
 void Monster::Update(float deltaTime)
 {
-	GameObject::Update();
-
+    GameObject::Update();
+    movement::Snapshot displayed;
+    if (!m_movement.Update(deltaTime, displayed)) return;
+    m_pos = {displayed.position.x, displayed.position.y};
+    m_transform->SetPosition(m_pos);
+    m_dir = displayed.facing;
+    const auto* map = MapDataManager::getInstance()->FindMapData(displayed.mapId);
+    const auto* climb = map ? map->physics.FindClimbable(displayed.climbableId) : nullptr;
+    m_movementVisual.Update(m_animator, displayed, deltaTime, climb && climb->ladder,
+        m_state == MonsterState::E_Hit || m_state == MonsterState::E_Die);
+}
+// 병합 시 수정 부분인지 확인 불가로 남겨둠
+  /*
 	if (m_state == MonsterState::E_Die || m_state == MonsterState::E_Dead)
 		return;
 
 	stb::math::Vector2 diff = m_targetPos - m_pos;
 	float dist = diff.length();
 
-	//DebugMsg = "dist : " + std::to_string(dist) + "\n";
-	//OutputDebugStringA(DebugMsg.c_str());
-
 	if (dist > 1.0f)
 	{
 		float correctionSpeed = static_cast<float>(m_moveSpeed);
 		//float correctionSpeed = m_moveSpeed * 2.0f;
 		float moveDist = correctionSpeed * deltaTime;
+    */
 
-		if (moveDist >= dist)
-			m_pos = m_targetPos;
-		else
-			m_pos += diff.normalize() * moveDist;
+void Monster::ApplyMovementSnapshot(const movement::Snapshot& s)
+{
+    const bool reset = !m_movement.HasSnapshot() || s.epoch != m_movement.Latest().epoch;
+    const int oldLife = m_movement.HasSnapshot() ? m_movement.Latest().lifeState : -1;
+    if (!m_movement.Push(s)) return;
+    m_curHp = s.hp; m_maxHp = s.maxHp;
+    if (reset)
+    {
+        m_movementVisual.Reset();
+        m_pos = m_targetPos = {s.position.x, s.position.y};
+        m_transform->SetPosition(m_pos);
+        m_isDead = false; m_isDeathAnimationFinished = false;
+        m_state = MonsterState::E_NONE;
+    }
+    if (s.lifeState == static_cast<int>(movement::MonsterLife::Dead))
+    {
+        SetState(MonsterState::E_Die);
+        m_isDead = true; m_isDeathAnimationFinished = true;
+    }
+    else if (movement::IsDead(s)) SetState(MonsterState::E_Die);
+    else if (reset || oldLife != s.lifeState)
+    {
+        switch (static_cast<movement::MonsterLife>(s.lifeState))
+        {
+        case movement::MonsterLife::Hit: SetState(MonsterState::E_Hit); break;
+        case movement::MonsterLife::Patrol: SetState(MonsterState::E_Patrol); break;
+        case movement::MonsterLife::Chase: SetState(MonsterState::E_Chase); break;
+        case movement::MonsterLife::Move: SetState(MonsterState::E_Move); break;
+        default: SetState(MonsterState::E_Idle); break;
+        }
+    }
+}
 
-		m_transform->SetPosition(m_pos);
-	}
+float Monster::GetFootOffset() const
+{
+    const auto* data = M_MONSTERDATAMANAGER->FindMonsterData(m_monsterId);
+    if (!data) return 0;
+    return data->colliderInfo.offset.y +
+        (data->colliderInfo.colliderType == stb::enums::eColliderType::Circle2D
+            ? data->colliderInfo.radius : data->colliderInfo.halfSize.y);
 }
 
 void Monster::Render(stbD2DRenderer& renderer)
@@ -73,6 +117,7 @@ void Monster::Render(stbD2DRenderer& renderer)
 
 
 	GameObject::Render(renderer);
+        if (m_transform) movement::DrawOriginAndFeet(renderer, m_transform->GetPosition(), GetFootOffset());
 	//m_collider->Render(renderer);
 }
 
@@ -82,6 +127,7 @@ void Monster::SetState(MonsterState state)
 		return;
 
 	m_state = state;
+    if (m_animator) m_animator->SetPaused(false);
 
 	bool isLoop = true;
 
@@ -240,6 +286,7 @@ void Monster::OnMove(float /*x*/, float /*y*/, int /*dir*/)
 // 몬스터패킷 핸들러에서 바로 호출하는 함수
 void Monster::ApplyServerUpdate(const MonsterUpdateInfo& info)
 {
+    if (m_movement.HasSnapshot()) return;
 	m_targetPos = info.pos;
 	m_dir = info.dir;
 
@@ -291,6 +338,10 @@ void Monster::ApplyAttackResult(const AttackResult& result)
 
 void Monster::RespawnFromServer(const MonsterUpdateInfo& info)
 {
+    // A new live snapshot may arrive before the legacy respawn notification.
+    if (m_movement.HasSnapshot() && !movement::IsDead(m_movement.Latest())) return;
+    m_movement.Suspend();
+    m_movementVisual.Reset();
 	OutputDebugStringA("[RESPAWN] RespawnFromServer called\n");
 
 	m_isDeathAnimationFinished = false;
@@ -315,6 +366,7 @@ void Monster::RespawnFromServer(const MonsterUpdateInfo& info)
 
 void Monster::ResetFromSpawnInfo(const MonsterSpawnInfo& info)
 {
+    if (m_movement.HasSnapshot()) return;
 	
 	m_pos = info.pos;
 

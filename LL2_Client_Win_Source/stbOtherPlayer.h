@@ -7,6 +7,8 @@
 #include "stbDamageText.h"
 #include "BoxCollider2D.h"
 #include "EquipeTypes.h"
+#include "MovementStream.h"
+#include "MovementVisual.h"
 
 class stbD2DRenderer;
 
@@ -34,6 +36,9 @@ namespace stb
         void SetTargetPosition(float x, float y, float speed);
         void SetDirection(int dir);
         void SetState(PlayerState state);
+        void ApplyMovementSnapshot(const movement::Snapshot& snapshot);
+        bool HasMovementSnapshot() const { return m_movement.HasSnapshot(); }
+        void ResetMovementConnection() { m_movement.Reset(); m_movementVisual.Reset(); }
 
         PlayerState GetState() { return m_playerState; }
         void AddFollower(GameObject* obj, Vector2 offset)
@@ -53,6 +58,8 @@ namespace stb
         float mTargetSpeed;
         bool mHasTarget;
         float mInterpolationSpeed;
+        movement::Stream m_movement;
+        movement::Visual m_movementVisual;
 
         // 플레이어 상태
         PlayerState m_playerState;

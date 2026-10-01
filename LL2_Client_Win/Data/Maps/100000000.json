@@ -8,24 +8,19 @@
     {
       "id": "to_map_100000001",
       "texture": "ForestPortal",
-
       "position": {
         "x": 1450.0,
         "y": 550.0
       },
-
       "renderSize": {
         "x": 100.0,
         "y": 160.0
       },
- 
       "halfSize": {
         "x": 60.0,
         "y": 100.0
       },
-
       "destinationMapId": 100000001,
-
       "spawnPosition": {
         "x": 120.0,
         "y": 820.0

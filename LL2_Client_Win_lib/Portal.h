@@ -20,12 +20,14 @@ public:
     void SetRenderSize(const stb::math::Vector2& size);
     void SetPortalId(const std::string& portalId) { m_portalId = portalId; }
     void ResetTransition() { m_transitioning = false; }
+    void SetInteractionRange(float range) { m_interactionRange = range; }
 private:
     std::string m_portalId;
     std::wstring m_destinationScene;
     stb::math::Vector2 m_spawnPosition;
     stb::BoxCollider2D* m_collider = nullptr;
     bool m_transitioning = false;
+    float m_interactionRange = 120.0f;
 
     stb::math::Vector2 m_triggerHalfSize = stb::math::Vector2(50.0f, 80.0f);
 

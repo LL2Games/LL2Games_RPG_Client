@@ -61,6 +61,7 @@ namespace stb
 
         OtherPlayer* player = it->second;
 
+        if (player->GetState() == PlayerState::Dead) return false;
         player->SetState(PlayerState::Attack);
 
         return true;
@@ -77,7 +78,7 @@ namespace stb
         {
             // 이미 존재하면 위치/상태만 업데이트
             OtherPlayer* existing = it->second;
-            if (existing)
+            if (existing && !existing->HasMovementSnapshot())
             {
                 existing->UpdatePosition(playerInfo.xPos, playerInfo.yPos);
                 existing->SetTargetPosition(playerInfo.xPos, playerInfo.yPos, playerInfo.speed);

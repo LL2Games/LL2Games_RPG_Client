@@ -1,5 +1,6 @@
 ﻿#include "stbApplication.h"
 #include "stbInput.h"
+#include "MovementPacketHandler.h"
 #include "stbTime.h"
 #include "stbSceneManager.h"
 #include "stbCollisionManager.h"
@@ -111,6 +112,7 @@ namespace stb
 	{
 		M_INPUT->Update();
 		M_TIME->Update();
+		MovementPacketHandler::Pump();
 		M_COLMANAGER->Update();
 		M_SCENEMANAGER->Update();
 	}

@@ -7,6 +7,7 @@
 #include "stbTransform.h"
 #include "MapScene.h"
 #include "Portal.h"
+#include "MovementPacketHandler.h"
 #include "stbOtherPlayerManager.h"
 
 
@@ -51,6 +52,7 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 
 		if (status != "ok")
 		{
+            MovementPacketHandler::CancelMapTransition();
 			std::string serverError;
 
 			PacketParser::ParseLengthPrefixedString(
@@ -119,6 +121,8 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 		player->GetPlayerLocation()->pos = spawnPostion;
 
 		player->GetPlayerLocation()->mapId = destinationMapId;
+        player->GetMovementScript()->SuspendMovement();
+        MovementPacketHandler::CommitMap(destinationMapId);
 
 		OutputDebugStringA("포탈 맵 이동 완료\n");
 	}
@@ -136,6 +140,8 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 void PortalPacketHandler::SendPortalEnter(std::string portalId)
 {
 	s_pendingPortalId = portalId;
+   MovementPacketHandler::BeginMapTransition();
+  
 	OutputDebugStringA(("[Portal] SendPortalEnter id=[" + portalId + "]\n").c_str());
 
 	std::vector<std::string> data = { portalId };

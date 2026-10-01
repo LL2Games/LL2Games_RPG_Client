@@ -27,6 +27,7 @@ public:
     Monster* FindMonster(int instanceId);
     //void ApplyMonsterDamage(const MonsterHitInfo& info);
     void Clear(); 
+    void ResetMovementConnections();
 
 private:
     struct BossPatternVisual

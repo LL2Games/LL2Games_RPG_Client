@@ -4,6 +4,8 @@
 #include "..\\LL2_Client_Win_Source\\stbInput.h"
 #include "..\\LL2_Client_Win_Source\\stbAnimation.h"
 #include "..\\LL2_Client_Win_Source\\QuickSlotManager.h"
+#include "MovementStream.h"
+#include "MovementVisual.h"
 
 namespace stb { class Player; }
 class stbD2DRenderer;
@@ -34,10 +36,17 @@ namespace stb
 
 		void SetPlayer(stb::Player* player) { m_player = player; }
 		void SetAnimator();
+		void ApplyMovementSnapshot(const movement::Snapshot& snapshot);
+		void SuspendMovement();
+		void CancelMovementSuspend();
+		void ResetMovementConnection();
+		void OnServerDeath();
+		void StopMovementInput();
+		bool CanMove() const;
+		bool CanAttack() const;
+		bool CanUsePortal() const;
+		bool HasMovementSnapshot() const { return m_movement.HasSnapshot(); }
 	private:
-		void UpdateAttackState();
-		void Idle(bool changeState = true);
-		void Move();
 		void Attack(const eSkillCode skillCode = eSkillCode::None);
 		void Jump();
 		void PickUp();
@@ -47,11 +56,14 @@ namespace stb
 		void ExecuteAction(eActionCode action);
 		void SyncFollowers(Vector2 pos);
 
-		bool IsMoveInputPressed() const;
 	
 	private:
-		float mNetworkSendTimer;
-		const float NETWORK_SEND_INTERVAL = 0.03f;
+		movement::Stream m_movement;
+		movement::InputSchedule m_inputSchedule;
+		movement::Visual m_movementVisual;
+		bool m_inputBlocked = true;
+		bool m_jumpPending = false;
+		bool m_jumpNeedsRelease = true;
 		float mAttackTimer;
 		float mAttackDuration;
 		GameObject* mHead;

@@ -75,6 +75,7 @@ namespace stb
 		bool IsLocalPlayer() { return m_isLocalPlayer; }
 
 		Animator* GetAnimator() { return m_animator; }
+		PlayerScript* GetMovementScript() { return m_script; }
 
 		const float GetPlayerMoveSpeed() { return m_moveSpeed; }
 

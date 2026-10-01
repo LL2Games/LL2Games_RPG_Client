@@ -113,9 +113,18 @@ bool MonsterDataManager::LoadJsonFile(const std::string& path, MonsterData& mons
     monsterData.colliderInfo.offset.x = offset.value("x", 0.0f);
     monsterData.colliderInfo.offset.y = offset.value("y", 0.0f);
 
-    const auto& half = collider.at("half");
-    monsterData.colliderInfo.halfSize.x = half.value("w", 0.0f);
-    monsterData.colliderInfo.halfSize.y = half.value("h", 0.0f);
+    if (monsterData.colliderInfo.colliderType == stb::enums::eColliderType::Circle2D)
+    {
+        const float legacyRadius = collider.contains("half") ? collider.at("half").value("w", 0.0f) : 0.0f;
+        monsterData.colliderInfo.radius = collider.value("radius", legacyRadius);
+        monsterData.colliderInfo.halfSize = {monsterData.colliderInfo.radius, monsterData.colliderInfo.radius};
+    }
+    else
+    {
+        const auto& half = collider.at("half");
+        monsterData.colliderInfo.halfSize.x = half.value("w", 0.0f);
+        monsterData.colliderInfo.halfSize.y = half.value("h", 0.0f);
+    }
     
     const auto& ui = j.at("ui").at("hp_bar_offset");
     monsterData.UIPos.x = ui.value("x", 0.0f);

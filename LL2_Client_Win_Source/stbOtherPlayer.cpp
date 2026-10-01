@@ -1,9 +1,11 @@
-﻿#include "stbOtherPlayer.h"
+﻿#include "MovementDebug.h"
+#include "stbOtherPlayer.h"
 #include "stbTransform.h"
 #include "stbAnimator.h"
 #include "stbResourceManager.h"
 #include "stbTexture.h"
 #include "stbTime.h"
+#include "MapDataManager.h"
 #include "stbD2DRenderer.h"
 #include "stbRender.h"
 #include "stbCamera.h"
@@ -44,40 +46,34 @@ namespace stb
     void OtherPlayer::Update()
     {
         GameObject::Update();
-        
-        // 목표 위치가 있으면 부드럽게 이동
-        if (mHasTarget)
+        movement::Snapshot displayed;
+        if (!m_movement.Update(M_Time->GetDeltaTime(), displayed)) return;
+        m_transform->SetPosition({displayed.position.x, displayed.position.y});
+        SyncFollowers({displayed.position.x, displayed.position.y});
+        const auto* map = MapDataManager::getInstance()->FindMapData(displayed.mapId);
+        const auto* climb = map ? map->physics.FindClimbable(displayed.climbableId) : nullptr;
+        const bool action = m_playerState >= PlayerState::Attack && m_playerState < PlayerState::Skill_End;
+        m_movementVisual.Update(m_animator, displayed, M_Time->GetDeltaTime(), climb && climb->ladder,
+            action && displayed.mode != movement::Mode::Climbing && !movement::IsStunned(displayed));
+    }
+
+    void OtherPlayer::ApplyMovementSnapshot(const movement::Snapshot& s)
+    {
+        const bool reset = !m_movement.HasSnapshot() || s.epoch != m_movement.Latest().epoch;
+        const int previousLife = m_movement.HasSnapshot() ? m_movement.Latest().lifeState : -1;
+        if (!m_movement.Push(s)) return;
+        if (reset)
         {
-            Transform* tr = GetComponent<Transform>();
-            if (tr)
-            {
-                Vector2 currentPos = tr->GetPosition();
-                Vector2 direction = mTargetPosition - currentPos;
-                float distance = direction.length();
-                
-                if (distance > 0.5f) // 목표에 거의 도달하지 않았으면
-                {
-                    // Lerp 방식: 거리에 비례해서 부드럽게 이동
-                    float lerpFactor = 10.0f * M_Time->GetDeltaTime(); // 초당 10배 속도로 따라감
-                    if (lerpFactor > 1.0f) lerpFactor = 1.0f;
-                    
-                    Vector2 newPos = currentPos + direction * lerpFactor;
-                    tr->SetPosition(newPos);
-                    SyncFollowers(newPos);
-                }
-                else
-                {
-                    // 목표에 도달
-                    tr->SetPosition(mTargetPosition);
-                    SyncFollowers(mTargetPosition);
-                    mHasTarget = false;
-                    if (m_playerState == PlayerState::Walk)
-                    {
-                        SetState(PlayerState::Idle);
-                    }
-                }
-            }
+            m_movementVisual.Reset();
+            m_transform->SetPosition({s.position.x, s.position.y});
+            SyncFollowers({s.position.x, s.position.y});
+            SetState(movement::IsDead(s) ? PlayerState::Dead : PlayerState::Idle);
         }
+        if (movement::IsDead(s)) SetState(PlayerState::Dead);
+        else if (s.mode == movement::Mode::Climbing || movement::IsStunned(s)) SetState(PlayerState::Idle);
+        else if (s.lifeState == static_cast<int>(movement::PlayerLife::Attack) && previousLife != s.lifeState)
+            SetState(PlayerState::Attack);
+        mHasTarget = false;
     }
 
     void OtherPlayer::LateUpdate()
@@ -93,6 +89,7 @@ namespace stb
     void OtherPlayer::Render(stbD2DRenderer& renderer)
     {
         GameObject::Render(renderer);
+        if (m_transform) movement::DrawOriginAndFeet(renderer, m_transform->GetPosition(), movement::PlayerFootOffset);
 
         if (m_transform == nullptr ||
             m_nickName.empty())
@@ -144,6 +141,7 @@ namespace stb
 
     void OtherPlayer::UpdatePosition(float x, float y)
     {
+        if (m_movement.HasSnapshot()) return;
         Transform* tr = GetComponent<Transform>();
         if (tr)
         {
@@ -153,6 +151,7 @@ namespace stb
 
     void OtherPlayer::SetTargetPosition(float x, float y, float speed)
     {
+        if (m_movement.HasSnapshot()) return;
         mTargetPosition = Vector2(x, y);
         mTargetSpeed = speed;
         mHasTarget = true;
@@ -173,6 +172,7 @@ namespace stb
             return;
 
         m_playerState = state;
+        if (m_animator) m_animator->SetPaused(false);
 
         switch (state)
         {
@@ -184,6 +184,12 @@ namespace stb
             m_currentAnimation = L"walk";
             break;
 
+        case PlayerState::Dead:
+            m_currentAnimation = L"dead";
+            break;
+        case PlayerState::Skill_Slash:
+            m_currentAnimation = L"slash";
+            break;
         case PlayerState::Attack:
             m_currentAnimation = L"swingO3";
             break;
@@ -198,7 +204,7 @@ namespace stb
         {
             bool isLoop = true;
 
-            if (state == PlayerState::Attack)
+            if ((state >= PlayerState::Attack && state < PlayerState::Skill_End) || state == PlayerState::Dead)
                 isLoop = false;
 
             animator->PlayAnimation(m_currentAnimation, isLoop);

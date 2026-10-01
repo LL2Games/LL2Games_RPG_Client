@@ -270,3 +270,8 @@ void MonsterManager::Clear()
     OutputDebugStringA("[MonsterManager] Clear\n");
 }
 
+
+void MonsterManager::ResetMovementConnections()
+{
+    for (auto& entry : m_monsters) entry.second->ResetMovementConnection();
+}

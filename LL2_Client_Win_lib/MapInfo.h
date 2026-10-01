@@ -1,11 +1,13 @@
 ﻿#pragma once
 
 #include "stbMath.h"
+#include "MovementMap.h"
 
 struct PortalData
 {
     std::string id;
     std::string texture;
+    float interactionRange = 120.0f;
 
     stb::math::Vector2 position;
     stb::math::Vector2 renderSize =
@@ -20,6 +22,7 @@ struct PortalData
 
 struct MapData
 {
+    movement::MapGeometry physics;
     int mapId = 0;
 
     std::string name;

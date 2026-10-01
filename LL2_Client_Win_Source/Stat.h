@@ -17,6 +17,7 @@ public:
 	void SetDerivedStat(const DerivedStat& derived);
 
 	void SetCurHp(int cur_hp) { m_cur_hp = cur_hp; }
+	void SetHealth(int hp, int maxHp) { m_cur_hp = hp; m_derived.maxHp = maxHp; }
 	void SetCurMp(int cur_mp) { m_cur_mp = cur_mp; }
 	void SetRemainAp(int remainAp) { m_remain_ap = remainAp; }
 	void SetExp(uint64_t exp) { m_expStat.exp = exp; }
