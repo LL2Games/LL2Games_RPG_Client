@@ -38,6 +38,12 @@
     <ClInclude Include="Map_100000002.h">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="Map_100000003.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map_100000004.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stbPlayScene.cpp" />
@@ -70,6 +76,12 @@
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="Map_100000002.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map_100000003.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map_100000004.cpp">
       <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>

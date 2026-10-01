@@ -8,6 +8,7 @@
 #include "SkillDataManager.h"
 #include "MonsterDataManager.h"
 #include "VFXDataManager.h"
+#include "NPCDataManager.h"
 #include "..\\LL2_Client_Win_lib\\MapDataManager.h"
 
 
@@ -21,6 +22,7 @@
 #define M_MONSTERDATAMANAGER stb::SingletonBase<MonsterDataManager>::getInstance()
 #define M_MAPDATAMANAGER stb::SingletonBase<MapDataManager>::getInstance()
 #define M_VFXDATAMANAGER stb::SingletonBase<VFXDataManager>::getInstance()
+#define M_NPCDATAMANAGER stb::SingletonBase<NPCDataManager>::getInstance()
 
 namespace stb
 {
@@ -89,6 +91,13 @@ namespace stb
 			MessageBox(hWnd, L"fail: M_MAPDATAMANAGER init", L"Error", MB_ICONERROR);
 			return false;
 		}
+
+		if (!M_NPCDATAMANAGER->Init())
+		{
+			MessageBox(hWnd, L"fail: M_NPCDATAMANAGER init", L"Error", MB_ICONERROR);
+			return false;
+		}
+
 
 		return true;
 	}

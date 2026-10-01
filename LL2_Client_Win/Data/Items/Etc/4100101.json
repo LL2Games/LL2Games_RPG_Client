@@ -1,0 +1,8 @@
+{
+  "item_id": 4100101,
+  "name": "도토리 갑각",
+  "type": "Etc",
+  "stackable": true,
+  "max_stack": 999,
+  "sell_price": 6
+}

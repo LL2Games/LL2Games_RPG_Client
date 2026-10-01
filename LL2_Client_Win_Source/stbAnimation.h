@@ -64,6 +64,7 @@ namespace stb
 			, const std::vector<stb::math::Vector2>& frameOffsets
 			, float duration
 		);
+		bool SetFrameDurations(const std::vector<float>& durations);
 		void Reset();
 		HRESULT Load(const std::wstring& path);
 

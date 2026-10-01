@@ -48,6 +48,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MonsterScript.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MovePacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPC.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCDataManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCInteraction.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPC_info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Packet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PacketData.h" />
@@ -153,6 +158,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MonsterScript.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MovePacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MySocket.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPC.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCDataManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCInteraction.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OtherPlayerPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PacketManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PacketParser.cpp" />

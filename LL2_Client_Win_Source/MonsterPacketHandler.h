@@ -10,7 +10,7 @@ public:
 	static void HandleS2C_MonsterMove(const ParsedPacket& pkt);
 	static void HandleS2C_RespawnMonster(const ParsedPacket& pkt);
 	static void HandleS2C_ProjectileMove(const ParsedPacket& pkt);
-
+	static void HandleS2C_BossPatternStart(const ParsedPacket& pkt);
 private:
 };
 

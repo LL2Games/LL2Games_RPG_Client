@@ -1,0 +1,23 @@
+{
+  "npcId": 200104,
+  "name": "세린",
+  "role": "숲지기",
+  "render": {
+    "width": 96,
+    "height": 96,
+    "origin": { "x": 48, "y": 92 }
+  },
+  "animations": {
+    "idle": {
+      "loop": true,
+      "frames": [
+        { "image": "Resources_Woodland/NPC/ranger/idle_0.png", "durationMs": 600 },
+        { "image": "Resources_Woodland/NPC/ranger/idle_1.png", "durationMs": 180 },
+        { "image": "Resources_Woodland/NPC/ranger/idle_2.png", "durationMs": 220 },
+        { "image": "Resources_Woodland/NPC/ranger/idle_3.png", "durationMs": 100 },
+        { "image": "Resources_Woodland/NPC/ranger/idle_4.png", "durationMs": 120 },
+        { "image": "Resources_Woodland/NPC/ranger/idle_5.png", "durationMs": 350 }
+      ]
+    }
+  }
+}

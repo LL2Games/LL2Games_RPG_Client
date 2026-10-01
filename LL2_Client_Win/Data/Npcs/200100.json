@@ -1,0 +1,23 @@
+{
+  "npcId": 200100,
+  "name": "로제",
+  "role": "여관주인",
+  "render": {
+    "width": 96,
+    "height": 96,
+    "origin": { "x": 48, "y": 92 }
+  },
+  "animations": {
+    "idle": {
+      "loop": true,
+      "frames": [
+        { "image": "Resources_Woodland/NPC/innkeeper/idle_0.png", "durationMs": 600 },
+        { "image": "Resources_Woodland/NPC/innkeeper/idle_1.png", "durationMs": 180 },
+        { "image": "Resources_Woodland/NPC/innkeeper/idle_2.png", "durationMs": 220 },
+        { "image": "Resources_Woodland/NPC/innkeeper/idle_3.png", "durationMs": 100 },
+        { "image": "Resources_Woodland/NPC/innkeeper/idle_4.png", "durationMs": 120 },
+        { "image": "Resources_Woodland/NPC/innkeeper/idle_5.png", "durationMs": 350 }
+      ]
+    }
+  }
+}

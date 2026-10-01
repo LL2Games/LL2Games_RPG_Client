@@ -15,7 +15,7 @@ using namespace stb;
 
 void stb::Map_100000000::LoadMapResources()
 {
-	m_background = M_RESOURCEMANAGER->Find<Texture>(L"Forest_ground_1");
+	m_background = M_RESOURCEMANAGER->Find<Texture>(L"Village_leafhaven");
 	m_BGM = M_RESOURCEMANAGER->Find<AudioClip>(L"BGM_Forest_ground_1");
 }
 
