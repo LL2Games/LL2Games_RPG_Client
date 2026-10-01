@@ -43,22 +43,27 @@ void MonsterManager::Update(float deltaTime)
         m_bossPatterns.end());
 }
 
-void MonsterManager::StartBossPattern(int instanceId, int patternId,
-    const stb::math::Vector2& center, float radius, int telegraphMs)
+void MonsterManager::StartBossPattern(int instanceId, int patternId, const stb::math::Vector2& center, float radius, int telegraphMs)
 {
-    if (patternId != 1 || instanceId <= 0 || telegraphMs <= 0 ||
-        !std::isfinite(center.x) || !std::isfinite(center.y) ||
-        !std::isfinite(radius) || radius <= 0.0f)
+    if ((patternId != 1 && patternId != 2) ||
+        instanceId <= 0 ||
+        telegraphMs <= 0 ||
+        !std::isfinite(center.x) ||
+        !std::isfinite(center.y) ||
+        !std::isfinite(radius) ||
+        radius <= 0.0f)
+    {
         return;
+    }
 
-    m_bossPatterns.erase(std::remove_if(m_bossPatterns.begin(), m_bossPatterns.end(),
-            [instanceId](const BossPatternVisual& visual)
-            {
-                return visual.instanceId == instanceId;
-            }),
-        m_bossPatterns.end());
-
-    m_bossPatterns.push_back({instanceId, center, radius, telegraphMs / 1000.0f, 0.0f});
+    // 같은 보스의 예고들도 각각 유지한다.
+    m_bossPatterns.push_back({
+        instanceId,
+        center,
+        radius,
+        static_cast<float>(telegraphMs) / 1000.0f,
+        0.0f
+        });
 }
 
 void MonsterManager::RenderBossWarnings(stbD2DRenderer& renderer)
