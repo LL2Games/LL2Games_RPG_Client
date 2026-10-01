@@ -136,6 +136,7 @@ void PortalPacketHandler::HandleMoveMap(const ParsedPacket& pkt)
 void PortalPacketHandler::SendPortalEnter(std::string portalId)
 {
 	s_pendingPortalId = portalId;
+	OutputDebugStringA(("[Portal] SendPortalEnter id=[" + portalId + "]\n").c_str());
 
 	std::vector<std::string> data = { portalId };
 

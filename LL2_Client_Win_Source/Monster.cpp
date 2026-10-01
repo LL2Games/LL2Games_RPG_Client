@@ -41,7 +41,7 @@ void Monster::Update(float deltaTime)
 {
 	GameObject::Update();
 
-	if (m_state == MonsterState::E_Die)
+	if (m_state == MonsterState::E_Die || m_state == MonsterState::E_Dead)
 		return;
 
 	stb::math::Vector2 diff = m_targetPos - m_pos;
@@ -67,7 +67,8 @@ void Monster::Update(float deltaTime)
 
 void Monster::Render(stbD2DRenderer& renderer)
 {
-	if (m_state == MonsterState::E_Die && m_isDeathAnimationFinished)
+	if ((m_state == MonsterState::E_Die || m_state == MonsterState::E_Dead)
+		&& m_isDeathAnimationFinished)
 		return;
 
 
@@ -99,7 +100,11 @@ void Monster::SetState(MonsterState state)
 			m_currentAnimation = L"hit";
 			M_LOGGER("MonsterState[hit]");
 			break;
+		case MonsterState::E_RangeAttack:
+			m_currentAnimation = L"attack";
+			break;
 		case MonsterState::E_Die:
+		case MonsterState::E_Dead:
 			m_currentAnimation = L"die";
 			M_LOGGER("MonsterState[die]");
 			break;
@@ -113,7 +118,10 @@ void Monster::SetState(MonsterState state)
 		m_debugMsg ="current State : " + std::to_string(static_cast<int>(m_state)) + "\n";
 		OutputDebugStringA(m_debugMsg.c_str());
 	
-		if (state == MonsterState::E_Hit || state == MonsterState::E_Die)
+		if (state == MonsterState::E_Hit
+			|| state == MonsterState::E_Die
+			|| state == MonsterState::E_Dead
+			|| state == MonsterState::E_RangeAttack)
 		{
 			isLoop = false;
 		}
@@ -157,7 +165,7 @@ void Monster::SetAnimation()
 			frames,
 			data->renderInfo.origin,
 			data->renderInfo.offset,
-			0.2f
+			static_cast<float>(info.delay_ms) / 1000.0f
 		);
 
 		stb::Animator::EventNames eventNames;
@@ -205,6 +213,12 @@ void Monster::BindAnimationEvents()
 			}
 		});
 
+	m_animator->RegisterEvent(L"MonsterAttackEnd", [this]()
+		{
+			if (m_state == MonsterState::E_RangeAttack)
+				SetState(MonsterState::E_Idle);
+		});
+
 	m_animator->RegisterEvent(L"MonsterDieEnd", [this]()
 		{
 			OutputDebugStringA("MonsterDieEnd event called\n");
@@ -233,13 +247,29 @@ void Monster::ApplyServerUpdate(const MonsterUpdateInfo& info)
 	m_maxHp = info.maxHp;
 
 	// 죽음 애니메이션은 Respawn 패킷이 올 때까지 유지
-	if (m_state == MonsterState::E_Die)
+	if (m_state == MonsterState::E_Die || m_state == MonsterState::E_Dead)
 		return;
 
 	// 피격 애니메이션은 끝날 때까지 유지
 	// MonsterHitEnd에서 Idle로 변경한다.
 	if (m_state == MonsterState::E_Hit)
 		return;
+
+	if (m_monsterId == 100200)
+	{
+		if (info.state == MonsterState::E_RangeAttack)
+		{
+			if (m_bossAttackStateActive)
+				return; // 같은 공격 상태의 반복 패킷은 애니메이션을 재시작하지 않음
+
+			m_bossAttackStateActive = true;
+		}
+		else
+		{
+			m_bossAttackStateActive = false;
+		}
+	}
+
 
 	SetState(info.state);
 }

@@ -225,6 +225,8 @@ void stb::ResourceManager::LoadMapTextures()
 	Load<Texture>(L"Forest_ground_1", L"Resources_Woodland\\Background\\forest\\forest_ground_1.png");
 	Load<Texture>(L"Forest_ground_2", L"Resources_Woodland\\Background\\forest\\forest_ground_2.png");
 	Load<Texture>(L"Forest_ground_3", L"Resources_Woodland\\Background\\forest\\forest_ground_3.png");
+	Load<Texture>(L"Village_leafhaven", L"Resources_Woodland\\Background\\village\\leafhaven_map.png");
+	Load<Texture>(L"Boss_room_1", L"Resources_Woodland\\Background\\boss\\boss_room_1.png");
 }
 
 void stb::ResourceManager::LoadQuickSlotTextures()
@@ -235,6 +237,29 @@ void stb::ResourceManager::LoadQuickSlotTextures()
 void stb::ResourceManager::LoadPortalTextures()
 {
 	Load<Texture>(L"ForestPortal", L"Resources_Woodland\\Portal\\forest_portal.png");
+}
+
+void stb::ResourceManager::LoadNPCTextures()
+{
+	std::filesystem::path root = L"Resources_Woodland\\NPC";
+
+	if (!std::filesystem::exists(root))
+		return;
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(root))
+	{
+		if (!entry.is_regular_file())
+			continue;
+
+		if (entry.path().extension() != L".png")
+			continue;
+
+		std::filesystem::path relative = std::filesystem::relative(entry.path(), L"Resources_Woodland");
+
+		std::wstring key = relative.replace_extension(L"").generic_wstring();
+
+		Load<Texture>(key, entry.path().wstring());
+	}
 }
 
 

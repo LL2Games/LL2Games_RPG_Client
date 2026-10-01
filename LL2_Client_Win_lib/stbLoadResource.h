@@ -23,6 +23,8 @@ namespace stb
 
 		RESOURCEMANAGER->LoadPortalTextures();
 
+		RESOURCEMANAGER->LoadNPCTextures();
+
 		// ============================
 		// 2. 게임 오브젝트 리소스
 		// ============================

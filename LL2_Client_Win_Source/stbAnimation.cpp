@@ -6,6 +6,7 @@
 #include "stbRender.h"
 #include "stbD2DRenderer.h"
 #include "stbLogger.h"
+#include <cmath>
 
 #define M_TIME stb::SingletonBase<stb::Time>::getInstance()
 
@@ -460,6 +461,23 @@ namespace stb
 
 			mAnimationSheet.emplace_back(sprite);
 		}
+	}
+
+	bool Animation::SetFrameDurations(const std::vector<float>& durations)
+	{
+		if (durations.size() != mAnimationSheet.size())
+			return false;
+
+		for (float duration : durations)
+		{
+			if (!std::isfinite(duration) || duration <= 0.0f)
+				return false;
+		}
+
+		for (std::size_t i = 0; i < durations.size(); ++i)
+			mAnimationSheet[i].duration = durations[i];
+
+		return true;
 	}
 
 

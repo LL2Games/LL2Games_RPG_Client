@@ -37,7 +37,11 @@ public:
     int GetMonsterId() const { return m_monsterId; }
     int GetMoveSpeed() const { return m_moveSpeed; }
     bool IsDead() { return m_isDead; }
-    bool IsDying() const { return m_state == MonsterState::E_Die; }
+	bool IsDying() const
+	{
+		return m_state == MonsterState::E_Die
+			|| m_state == MonsterState::E_Dead;
+	}
 
 private:
     int m_instanceId = 0;   // 서버 개체 ID
@@ -52,6 +56,7 @@ private:
 
     bool m_isDead = false;
     bool m_isDeathAnimationFinished = false;
+    bool m_bossAttackStateActive = false;
     MonsterState m_state = MonsterState::E_Idle;
 
     int m_moveSpeed;

@@ -203,6 +203,14 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
     <None Include="..\.editorconfig" />
     <None Include="..\.gitattributes" />
   </ItemGroup>
+  <ItemGroup>
+    <MapDataFile Include="$(ProjectDir)Data\Maps\**\*.json" />
+  </ItemGroup>
+  <Target Name="CopyMapDataToRuntime" AfterTargets="Build">
+    <Copy SourceFiles="@(MapDataFile)"
+          DestinationFiles="@(MapDataFile->'$(SolutionDir)bin\$(Platform)\$(Configuration)\Data\Maps\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

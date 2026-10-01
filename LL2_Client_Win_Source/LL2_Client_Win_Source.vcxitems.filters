@@ -244,6 +244,18 @@
       <Filter>Game\Skill</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPC.cpp">
+      <Filter>Game\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCDataManager.cpp">
+      <Filter>Game\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCInteraction.cpp">
+      <Filter>Game\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)NPCPacketHandler.cpp">
+      <Filter>Game\NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -550,6 +562,21 @@
       <Filter>Game\Skill</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPC.h">
+      <Filter>Game\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPC_info.h">
+      <Filter>Game\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCDataManager.h">
+      <Filter>Game\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCInteraction.h">
+      <Filter>Game\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NPCPacketHandler.h">
+      <Filter>Game\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">
@@ -713,6 +740,9 @@
     </Filter>
     <Filter Include="PacketHandler\Stat">
       <UniqueIdentifier>{425ca5cd-c3de-4dd9-839b-fe02ea6b07e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\NPC">
+      <UniqueIdentifier>{e81048da-804b-45ea-97ad-98457187aff7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
