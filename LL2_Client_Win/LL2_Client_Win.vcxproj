@@ -205,10 +205,14 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
   </ItemGroup>
   <ItemGroup>
     <MapDataFile Include="$(ProjectDir)Data\Maps\**\*.json" />
+    <VFXDataFile Include="$(ProjectDir)Data\VFX\**\*.json" />
   </ItemGroup>
   <Target Name="CopyMapDataToRuntime" AfterTargets="Build">
     <Copy SourceFiles="@(MapDataFile)"
           DestinationFiles="@(MapDataFile->'$(SolutionDir)bin\$(Platform)\$(Configuration)\Data\Maps\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(VFXDataFile)"
+          DestinationFiles="@(VFXDataFile->'$(SolutionDir)bin\$(Platform)\$(Configuration)\Data\VFX\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
