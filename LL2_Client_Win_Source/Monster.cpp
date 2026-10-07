@@ -43,29 +43,27 @@ void Monster::Update(float deltaTime)
 {
     GameObject::Update();
     movement::Snapshot displayed;
-    if (!m_movement.Update(deltaTime, displayed)) return;
+    if (!m_movement.Update(deltaTime, displayed))
+    {
+        // Legacy packets remain usable until the first movement snapshot arrives.
+        if (!m_movement.HasSnapshot())
+        {
+            const float alpha = (std::clamp)(deltaTime / 0.05f, 0.0f, 1.0f);
+            m_pos += (m_targetPos - m_pos) * alpha;
+            m_transform->SetPosition(m_pos);
+            if (m_animator) m_animator->SetFlipX(m_dir > 0);
+        }
+        return;
+    }
     m_pos = {displayed.position.x, displayed.position.y};
     m_transform->SetPosition(m_pos);
     m_dir = displayed.facing;
     const auto* map = MapDataManager::getInstance()->FindMapData(displayed.mapId);
     const auto* climb = map ? map->physics.FindClimbable(displayed.climbableId) : nullptr;
     m_movementVisual.Update(m_animator, displayed, deltaTime, climb && climb->ladder,
-        m_state == MonsterState::E_Hit || m_state == MonsterState::E_Die);
+        m_state == MonsterState::E_Hit || m_state == MonsterState::E_Die
+        || m_state == MonsterState::E_RangeAttack);
 }
-// 병합 시 수정 부분인지 확인 불가로 남겨둠
-  /*
-	if (m_state == MonsterState::E_Die || m_state == MonsterState::E_Dead)
-		return;
-
-	stb::math::Vector2 diff = m_targetPos - m_pos;
-	float dist = diff.length();
-
-	if (dist > 1.0f)
-	{
-		float correctionSpeed = static_cast<float>(m_moveSpeed);
-		//float correctionSpeed = m_moveSpeed * 2.0f;
-		float moveDist = correctionSpeed * deltaTime;
-    */
 
 void Monster::ApplyMovementSnapshot(const movement::Snapshot& s)
 {
@@ -91,6 +89,7 @@ void Monster::ApplyMovementSnapshot(const movement::Snapshot& s)
     {
         switch (static_cast<movement::MonsterLife>(s.lifeState))
         {
+        case movement::MonsterLife::RangeAttack: SetState(MonsterState::E_RangeAttack); break;
         case movement::MonsterLife::Hit: SetState(MonsterState::E_Hit); break;
         case movement::MonsterLife::Patrol: SetState(MonsterState::E_Patrol); break;
         case movement::MonsterLife::Chase: SetState(MonsterState::E_Chase); break;

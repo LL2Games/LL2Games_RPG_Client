@@ -118,6 +118,7 @@ namespace stb
 
 	void PlayScene::OnExit()
 	{
+        M_PROJECTILEMANAGER->Clear("scene_exit");
 		if (mBGM != nullptr)
 			mBGM->Stop();
 

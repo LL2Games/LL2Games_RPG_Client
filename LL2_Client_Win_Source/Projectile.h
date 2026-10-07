@@ -13,13 +13,14 @@ class Projectile : public stb::GameObject
 public:
     void Initialize() override;
     void InitFromServer(const MonsterProjectileData& info);
-    void ApplyServerUpdate(const MonsterProjectileData& info);
 
     void Update(float deltaTime);
     void Render(stbD2DRenderer& renderer);
 
     int GetInstanceId() const { return m_instanceId; }
-    bool IsExpired();
+    bool IsExpired() const;
+    float GetTravelledDistance() const { return m_travelled; }
+    void LogRemoval(const char* reason) const;
 
 private:
     void SetAnimation();
@@ -34,7 +35,6 @@ private:
     float m_speed = 0.0f;
 
     stb::math::Vector2 m_position{};
-    stb::math::Vector2 m_targetPosition{};
     stb::math::Vector2 m_direction{};
 
     stb::Transform* m_transform = nullptr;
