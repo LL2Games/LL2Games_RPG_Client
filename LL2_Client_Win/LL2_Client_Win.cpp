@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "LL2_Client_Win.h"
 #include <Windows.h>
+#include "GameSystemKeyPolicy.h"
 #include <imm.h>
 
 #pragma comment(lib, "imm32.lib")
@@ -201,19 +202,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPITESTCLIENT));
 
-    MSG msg;
+    MSG msg{};
+    bool running = true;
 
     // 기본 메시지 루프입니다:
-    while (true)
+    while (running)
     {
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        // Bound each batch so continuous key repeats/network messages cannot starve a frame.
+        constexpr unsigned int maxMessagesPerFrame = 64;
+        for (unsigned int processed = 0; processed < maxMessagesPerFrame &&
+            PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE); ++processed)
         {
             if (msg.message == WM_QUIT)
             {
+                running = false;
                 break;
             }
 
             // 부활창의 Enter, Tab 등 다이얼로그 키 처리
+            // Filter before dialog and accelerator processing, including focused game children.
+            if (GetAncestor(msg.hwnd, GA_ROOT) == APP->GetHWND() &&
+                ConsumeGameplaySystemKey(msg.message, msg.wParam))
+                continue;
+
             if (g_reviveDlg &&
                 ::IsWindow(g_reviveDlg->GetSafeHwnd()) &&
                 g_reviveDlg->IsWindowVisible() &&
@@ -228,11 +239,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
-        else
-            // 게임 로직 실행 구역
-        {
-           APP->Run();
-        }
+        if (running && IsWindow(APP->GetHWND()))
+            APP->Run();
     }
 
     Gdiplus::GdiplusShutdown(gpToken);
@@ -370,6 +378,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+
+    case WM_SYSKEYDOWN:
+    case WM_SYSKEYUP:
+        // Also consume Alt+arrows and other gameplay combinations, in either release order.
+        if (ConsumeGameplaySystemKey(message, wParam)) return 0;
+        return DefWindowProc(hWnd, message, wParam, lParam);
+
+    case WM_SYSCHAR:
+    case WM_SYSDEADCHAR:
+        // Alt+gameplay keys must not activate menu mnemonics or trigger a system beep.
+        return 0;
+
+    case WM_SYSCOMMAND:
+        if ((wParam & 0xFFF0) == SC_KEYMENU) return 0;
+        return DefWindowProc(hWnd, message, wParam, lParam);
 
     case WM_ACTIVATEAPP:
         if (!wParam)

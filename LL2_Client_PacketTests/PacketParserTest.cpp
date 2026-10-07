@@ -4,6 +4,7 @@
 #include "MonsterPacketHandler.h"
 #include <cmath>
 #include "Monster.h"
+#include "../LL2_Client_Win/GameSystemKeyPolicy.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -299,6 +300,28 @@ int main()
     };
 
     int failureCount = RunMovementTests();
+    try
+    {
+        for (UINT message : {WM_SYSKEYDOWN, WM_SYSKEYUP})
+        {
+            for (WPARAM key : {WPARAM(VK_MENU), WPARAM(VK_UP), WPARAM(VK_DOWN), WPARAM(VK_LEFT), WPARAM(VK_RIGHT), WPARAM(VK_SPACE)})
+                if (!ConsumeGameplaySystemKey(message, key))
+                    throw std::runtime_error("Alt gameplay combination escaped to system menus");
+            for (WPARAM key : {WPARAM(VK_TAB), WPARAM(VK_ESCAPE), WPARAM(VK_F4)})
+                if (ConsumeGameplaySystemKey(message, key))
+                    throw std::runtime_error("OS switch/close shortcut was blocked");
+        }
+        if (ConsumeGameplaySystemKey(WM_KEYDOWN, VK_UP) ||
+            !ConsumeGameplaySystemKey(WM_SYSCHAR, 'x') ||
+            !ConsumeGameplaySystemKey(WM_SYSDEADCHAR, '^'))
+            throw std::runtime_error("normal/system character policy mismatch");
+        std::cout << "[PASS] Alt ladder keys and OS shortcut routing\n";
+    }
+    catch (const std::exception& exception)
+    {
+        ++failureCount;
+        std::cerr << "[FAIL] Alt input: " << exception.what() << '\n';
+    }
     try
     {
         auto require = [](bool ok, const char* message) { if (!ok) throw std::runtime_error(message); };
