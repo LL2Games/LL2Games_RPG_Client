@@ -42,6 +42,7 @@ void PlayerDataPacketHandler::HandleLocalPlayerInfo(const ParsedPacket& pkt)
 		PlayerIdentity playerIdentity = {};
 		PlayerProfile playerProfile = {};
 		PlayerLocation playerLocation = {};
+		std::int64_t gold = 0;
 		
 		if (!PacketParser::ParseNextIntField(data, payloadSize, offset, playerIdentity.charId, errMsg))
 		{
@@ -78,7 +79,16 @@ void PlayerDataPacketHandler::HandleLocalPlayerInfo(const ParsedPacket& pkt)
 			throw std::runtime_error(errMsg);
 		}
 
+		if (!PacketParser::ParseNextInt64Field(data, payloadSize, offset, gold, errMsg))
+		{
+			throw std::runtime_error(errMsg);
+		}
+
+		if (gold < 0)
+			throw std::runtime_error("invalid gold balance");
+
 		localPlayer->SetPlayerInfo(playerIdentity, playerProfile, playerLocation);
+		localPlayer->SetGold(gold);
 
 		OutputDebugStringA("SetPlayerInfo Success\n");
 		

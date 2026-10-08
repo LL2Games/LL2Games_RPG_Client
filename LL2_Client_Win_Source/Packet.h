@@ -82,6 +82,9 @@ enum PACKET_TYPE : uint16_t {
 
     PKT_NPC_SNAPSHOT        = 0x0050,
     PKT_NPC_INTERACT        = 0x0051,
+    PKT_SHOP_OPEN           = 0x0052,
+    PKT_SHOP_BUY            = 0x0053,
+    PKT_SHOP_SELL           = 0x0054,
 
     // 0x0060 ~ 0x007F : 드롭
     PKT_DROPITEMS           = 0x0060,

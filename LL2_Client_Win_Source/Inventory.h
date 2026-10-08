@@ -13,6 +13,7 @@ public:
 	bool RemoveItemFromId(int itemId, int count);
 	bool RemoveItem(int slotPos, int count);
 	bool RemoveItem(int slotPos);
+	bool ApplyServerSlot(int slotPos, int itemId, int itemCount);
 
 	std::vector<InventoryItemInfo> GetItemInfos();
 

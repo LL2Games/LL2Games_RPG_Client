@@ -46,4 +46,16 @@ struct NPCSpawnInfo
     float yPos = 0.0f;  // 발 기준 월드 Y 좌표
 };
 
+struct NPCInteractionResult
+{
+    int mapId = 0;
+    int spawnId = 0;
+    int npcId = 0;
+
+    std::string name;
+    std::string role;
+    std::vector<std::string> dialogue;
+
+    int shopId = 0;
+};
 

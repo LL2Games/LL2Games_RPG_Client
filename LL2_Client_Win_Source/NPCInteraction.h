@@ -9,6 +9,8 @@ namespace stb
     class NPCInteraction : public Script
     {
     public:
+        void Update() override;
+
         // 서버 전송에 성공적으로 접수되면 true 반환
         using RequestCallback = std::function<bool(int spawnId)>;
 
@@ -26,11 +28,14 @@ namespace stb
         // NPCManager가 선택한 NPC 하나에만 호출
         bool TryInteract();
 
+
         // 성공/실패 응답, 타임아웃, 맵 이탈 시 호출
-        void ResetRequest() { m_requestPending = false; }
+        void ResetRequest() {m_requestPending = false; m_requestElapsed = 0.0f;}
+        bool IsRequestPending() const {return m_requestPending;}
 
         int GetSpawnId() const { return m_spawnId; }
         int GetNpcId() const { return m_npcId; }
+       
 
     private:
         int m_spawnId = 0;
@@ -38,6 +43,7 @@ namespace stb
 
         float m_interactionRange = 100.0f;
         bool m_requestPending = false;
+        float m_requestElapsed = 0.0f;
 
         math::Vector2 m_renderSize = { 96.0f, 96.0f };
         math::Vector2 m_origin = { 48.0f, 92.0f };

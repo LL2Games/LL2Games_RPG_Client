@@ -11,6 +11,9 @@
 #include "stbPlayerScript.h"
 #include "EquipeTypes.h"
 
+#include <cstdint>
+#include <optional>
+
 
 
 class stbD2DRenderer;
@@ -80,6 +83,9 @@ namespace stb
 		const float GetPlayerMoveSpeed() { return m_moveSpeed; }
 
 		StatViewData GetStatViewData() const;
+
+		void SetGold(std::int64_t gold){m_gold = gold;}
+		std::optional<std::int64_t> GetGold() const{return m_gold;}
 	public:
 		void OnDamaged(int damage, int curHp);
 		void ShowDamageText(int damage);
@@ -122,6 +128,8 @@ namespace stb
 		bool m_isLocalPlayer;
 
 		std::string m_debugMsg;
+
+		std::optional<std::int64_t> m_gold;
 
 	};
 

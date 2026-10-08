@@ -149,23 +149,35 @@ bool Inventory::RemoveItem(int slotPos)
 	return true;
 }
 
+bool Inventory::ApplyServerSlot(int slotPos, int itemId, int itemCount)
+{
+	if (slotPos < 0 || slotPos >= m_maxSlot || itemId < 0 ||
+		itemCount < 0 || ((itemId == 0) != (itemCount == 0)))
+	{
+		return false;
+	}
+
+	InventoryItemInfo info{};
+	info.inventoryType = m_inventoryType;
+	info.slotPos = slotPos;
+	info.itemId = itemId;
+	info.itemCount = itemCount;
+
+	m_slots.insert_or_assign(slotPos, info);
+	return true;
+}
+
 
 
 std::vector<InventoryItemInfo> Inventory::GetItemInfos()
 {
 	std::vector<InventoryItemInfo> items;
 	std::string msg;
-	msg = "[SetSlot] this=" + std::to_string((uintptr_t)this) + "\n";
-	OutputDebugStringA(msg.c_str());
-
+	
 	for (auto& [pos, item] : m_slots)
 	{
 		if (item.itemId != 0 && item.itemCount > 0)
 		{
-			std::string DebugMsg = "Item ID [" + std::to_string(item.itemId) +"]" + "\n";
-			OutputDebugStringA(DebugMsg.c_str());
-			DebugMsg = "Item SlotPos [" + std::to_string(item.slotPos) + "]" + "\n";
-			OutputDebugStringA(DebugMsg.c_str());
 			items.push_back(item);
 		}
 	}

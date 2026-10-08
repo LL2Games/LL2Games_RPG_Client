@@ -266,6 +266,16 @@ bool stbD2DRenderer::CreateTextFormats()
         L"ko-kr",
         m_ChatTextFormat.GetAddressOf());
 
+    hr = m_DWriteFactory->CreateTextFormat(
+        L"메이플스토리",
+        nullptr,
+        DWRITE_FONT_WEIGHT_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
+        12.0f,
+        L"ko-kr",
+        m_MoneyTextFormat.GetAddressOf());
+
   
    
 
@@ -304,6 +314,9 @@ bool stbD2DRenderer::CreateTextFormats()
 
     m_ChatTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
     m_ChatTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+
+    m_MoneyTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+    m_MoneyTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
 
     return true;
@@ -599,6 +612,9 @@ void stbD2DRenderer::DrawTextString(const std::wstring& text, const D2D1_RECT_F&
         break;
     case TextStyle::Chat:
         textFormat = m_ChatTextFormat.Get();
+        break;
+    case TextStyle::Money:
+        textFormat = m_MoneyTextFormat.Get();
         break;
     case TextStyle::Body:
     default:

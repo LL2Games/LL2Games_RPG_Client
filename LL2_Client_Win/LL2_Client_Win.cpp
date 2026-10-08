@@ -668,6 +668,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 #endif
     }
     break;
+    case WM_SYSKEYDOWN:
     case WM_KEYDOWN:
     {
         if (M_UIMANAGER->IsTradeQuantityInputActive())
@@ -697,6 +698,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         stb::NetworkManager::getInstance()->Disconnect();
         PostQuitMessage(0);
         break;
+    case WM_SYSCHAR:
+        // Alt+문자 키의 기본 메뉴 처리와 알림음을 차단한다.
+        return 0;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

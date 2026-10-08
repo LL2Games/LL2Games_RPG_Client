@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -76,6 +76,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QuickSlotUI_Info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopPacketHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopUI_Info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Skill.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillDataManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkillEffectManager.h" />
@@ -181,6 +186,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QuickSlotUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerShutdownHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShopManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShopPacketHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShopUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Skill.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillDataManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkillEffectManager.cpp" />

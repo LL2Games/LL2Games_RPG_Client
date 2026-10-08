@@ -5,12 +5,27 @@
 #include "stbCamera.h"
 #include "stbRender.h"
 #include "PlayerManager.h"
+#include "stbTime.h"
 
 #include <cmath>
 #include <utility>
 
 namespace stb
 {
+    void NPCInteraction::Update()
+    {
+        if (!m_requestPending)
+            return;
+
+        m_requestElapsed += Time::getInstance()->GetDeltaTime();
+
+        if (m_requestElapsed >= 5.0f)
+        {
+            ResetRequest();
+            OutputDebugStringA("[NPC interact] request timeout\n");
+        }
+
+    }
     void NPCInteraction::Setup(int spawnId, int npcId, float interactionRange)
     {
         m_spawnId = spawnId;
@@ -95,6 +110,7 @@ namespace stb
             return false;
 
         m_requestPending = true;
+        m_requestElapsed = 0.0f;
 
         if (!m_onRequest(m_spawnId))
         {

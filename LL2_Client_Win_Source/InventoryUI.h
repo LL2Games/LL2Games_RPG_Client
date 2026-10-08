@@ -70,7 +70,7 @@ private:
 	std::vector<Slot> mSlots;
 	std::vector<InventorySlotUI> m_slots;
 
-	InventoryType m_currentType =InventoryType::Etc;
+	InventoryType m_currentType = InventoryType::Etc;
 
 	bool m_isInventoryDragging = false;	// 인벤토리 창 드래그용
 	bool m_isItemDragging = false; // 인벤토리 내 아이템 드래그 용

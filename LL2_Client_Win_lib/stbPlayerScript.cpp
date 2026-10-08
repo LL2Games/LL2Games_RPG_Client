@@ -287,8 +287,8 @@ namespace stb
             SyncFollowers({s.position.x, s.position.y});
         }
 #ifdef _DEBUG
-        OutputDebugStringA(("[Movement self] map=" + std::to_string(s.mapId) + " epoch=" + std::to_string(s.epoch) +
-            " sequence=" + std::to_string(s.sequence) + " tick=" + std::to_string(s.tick) + "\n").c_str());
+        //OutputDebugStringA(("[Movement self] map=" + std::to_string(s.mapId) + " epoch=" + std::to_string(s.epoch) +
+            //" sequence=" + std::to_string(s.sequence) + " tick=" + std::to_string(s.tick) + "\n").c_str());
 #endif
     }
 
