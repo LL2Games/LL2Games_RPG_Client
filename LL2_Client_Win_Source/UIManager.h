@@ -16,6 +16,7 @@ class TradeRequestUI;
 class ExpBarUI;
 class LevelUI;
 class StatUI;
+class ShopUI;
 
 class UIManager : public stb::SingletonBase<UIManager>
 {
@@ -70,6 +71,8 @@ public:
 	void RefreshStatUI();
 	void FinishStatUpRequest();
 
+	void ResetShopSelection();
+
 public:
 	InventoryUI* GetInventoryUI() { return m_inventoryUI; }
 	QuickSlotUI* GetQuickSlotUI() { return m_quickslotUI; }
@@ -87,5 +90,6 @@ private:
 	TradeUI* m_tradeUI = nullptr; //교환
 	TradeRequestUI* m_tradeReqUI = nullptr; //교환
 	ChatUI* m_chatUI = nullptr; //채팅
+	ShopUI* m_shopUI = nullptr;
 	bool m_tradeQuantityEnterConsumed = false;
 };

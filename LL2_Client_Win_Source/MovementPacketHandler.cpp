@@ -1,4 +1,4 @@
-#include "MovementPacketHandler.h"
+﻿#include "MovementPacketHandler.h"
 #include "MovementProtocol.h"
 #include "PacketParser.h"
 #include "stbNetworkManager.h"
@@ -65,11 +65,7 @@ bool MovementPacketHandler::SendInput(int mapId, int epoch, int sequence, const 
     std::vector<std::string> fields;
     if (!network || !network->IsConnected() || !movement::BuildInputFields(mapId, epoch, sequence, input, fields)) return false;
     network->SendPacket(PKT_MOVEMENT_INPUT, fields);
-#ifdef _DEBUG
-    OutputDebugStringA(("[Movement input] map=" + std::to_string(mapId) + " epoch=" + std::to_string(epoch) +
-        " sequence=" + std::to_string(sequence) + " axes=" + std::to_string(input.horizontal) + "," +
-        std::to_string(input.vertical) + " jump=" + (input.jump ? "1\n" : "0\n")).c_str());
-#endif
+
     return true;
 }
 void MovementPacketHandler::Pump()

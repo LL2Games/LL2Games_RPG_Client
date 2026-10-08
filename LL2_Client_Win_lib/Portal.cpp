@@ -38,7 +38,7 @@ void Portal::Update()
         GetForegroundWindow() != GetAncestor(stb::Application::getInstance()->GetHWND(), GA_ROOT)) return;
     auto* tr = GetComponent<Transform>();
     auto* playerTransform = player->GetComponent<Transform>();
-    if (!tr || !playerTransform || !M_INPUT->GetActionDown(eActionCode::Interact)) return;
+    if (!tr || !playerTransform || !M_INPUT->GetActionDown(eActionCode::MoveUp)) return;
     auto delta = playerTransform->GetPosition() - tr->GetPosition();
     if (delta.x * delta.x + delta.y * delta.y > m_interactionRange * m_interactionRange) return;
     m_transitioning = true;

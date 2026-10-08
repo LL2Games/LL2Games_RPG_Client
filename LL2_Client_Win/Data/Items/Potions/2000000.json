@@ -1,6 +1,6 @@
   {
   "item_id": 2000000,
-  "name": "Red Potion",
+  "name": "빨간 포션",
   "type": "Consume",
   "stackable": true,
   "max_stack": 100,

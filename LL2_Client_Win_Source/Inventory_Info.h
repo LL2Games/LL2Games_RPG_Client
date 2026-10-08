@@ -61,6 +61,7 @@ struct ItemData
 
 	int hpRestore = 0;
 	int mpRestore = 0;
+	int sellPrice = 0;
 };
 
 struct DropItemData

@@ -256,6 +256,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)NPCPacketHandler.cpp">
       <Filter>Game\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShopManager.cpp">
+      <Filter>Game\Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShopPacketHandler.cpp">
+      <Filter>PacketHandler\Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShopUI.cpp">
+      <Filter>Game\UI\ShopUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)MySocket.h" />
@@ -577,6 +586,21 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)NPCPacketHandler.h">
       <Filter>Game\NPC</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopData.h">
+      <Filter>Game\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopManager.h">
+      <Filter>Game\Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopPacketHandler.h">
+      <Filter>PacketHandler\Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopUI.h">
+      <Filter>Game\UI\ShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShopUI_Info.h">
+      <Filter>Game\UI\ShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Colider">
@@ -743,6 +767,15 @@
     </Filter>
     <Filter Include="Game\NPC">
       <UniqueIdentifier>{e81048da-804b-45ea-97ad-98457187aff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Shop">
+      <UniqueIdentifier>{5a0612b2-f263-4eca-8d47-fea13cac0233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketHandler\Shop">
+      <UniqueIdentifier>{b47a1050-de71-4cff-aea6-fd32c7d2ed0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UI\ShopUI">
+      <UniqueIdentifier>{4713679b-8689-47f1-9859-1f94a010a501}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

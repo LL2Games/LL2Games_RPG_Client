@@ -16,6 +16,7 @@
 #include "PortalPacketHandler.h"
 #include "ServerShutdownHandler.h"
 #include "NPCPacketHandler.h"
+#include "ShopPacketHandler.h"
 
 bool PacketManager::RegisterAllHandlers()
 {
@@ -290,8 +291,33 @@ bool PacketManager::RegisterAllHandlers()
 			ServerShutdownHandler::HandleServerShutdown(pkt);
 		});
 
+	networkManager->RegisterHandler(
+		PKT_NPC_INTERACT,
+		[](const ParsedPacket& pkt)
+		{
+			NPCPacketHandler::HandleInteractResult(pkt);
+		});
 
+	networkManager->RegisterHandler(
+		PKT_SHOP_OPEN,
+		[](const ParsedPacket& pkt)
+		{
+			ShopPacketHandler::HandleOpen(pkt);
+		});
 
+	networkManager->RegisterHandler(
+		PKT_SHOP_BUY,
+		[](const ParsedPacket& pkt)
+		{
+			ShopPacketHandler::HandleBuyResult(pkt);
+		});
+
+	networkManager->RegisterHandler(
+		PKT_SHOP_SELL,
+		[](const ParsedPacket& pkt)
+		{
+			ShopPacketHandler::HandleSellResult(pkt);
+		});
 	
 	return true;
 }

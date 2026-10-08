@@ -1,6 +1,6 @@
 {
   "item_id": 2000003,
-  "name": "Blue Potion",
+  "name": "파란 포션",
   "type": "Consume",
   "stackable": true,
   "max_stack": 3000,

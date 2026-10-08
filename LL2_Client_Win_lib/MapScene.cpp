@@ -9,6 +9,14 @@
 #include "ProjectileManager.h"
 #include "SkillEffectManager.h"
 #include "MovementDebug.h"
+#include "NPCInteraction.h"
+#include "PlayerManager.h"
+#include "stbInput.h"
+#include "stbTransform.h"
+#include "UIManager.h"
+#include "ShopManager.h"
+
+#include <limits>
 
 #define M_TIME SingletonBase<Time>::getInstance()
 #define M_MONSTERMANAGER SingletonBase<MonsterManager>::getInstance()
@@ -30,6 +38,7 @@ void MapScene::Initialize()
 void MapScene::Update()
 {
 	Scene::Update();
+    UpdateNPCInteraction();
 	M_MONSTERMANAGER->Update(M_TIME->GetDeltaTime());
     M_PROJECTILEMANAGER->Update(M_TIME->GetDeltaTime());
     M_SKILLEFFECTMANAGER->Update();
@@ -60,6 +69,8 @@ void MapScene::OnEnter()
 
 void MapScene::OnExit()
 {
+    ShopManager::getInstance()->Close();
+    ResetNPCInteractionRequests();
     M_SKILLEFFECTMANAGER->Clear();
     M_MONSTERMANAGER->Clear();
     M_PROJECTILEMANAGER->Clear();
@@ -138,4 +149,92 @@ void MapScene::RenderMovementGeometry(stbD2DRenderer& renderer)
         renderer.DrawLine(left.x, left.y, right.x, right.y, D2D1::ColorF(D2D1::ColorF::Lime), 2);
     }
 #endif
+}
+
+void MapScene::UpdateNPCInteraction()
+{
+    if (UIManager::getInstance()->IsGameplayInputBlocked())
+        return;
+
+    if (!stb::Input::getInstance()->GetActionDown(stb::eActionCode::Interact))
+    {
+        return;
+    }
+
+    auto* player = PlayerManager::getInstance()->GetLocalPlayer();
+
+    if (player == nullptr || player->IsDead())
+        return;
+
+    auto* transform = player->GetComponent<stb::Transform>();
+
+    if (transform == nullptr)
+        return;
+
+    auto* layer = GetLayer(stb::enums::eLayerType::Animal);
+
+    if (layer == nullptr)
+        return;
+
+    const auto playerPosition = transform->GetPosition();
+
+    stb::NPCInteraction* selected = nullptr;
+    float nearestDistance = (std::numeric_limits<float>::max)();
+
+    for (auto* object : layer->GetGameObjects())
+    {
+        if (object == nullptr)
+            continue;
+
+        auto* interaction = object->GetComponent<stb::NPCInteraction>();
+
+        if (interaction == nullptr)
+            continue;
+
+        // 한 번에 NPC 요청 하나만 보낸다.
+        if (interaction->IsRequestPending())
+            return;
+
+        if (!interaction->IsInRange())
+            continue;
+
+        auto* npcTransform = object->GetComponent<stb::Transform>();
+
+        if (npcTransform == nullptr)
+            continue;
+
+        const auto npcPosition = npcTransform->GetPosition();
+
+        const float dx = npcPosition.x - playerPosition.x;
+        const float dy = npcPosition.y - playerPosition.y;
+        const float distanceSquared = dx * dx + dy * dy;
+
+        if (distanceSquared < nearestDistance)
+        {
+            nearestDistance = distanceSquared;
+            selected = interaction;
+        }
+    }
+
+    if (selected != nullptr)
+        selected->TryInteract();
+}
+
+void MapScene::ResetNPCInteractionRequests()
+{
+    auto* layer = GetLayer(stb::enums::eLayerType::Animal);
+
+    if (layer == nullptr)
+        return;
+
+    for (auto* object : layer->GetGameObjects())
+    {
+        if (object == nullptr)
+            continue;
+
+        auto* interaction = object->GetComponent<stb::NPCInteraction>();
+
+        if (interaction != nullptr)
+            interaction->ResetRequest();
+    }
 }

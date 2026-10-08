@@ -28,6 +28,8 @@ protected:
 private:
     void CreatePortals();
     void RenderMovementGeometry(stbD2DRenderer& renderer);
+    void UpdateNPCInteraction();
+    void ResetNPCInteractionRequests();
     std::unordered_map<std::string, Portal*> m_portals;
 };
 

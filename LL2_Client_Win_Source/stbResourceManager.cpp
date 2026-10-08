@@ -262,6 +262,23 @@ void stb::ResourceManager::LoadNPCTextures()
 	}
 }
 
+void stb::ResourceManager::LoadShopTextures()
+{
+	const std::filesystem::path root = L"Resources_Woodland\\UI\\Shop";
+
+	for (const auto& entry : std::filesystem::directory_iterator(root))
+	{
+		if (!entry.is_regular_file() || entry.path().extension() != L".png")
+		{
+			continue;
+		}
+
+		const std::wstring key = L"Shop_" + entry.path().stem().wstring();
+
+		Load<Texture>(key, entry.path().wstring());
+	}
+}
+
 
 void stb::ResourceManager::LoadStatTextures()
 {

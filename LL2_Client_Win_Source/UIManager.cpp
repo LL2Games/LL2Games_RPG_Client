@@ -9,6 +9,8 @@
 #include "ExpBarUI.h"
 #include "LevelUI.h"
 #include "StatUI.h"
+#include "ShopUI.h"
+#include "ShopManager.h"
 
 UIManager::UIManager()
 {
@@ -21,6 +23,7 @@ UIManager::UIManager()
 	m_tradeUI = new TradeUI();
 	m_chatUI = new ChatUI();
 	m_tradeReqUI = new TradeRequestUI();
+	m_shopUI = new ShopUI();
 
 }
 
@@ -35,6 +38,7 @@ void UIManager::Init()
 	m_tradeUI->Init();
 	m_chatUI->Init();
 	m_tradeReqUI->Init();
+	m_shopUI->Init();
 
 	mUIs.push_back(m_inventoryUI);
 	mUIs.push_back(m_quickslotUI);
@@ -45,7 +49,7 @@ void UIManager::Init()
 	mUIs.push_back(m_tradeUI);
 	mUIs.push_back(m_chatUI);
 	mUIs.push_back(m_tradeReqUI);
-
+	mUIs.push_back(m_shopUI);
 
 
 	char msg[128];
@@ -55,9 +59,14 @@ void UIManager::Init()
 
 void UIManager::Update()
 {
+	const bool shopOpen = ShopManager::getInstance()->IsOpen();
+
 	for (UI* ui : mUIs)
 	{
-		if (ui == nullptr || ui->IsActive() == false)
+		if (ui == nullptr || !ui->IsActive())
+			continue;
+
+		if (shopOpen && ui != m_shopUI)
 			continue;
 
 		ui->Update();
@@ -195,7 +204,16 @@ bool UIManager::IsInputFocused() const
 
 bool UIManager::IsGameplayInputBlocked() const
 {
-	return IsInputFocused() || IsTradeRequestActive() || IsTradeQuantityInputActive();
+	return IsInputFocused() ||
+		IsTradeRequestActive() ||
+		IsTradeQuantityInputActive() ||
+		ShopManager::getInstance()->IsOpen();
+}
+
+void UIManager::ResetShopSelection()
+{
+	if (m_shopUI != nullptr)
+		m_shopUI->ResetSelection();
 }
 
 void UIManager::AppendInputChar(wchar_t ch)

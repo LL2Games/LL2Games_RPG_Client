@@ -62,6 +62,7 @@ namespace stb
 		void LoadMapTextures();
 		void LoadPortalTextures();
 		void LoadNPCTextures();
+		void LoadShopTextures();
 
 		// 2. 게임 오브젝트 리소스
 		void LoadPlayerTextures();

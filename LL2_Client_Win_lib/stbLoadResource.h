@@ -25,6 +25,8 @@ namespace stb
 
 		RESOURCEMANAGER->LoadNPCTextures();
 
+		RESOURCEMANAGER->LoadShopTextures();
+
 		// ============================
 		// 2. 게임 오브젝트 리소스
 		// ============================

@@ -1,6 +1,6 @@
 {
   "item_id": 2000001,
-  "name": "Orange Potion",
+  "name": "주황 포션",
   "type": "Consume",
   "stackable": true,
   "max_stack": 100,
