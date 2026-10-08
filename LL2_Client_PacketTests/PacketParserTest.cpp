@@ -1,4 +1,10 @@
 ﻿#include <WinSock2.h>
+#include "Projectile.h"
+#include "ProjectileManager.h"
+#include "MonsterPacketHandler.h"
+#include <cmath>
+#include "Monster.h"
+#include "../LL2_Client_Win/GameSystemKeyPolicy.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -294,6 +300,112 @@ int main()
     };
 
     int failureCount = RunMovementTests();
+    try
+    {
+        for (UINT message : {WM_SYSKEYDOWN, WM_SYSKEYUP})
+        {
+            for (WPARAM key : {WPARAM(VK_MENU), WPARAM(VK_UP), WPARAM(VK_DOWN), WPARAM(VK_LEFT), WPARAM(VK_RIGHT), WPARAM(VK_SPACE)})
+                if (!ConsumeGameplaySystemKey(message, key))
+                    throw std::runtime_error("Alt gameplay combination escaped to system menus");
+            for (WPARAM key : {WPARAM(VK_TAB), WPARAM(VK_ESCAPE), WPARAM(VK_F4)})
+                if (ConsumeGameplaySystemKey(message, key))
+                    throw std::runtime_error("OS switch/close shortcut was blocked");
+        }
+        if (ConsumeGameplaySystemKey(WM_KEYDOWN, VK_UP) ||
+            !ConsumeGameplaySystemKey(WM_SYSCHAR, 'x') ||
+            !ConsumeGameplaySystemKey(WM_SYSDEADCHAR, '^'))
+            throw std::runtime_error("normal/system character policy mismatch");
+        std::cout << "[PASS] Alt ladder keys and OS shortcut routing\n";
+    }
+    catch (const std::exception& exception)
+    {
+        ++failureCount;
+        std::cerr << "[FAIL] Alt input: " << exception.what() << '\n';
+    }
+    try
+    {
+        auto require = [](bool ok, const char* message) { if (!ok) throw std::runtime_error(message); };
+        // Exercise the actual 9-field spawn receiver with decimal directions/coordinates.
+        auto* manager = ProjectileManager::getInstance();
+        manager->Clear("test_start");
+        ParsedPacket packet{};
+        packet.payload = PacketParser::MakeBody({"1", "42", "7", "0", "-0.997971", "0.063671",
+            "1000.5", "100.25", "200.5", "50.25"});
+        MonsterPacketHandler::HandleS2C_ProjectileMove(packet);
+        auto* projectile = manager->FindProjectile(42);
+        require(projectile != nullptr, "decimal spawn packet was rejected");
+        auto* transform = projectile->GetComponent<stb::Transform>();
+        require(transform->GetPosition().x == 200.5f && transform->GetPosition().y == 50.25f,
+            "spawn coordinate changed axis or scale");
+        manager->Update(0.5f);
+        const auto moved = transform->GetPosition();
+        require(std::abs(moved.x - (200.5f - 0.997971f * 100.25f * 0.5f)) < 0.001f &&
+            std::abs(moved.y - (50.25f + 0.063671f * 100.25f * 0.5f)) < 0.001f,
+            "decimal diagonal direction was truncated or rescaled");
+        MonsterPacketHandler::HandleS2C_ProjectileMove(packet);
+        require(manager->FindProjectile(42) == projectile && transform->GetPosition().x == moved.x,
+            "duplicate spawn reset the projectile");
+        manager->Update(2.5f);
+        require(manager->FindProjectile(42) != nullptr, "spawn-only projectile expired on receive timeout");
+        manager->Update(7.0f);
+        require(manager->FindProjectile(42) == nullptr, "projectile survived actual travel range");
+        MonsterPacketHandler::HandleS2C_ProjectileMove(packet);
+        require(manager->FindProjectile(42) == nullptr, "duplicate packet revived retired ID");
+        manager->Clear("map_exit");
+        MonsterPacketHandler::HandleS2C_ProjectileMove(packet);
+        require(manager->FindProjectile(42) != nullptr, "map exit did not allow ID reuse");
+        manager->Clear("test_end");
+
+        // Two clients given the same spawn and elapsed time follow the same world trajectory.
+        MonsterProjectileData info{};
+        info.instanceId = 99; info.dirX = -0.997971f; info.dirY = 0.063671f;
+        info.pos = {200.5f, 50.25f}; info.speed = 100.25f; info.range = 1000.5f;
+        Projectile first, second;
+        first.Initialize(); second.Initialize();
+        first.InitFromServer(info); second.InitFromServer(info);
+        first.Update(0.25f); first.Update(0.25f); second.Update(0.5f);
+        const auto firstPosition = first.GetComponent<stb::Transform>()->GetPosition();
+        const auto secondPosition = second.GetComponent<stb::Transform>()->GetPosition();
+        require(std::abs(firstPosition.x - secondPosition.x) < 0.001f &&
+            std::abs(firstPosition.y - secondPosition.y) < 0.001f &&
+            std::abs(first.GetTravelledDistance() - second.GetTravelledDistance()) < 0.001f,
+            "same spawn diverged between client simulations");
+
+        Monster monster;
+        monster.Initialize();
+        MonsterSpawnInfo spawn{};
+        spawn.state = MonsterState::E_Idle;
+        monster.InitFromSpawn(spawn);
+        MonsterUpdateInfo update{};
+        update.pos = {200, 50}; update.dir = 1; update.state = MonsterState::E_Move;
+        monster.ApplyServerUpdate(update);
+        monster.Update(0.05f);
+        require(monster.GetComponent<stb::Transform>()->GetPosition().x == 200,
+            "legacy monster movement remained at spawn");
+        auto* animator = monster.GetComponent<stb::Animator>();
+        animator->CreateAnimation(L"attack", nullptr, {}, {1, 1}, {}, 1, 1.0f);
+        animator->CreateAnimation(L"idle", nullptr, {}, {1, 1}, {}, 1, 1.0f);
+        movement::Snapshot snapshot;
+        snapshot.kind = movement::Kind::Monster;
+        snapshot.epoch = 1; snapshot.tick = 1;
+        snapshot.hp = snapshot.maxHp = 100;
+        snapshot.position = {300, 50};
+        snapshot.lifeState = static_cast<int>(movement::MonsterLife::RangeAttack);
+        monster.ApplyMovementSnapshot(snapshot);
+        monster.Update(0.05f);
+        require(animator->IsPlaying(L"attack"), "movement visual overwrote ranged attack");
+        update.pos = {900, 50};
+        monster.ApplyServerUpdate(update);
+        monster.Update(0.05f);
+        require(monster.GetComponent<stb::Transform>()->GetPosition().x == 300,
+            "legacy packet overwrote authoritative snapshot");
+        std::cout << "[PASS] projectile decimal spawn, range, duplicate/map lifecycle, client trajectories and monster visuals\n";
+    }
+    catch (const std::exception& exception)
+    {
+        ++failureCount;
+        std::cerr << "[FAIL] combat visuals: " << exception.what() << '\n';
+    }
 
     for (const TestCase& test : tests)
     {

@@ -6,6 +6,9 @@
 #include "stbTexture.h"
 #include "Util.h"
 #include "Collider_Info.h"
+#include "stbLogger.h"
+#include <algorithm>
+#include <cmath>
 
 #define M_RESOURCEMANAGER stb::SingletonBase<stb::ResourceManager>::getInstance()
 #define M_MONSTERDATAMANAGER stb::SingletonBase<MonsterDataManager>::getInstance()
@@ -30,8 +33,10 @@ void Projectile::InitFromServer(const MonsterProjectileData& info)
 	m_speed = info.speed;
 	//m_moveSpeed = info.moveSpeed;
 
+    // Server coordinates share the client world axes/units (x right, y down).
+    // Rendering applies camera translation; do not flip or scale the direction.
 	m_position = info.pos;
-	m_targetPosition = info.pos;
+    m_travelled = 0.0f;
 	m_direction = { info.dirX, info.dirY };
 
 	if (m_transform != nullptr)
@@ -54,113 +59,20 @@ void Projectile::InitFromServer(const MonsterProjectileData& info)
 	BindAnimationEvents();*/
 }
 
-void Projectile::ApplyServerUpdate(const MonsterProjectileData& info)
-{
-	m_targetPosition = info.pos;
-	m_direction = { info.dirX, info.dirY };
-
-	//우선 출력 확인 위해 즉시 반영
-	/*m_position = info.pos;
-
-	if (m_transform != nullptr)
-	{
-		m_transform->SetPosition(m_position);
-	}*/
-}
-
-static float Length(const stb::math::Vector2& v)
-{
-	return std::sqrt(v.x * v.x + v.y * v.y);
-}
 
 void Projectile::Update(float deltaTime)
 {
-	GameObject::Update();
-
-	stb::math::Vector2 delta;
-	delta.x = m_direction.x * m_speed * deltaTime;
-	delta.y = m_direction.y * m_speed * deltaTime;
-
-	m_position += delta;
-	m_travelled += Length(delta);
-
-	if (m_transform != nullptr)
-		m_transform->SetPosition(m_position);
-
-	////constexpr float projectileSpeed = 500.0f;
-	//float projectileSpeed = m_speed;
-	//constexpr float correctionStrength = 8.0f;
-
-	//// 서버 패킷 사이에도 계속 움직이도록 로컬 예측
-	//if (m_direction.length() > 0.0f)
-	//{
-	//	m_position += m_direction.normalize()
-	//		* projectileSpeed
-	//		* deltaTime;
-	//}
-
-	//// 서버 위치와 오차를 부드럽게 수정
-	//stb::math::Vector2 error =
-	//	m_targetPosition - m_position;
-
-	//float correctionRatio = std::clamp(
-	//	correctionStrength * deltaTime,
-	//	0.0f,
-	//	1.0f
-	//);
-
-	//m_position += error * correctionRatio;
-
-	//if (m_transform != nullptr)
-	//	m_transform->SetPosition(m_position);
+    GameObject::Update();
+    const float dt = (std::max)(deltaTime, 0.0f);
+    const auto before = m_position;
+    const stb::math::Vector2 delta = {m_direction.x * m_speed * dt, m_direction.y * m_speed * dt};
+    m_position += delta;
+    m_travelled += std::sqrt(delta.x * delta.x + delta.y * delta.y);
+    if (m_transform) m_transform->SetPosition(m_position);
+    M_LOGGER("[Projectile move] instanceId=%d before=(%.6f,%.6f) after=(%.6f,%.6f) dir=(%.6f,%.6f) speed=%.6f range=%.6f travelled=%.6f dt=%.6f",
+        m_instanceId, before.x, before.y, m_position.x, m_position.y,
+        m_direction.x, m_direction.y, m_speed, m_range, m_travelled, dt);
 }
-//
-//void Projectile::Update(float deltaTime)
-//{
-//	GameObject::Update();
-//
-//	stb::math::Vector2 diff = m_targetPosition - m_position;
-//	float distance = diff.length();
-//
-//	if (distance > 0.1f)
-//	{
-//		//값이 높을수록 서버 위치를 빠르게 따라감
-//		constexpr float correctionSpeed = 20.0f;
-//		//constexpr float correctionSpeed = m_moveSpeed;
-//
-//		float ratio = std::clamp(
-//			correctionSpeed * deltaTime,
-//			0.0f,
-//			1.0f
-//		);
-//
-//		m_position += diff * ratio;
-//	}
-//	else
-//	{
-//		m_position = m_targetPosition;
-//	}
-//
-//	if (m_transform != nullptr)
-//		m_transform->SetPosition(m_position);
-//
-//	//stb::math::Vector2 diff = m_targetPos - m_pos;
-//	//float dist = diff.length();
-//
-//	//if (dist > 1.0f)
-//	//{
-//	//	float correctionSpeed = static_cast<float>(m_moveSpeed);
-//	//	//float correctionSpeed = m_moveSpeed * 2.0f;
-//	//	float moveDist = correctionSpeed * deltaTime;
-//
-//	//	if (moveDist >= dist)
-//	//		m_pos = m_targetPos;
-//	//	else
-//	//		m_pos += diff.normalize() * moveDist;
-//
-//	//	m_transform->SetPosition(m_pos);
-//	//}
-//}
 
 void Projectile::Render(stbD2DRenderer& renderer)
 {
@@ -185,7 +97,9 @@ void Projectile::SetAnimation()
 
 	for (const AnimationInfo& info : data->animations)
 	{
+        if (info.anim_name != "projectile") continue;
 		std::vector<stb::Texture*> frames;
+        std::vector<stb::math::Vector2> frameOffsets;
 
 		for (int i = 0; i < info.frame_count; ++i)
 		{
@@ -194,15 +108,22 @@ void Projectile::SetAnimation()
 
 			stb::Texture* tex = M_RESOURCEMANAGER->Find<stb::Texture>(key);
 			if (tex != nullptr)
-				frames.emplace_back(tex);
+            {
+                frames.emplace_back(tex);
+                // A projectile uses its own image center, not the monster's body/feet origin.
+                // Keep the visible center at the same world offset as the collision shape.
+                const auto& center = data->projectileData.colliderInfo.offset;
+                frameOffsets.emplace_back(center.x - static_cast<float>(tex->GetWidth()) * 0.5f,
+                    center.y - static_cast<float>(tex->GetHeight()) * 0.5f);
+            }
 		}
 
 		m_animator->CreateFrameAnimation(
 			utils::StringToWString(info.anim_name),
 			frames,
-			data->renderInfo.origin,
-			data->renderInfo.offset,
-			0.2f
+			stb::math::Vector2::Zero,
+            frameOffsets,
+            static_cast<float>(info.delay_ms) / 1000.0f
 		);
 
 		stb::Animator::EventNames eventNames;
@@ -216,9 +137,16 @@ void Projectile::SetAnimation()
 	}
 }
 
-bool Projectile::IsExpired()
+bool Projectile::IsExpired() const
 {
-	return m_travelled >= m_range;
+    return m_travelled >= m_range;
+}
+
+void Projectile::LogRemoval(const char* reason) const
+{
+    M_LOGGER("[Projectile remove] instanceId=%d reason=%s dir=(%.6f,%.6f) pos=(%.6f,%.6f) speed=%.6f range=%.6f travelled=%.6f",
+        m_instanceId, reason, m_direction.x, m_direction.y, m_position.x, m_position.y,
+        m_speed, m_range, m_travelled);
 }
 
 void Projectile::SetCollider()

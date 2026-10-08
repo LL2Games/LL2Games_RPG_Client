@@ -6,6 +6,7 @@
 #include "stbPlayer.h"
 #include "stbOtherPlayerManager.h"
 #include "MonsterManager.h"
+#include "ProjectileManager.h"
 #include <chrono>
 #include <map>
 #include <mutex>
@@ -85,6 +86,7 @@ void MovementPacketHandler::Pump()
     if (reset && player) player->GetMovementScript()->ResetMovementConnection();
     if (reset)
     {
+        ProjectileManager::getInstance()->Clear("disconnect");
         for (auto& entry : stb::OtherPlayerManager::getInstance()->GetPlayers())
             if (entry.second) entry.second->ResetMovementConnection();
         MonsterManager::getInstance()->ResetMovementConnections();

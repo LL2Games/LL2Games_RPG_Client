@@ -285,7 +285,10 @@ void MonsterPacketHandler::HandleS2C_ProjectileMove(const ParsedPacket& pkt)
 			throw std::runtime_error(errMsg);
 		}
 
-		for (size_t i = 0; i < projectileSize; i++)
+        if (projectileSize < 0) throw std::runtime_error("negative projectile count");
+        std::vector<MonsterProjectileData> spawns;
+        // 0x0044 is a spawn batch, not a recurring position snapshot.
+		for (int i = 0; i < projectileSize; i++)
 		{
 			MonsterProjectileData projectileInfo{};
 			if (!PacketParser::ParseNextIntField(data, payloadSize, offset, projectileInfo.instanceId, errMsg))
@@ -333,10 +336,10 @@ void MonsterPacketHandler::HandleS2C_ProjectileMove(const ParsedPacket& pkt)
 				throw std::runtime_error(errMsg);
 			}
 
-			M_PROJECTILEMANAGER->ApplyServerUpdate(projectileInfo);
+			spawns.push_back(projectileInfo);
 		}
-
-
+        if (offset != payloadSize) throw std::runtime_error("extra projectile fields");
+        for (const auto& spawn : spawns) M_PROJECTILEMANAGER->SpawnFromServer(spawn);
 	}
 	catch (const std::exception& e)
 	{

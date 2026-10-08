@@ -177,6 +177,7 @@ echo copy /Y "$(OutDir)$(TargetName)$(TargetExt)" ..\bin\$(Platform)\$(Configura
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="LL2_Client_Win.h" />
+    <ClInclude Include="GameSystemKeyPolicy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CLogin.cpp" />
